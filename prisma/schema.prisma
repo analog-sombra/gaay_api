@@ -1,0 +1,284 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SYSTEM
+  ADMIN
+  DYCOLL
+  ACCOUNTS
+  SCSCT
+  FARMER
+  DOCTOR
+  STOCKMEN
+  ANIMALHUSBANDRY
+}
+
+enum Status {
+  NONE
+  ACTIVE
+  INACTIVE
+}
+
+enum Learn {
+  FOOD
+  HEALTH
+  MEDICINE
+}
+
+enum SEX {
+  MALE
+  FEMALE
+}
+
+enum RequestType {
+  MEDICAL
+  FOLLOWUP
+  SELFASSESSED
+}
+
+model user {
+  id               Int       @id @default(autoincrement())
+  name             String
+  password         String?
+  photo            String?
+  alias            String?
+  contact          String    @unique
+  contact_two      String?
+  beneficiary_code String?
+  address          String?
+  village          String?
+  district         String?
+  role             Role      @default(FARMER)
+  remark           String?
+  status           Status    @default(ACTIVE)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+
+  cow_createdby cow[] @relation("cow_createdby")
+  cow_updatedby cow[] @relation("cow_updatedby")
+  cow_deletedby cow[] @relation("cow_deletedby")
+  cow           cow[]
+
+  market_createdby market[] @relation("market_createdby")
+  market_updatedby market[] @relation("market_updatedby")
+  market_deletedby market[] @relation("market_deletedby")
+  market           market[]
+
+  vaccination_createdby vaccination[] @relation("vaccination_createdby")
+  vaccination_updatedby vaccination[] @relation("vaccination_updatedby")
+  vaccination_deletedby vaccination[] @relation("vaccination_deletedby")
+  vaccination           vaccination[]
+
+  birth_createdby birth[] @relation("birth_createdby")
+  birth_updatedby birth[] @relation("birth_updatedby")
+  birth_deletedby birth[] @relation("birth_deletedby")
+
+  medical_createdby medical_request[] @relation("medical_createdby")
+  medical_updatedby medical_request[] @relation("medical_updatedby")
+  medical_deletedby medical_request[] @relation("medical_deletedby")
+  farmer            medical_request[] @relation("farmer")
+  doctor            medical_request[] @relation("doctor")
+
+  loan_createdby loan[] @relation("loan_createdby")
+  loan_updatedby loan[] @relation("loan_updatedby")
+  loan_deletedby loan[] @relation("loan_deletedby")
+  loan           loan[]
+}
+
+model learning {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  link        String
+  type        Learn     @default(FOOD)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}
+
+model breed {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  cow         cow[]
+}
+
+model cow {
+  id                  Int           @id @default(autoincrement())
+  farmer              user          @relation(fields: [farmerid], references: [id])
+  farmerid            Int
+  cowtagno            String        @unique
+  cowname             String
+  alias               String
+  photocover          String
+  photo1              String
+  photo2              String
+  photo3              String
+  photo4              String
+  breed               breed         @relation(fields: [breedid], references: [id])
+  breedid             Int
+  sex                 SEX           @default(MALE)
+  birthdate           DateTime
+  noofcalves          Int
+  weight              String
+  last_vaccine_date   DateTime
+  last_treatment_date DateTime
+  last_deworming_date DateTime
+  last_calf_birthdate DateTime
+  daily_milk_produce  String
+  heat_period         String
+  remarks             String
+  status              Status        @default(ACTIVE)
+  createdAt           DateTime      @default(now())
+  createdBy           user          @relation("cow_createdby", fields: [createdById], references: [id])
+  createdById         Int
+  updatedAt           DateTime      @updatedAt
+  updatedBy           user          @relation("cow_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int
+  deletedAt           DateTime?
+  deletedBy           user?         @relation("cow_deletedby", fields: [deletedById], references: [id])
+  deletedById         Int?
+  market              market[]
+  vaccination         vaccination[]
+
+  mothercow_birth birth[]           @relation("mothercow")
+  fathercow_birth birth[]           @relation("fathercow")
+  calf_birth      birth[]           @relation("calf")
+  cow             medical_request[] @relation("cow")
+  loan            loan[]
+}
+
+model market {
+  id          Int       @id @default(autoincrement())
+  cow         cow       @relation(fields: [cowid], references: [id])
+  cowid       Int
+  farmer      user      @relation(fields: [farmerid], references: [id])
+  farmerid    Int
+  listingdate DateTime
+  price       String
+  verified    Boolean
+  remarks     String
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  createdBy   user      @relation("market_createdby", fields: [createdById], references: [id])
+  createdById Int
+  updatedAt   DateTime  @updatedAt
+  updatedBy   user      @relation("market_updatedby", fields: [updatedById], references: [id])
+  updatedById Int
+  deletedAt   DateTime?
+  deletedBy   user?     @relation("market_deletedby", fields: [deletedById], references: [id])
+  deletedById Int?
+}
+
+model vaccination {
+  id                  Int       @id @default(autoincrement())
+  cow                 cow       @relation(fields: [cowid], references: [id])
+  cowid               Int
+  date                DateTime
+  vaccine_name        String
+  doctor              user      @relation(fields: [doctorid], references: [id])
+  doctorid            Int
+  reason_for_vaccine  String
+  follow_up_date      DateTime
+  follow_up_treatment String
+  remarks             String
+  status              Status    @default(ACTIVE)
+  createdAt           DateTime  @default(now())
+  createdBy           user      @relation("vaccination_createdby", fields: [createdById], references: [id])
+  createdById         Int
+  updatedAt           DateTime  @updatedAt
+  updatedBy           user      @relation("vaccination_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int
+  deletedAt           DateTime?
+  deletedBy           user?     @relation("vaccination_deletedby", fields: [deletedById], references: [id])
+  deletedById         Int?
+}
+
+model birth {
+  id          Int       @id @default(autoincrement())
+  mothercow   cow       @relation("mothercow", fields: [mothercowid], references: [id])
+  mothercowid Int
+  fathercow   cow       @relation("fathercow", fields: [fathercowid], references: [id])
+  fathercowid Int
+  calf        cow       @relation("calf", fields: [calfid], references: [id])
+  calfid      Int
+  remarks     String
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  createdBy   user      @relation("birth_createdby", fields: [createdById], references: [id])
+  createdById Int
+  updatedAt   DateTime  @updatedAt
+  updatedBy   user      @relation("birth_updatedby", fields: [updatedById], references: [id])
+  updatedById Int
+  deletedAt   DateTime?
+  deletedBy   user?     @relation("birth_deletedby", fields: [deletedById], references: [id])
+  deletedById Int?
+}
+
+model medical_request {
+  id                  Int         @id @default(autoincrement())
+  farmer              user        @relation("farmer", fields: [farmerid], references: [id])
+  farmerid            Int
+  cow                 cow         @relation("cow", fields: [cowid], references: [id])
+  cowid               Int
+  doctor              user        @relation("doctor", fields: [doctorid], references: [id])
+  doctorid            Int
+  date                DateTime
+  reason              String
+  treatment_provided  String
+  follow_up_date      DateTime
+  follow_up_treatment String
+  type                RequestType @default(MEDICAL)
+  remarks             String
+  status              Status      @default(ACTIVE)
+  createdAt           DateTime    @default(now())
+  createdBy           user        @relation("medical_createdby", fields: [createdById], references: [id])
+  createdById         Int
+  updatedAt           DateTime    @updatedAt
+  updatedBy           user        @relation("medical_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int
+  deletedAt           DateTime?
+  deletedBy           user?       @relation("medical_deletedby", fields: [deletedById], references: [id])
+  deletedById         Int?
+}
+
+model loan {
+  id          Int       @id @default(autoincrement())
+  farmer      user      @relation(fields: [farmerid], references: [id])
+  farmerid    Int
+  cow         cow       @relation(fields: [cowid], references: [id])
+  cowid       Int
+  amount      String
+  start_date  DateTime
+  end_date    DateTime
+  emi_amount  String
+  emi_date    DateTime
+  loan_id     String
+  remarks     String
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  createdBy   user      @relation("loan_createdby", fields: [createdById], references: [id])
+  createdById Int
+  updatedAt   DateTime  @updatedAt
+  updatedBy   user      @relation("loan_updatedby", fields: [updatedById], references: [id])
+  updatedById Int
+  deletedAt   DateTime?
+  deletedBy   user?     @relation("loan_deletedby", fields: [deletedById], references: [id])
+  deletedById Int?
+}
