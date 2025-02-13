@@ -6,7 +6,7 @@ export class LoginUserInput {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
-  mobile: string;
+  code: string;
 
   @Length(8, 16, {
     message: 'Password must be between 8 to 16 characters long.',

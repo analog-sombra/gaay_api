@@ -7,11 +7,13 @@ import { user } from '@prisma/client';
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async login(mobile: string, password: string) {
+  async login(code: string, password: string) {
     try {
       const is_user = await this.prisma.user.findUnique({
         where: {
-          contact: mobile,
+          beneficiary_code: code,
+          deletedAt: null,
+          status: 'ACTIVE',
         },
       });
 
@@ -37,15 +39,15 @@ export class AuthService {
 
   async signup(mobile: string, name: string, password: string) {
     try {
-      const is_user = await this.prisma.user.findUnique({
-        where: {
-          contact: mobile,
-        },
-      });
+      // const is_user = await this.prisma.user.findUnique({
+      //   where: {
+      //     contact: mobile,
+      //   },
+      // });
 
-      if (is_user) {
-        throw new BadGatewayException('User already exists');
-      }
+      // if (is_user) {
+      //   throw new BadGatewayException('User already exists');
+      // }
 
       const hashedPassword = await argon2.hash(password);
 
@@ -63,16 +65,79 @@ export class AuthService {
     }
   }
 
-  async mobileLogin(mobile: string) {
+  async codeLogin(code: string) {
     try {
       const is_user = await this.prisma.user.findUnique({
         where: {
-          contact: mobile,
+          beneficiary_code: code,
+          deletedAt: null,
+          status: 'ACTIVE',
         },
       });
 
       if (!is_user) {
         throw new BadGatewayException('User not found');
+      }
+
+      return is_user;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async sendOtp(code: string) {
+    try {
+      const is_user = await this.prisma.user.findUnique({
+        where: {
+          beneficiary_code: code,
+          deletedAt: null,
+          status: 'ACTIVE',
+        },
+      });
+
+      if (!is_user) {
+        throw new BadGatewayException('User not found');
+      }
+
+      const otp = this.generateOTP(6);
+
+      const opt_response = await this.prisma.user.update({
+        where: {
+          beneficiary_code: code,
+          deletedAt: null,
+          status: 'ACTIVE',
+        },
+        data: {
+          otp: otp,
+        },
+      });
+
+      if (!opt_response) {
+        throw new BadGatewayException('OTP not sent');
+      }
+
+      return is_user;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async verifyOtp(otpInput: { code: string; otp: string }) {
+    try {
+      const is_user = await this.prisma.user.findUnique({
+        where: {
+          beneficiary_code: otpInput.code,
+          deletedAt: null,
+          status: 'ACTIVE',
+        },
+      });
+
+      if (!is_user) {
+        throw new BadGatewayException('User not found');
+      }
+
+      if (is_user.otp !== otpInput.otp) {
+        throw new BadGatewayException('OTP not valid');
       }
 
       return is_user;

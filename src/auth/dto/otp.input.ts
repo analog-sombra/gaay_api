@@ -6,7 +6,7 @@ export class OtpInput {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
-  mobile: string;
+  code: string;
 
   @IsString()
   @IsNotEmpty()

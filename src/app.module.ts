@@ -20,9 +20,20 @@ import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { UploaderModule } from './uploader/uploader.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './interceptor/responseinterceptor';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore.redisStore,
+      host: 'localhost',
+      port: 6379,
+      db: 0, // Use database 0
+      ttl: 60000, // 60 seconds
+      prefix: '', // No prefix
+    }),
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),

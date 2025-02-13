@@ -48,20 +48,30 @@ enum RequestType {
   SELFASSESSED
 }
 
+enum Category {
+  GENERAL
+  SCST
+  OBC
+  OTHERS
+}
+
 model user {
   id               Int       @id @default(autoincrement())
   name             String
   password         String?
   photo            String?
   alias            String?
-  contact          String    @unique
+  contact          String
   contact_two      String?
-  beneficiary_code String?
+  beneficiary_code String?   @unique
   address          String?
+  otp              String?
   village          String?
   district         String?
   role             Role      @default(FARMER)
   remark           String?
+  occupation       String?
+  category         Category  @default(GENERAL)
   status           Status    @default(ACTIVE)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -127,30 +137,34 @@ model cow {
   cowname             String
   alias               String
   photocover          String
-  photo1              String
-  photo2              String
-  photo3              String
-  photo4              String
+  photo1              String?
+  photo2              String?
+  photo3              String?
+  photo4              String?
   breed               breed         @relation(fields: [breedid], references: [id])
   breedid             Int
   sex                 SEX           @default(MALE)
   birthdate           DateTime
-  noofcalves          Int
+  noofcalves          Int?
   weight              String
-  last_vaccine_date   DateTime
-  last_treatment_date DateTime
-  last_deworming_date DateTime
-  last_calf_birthdate DateTime
-  daily_milk_produce  String
-  heat_period         String
-  remarks             String
+  last_vaccine_date   DateTime?
+  last_treatment_date DateTime?
+  last_deworming_date DateTime?
+  last_calf_birthdate DateTime?
+  daily_milk_produce  String?
+  heat_period         String?
+  remarks             String?
+  purchased_from      String?
+  purchased_date      DateTime?
+  purchased_contact   String?
+  purchased_price     String?
   status              Status        @default(ACTIVE)
   createdAt           DateTime      @default(now())
   createdBy           user          @relation("cow_createdby", fields: [createdById], references: [id])
   createdById         Int
   updatedAt           DateTime      @updatedAt
-  updatedBy           user          @relation("cow_updatedby", fields: [updatedById], references: [id])
-  updatedById         Int
+  updatedBy           user?         @relation("cow_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int?
   deletedAt           DateTime?
   deletedBy           user?         @relation("cow_deletedby", fields: [deletedById], references: [id])
   deletedById         Int?
@@ -179,8 +193,8 @@ model market {
   createdBy   user      @relation("market_createdby", fields: [createdById], references: [id])
   createdById Int
   updatedAt   DateTime  @updatedAt
-  updatedBy   user      @relation("market_updatedby", fields: [updatedById], references: [id])
-  updatedById Int
+  updatedBy   user?     @relation("market_updatedby", fields: [updatedById], references: [id])
+  updatedById Int?
   deletedAt   DateTime?
   deletedBy   user?     @relation("market_deletedby", fields: [deletedById], references: [id])
   deletedById Int?
@@ -203,8 +217,8 @@ model vaccination {
   createdBy           user      @relation("vaccination_createdby", fields: [createdById], references: [id])
   createdById         Int
   updatedAt           DateTime  @updatedAt
-  updatedBy           user      @relation("vaccination_updatedby", fields: [updatedById], references: [id])
-  updatedById         Int
+  updatedBy           user?     @relation("vaccination_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int?
   deletedAt           DateTime?
   deletedBy           user?     @relation("vaccination_deletedby", fields: [deletedById], references: [id])
   deletedById         Int?
@@ -224,8 +238,8 @@ model birth {
   createdBy   user      @relation("birth_createdby", fields: [createdById], references: [id])
   createdById Int
   updatedAt   DateTime  @updatedAt
-  updatedBy   user      @relation("birth_updatedby", fields: [updatedById], references: [id])
-  updatedById Int
+  updatedBy   user?     @relation("birth_updatedby", fields: [updatedById], references: [id])
+  updatedById Int?
   deletedAt   DateTime?
   deletedBy   user?     @relation("birth_deletedby", fields: [deletedById], references: [id])
   deletedById Int?
@@ -251,8 +265,8 @@ model medical_request {
   createdBy           user        @relation("medical_createdby", fields: [createdById], references: [id])
   createdById         Int
   updatedAt           DateTime    @updatedAt
-  updatedBy           user        @relation("medical_updatedby", fields: [updatedById], references: [id])
-  updatedById         Int
+  updatedBy           user?       @relation("medical_updatedby", fields: [updatedById], references: [id])
+  updatedById         Int?
   deletedAt           DateTime?
   deletedBy           user?       @relation("medical_deletedby", fields: [deletedById], references: [id])
   deletedById         Int?
@@ -276,8 +290,8 @@ model loan {
   createdBy   user      @relation("loan_createdby", fields: [createdById], references: [id])
   createdById Int
   updatedAt   DateTime  @updatedAt
-  updatedBy   user      @relation("loan_updatedby", fields: [updatedById], references: [id])
-  updatedById Int
+  updatedBy   user?     @relation("loan_updatedby", fields: [updatedById], references: [id])
+  updatedById Int?
   deletedAt   DateTime?
   deletedBy   user?     @relation("loan_deletedby", fields: [deletedById], references: [id])
   deletedById Int?

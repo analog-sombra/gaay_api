@@ -18,4 +18,9 @@ export class UserResolver {
   getUserCows(@Args('id', { type: () => Int }) id: number) {
     return this.userService.getUserCows(id);
   }
+
+  @Query(() => User)
+  getFarmerByCode(@Args('code', { type: () => String }) code: string) {
+    return this.userService.getFarmerByCode(code);
+  }
 }

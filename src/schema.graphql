@@ -16,6 +16,13 @@ type Breed {
   updatedAt: DateTime!
 }
 
+enum Category {
+  GENERAL
+  OBC
+  OTHERS
+  SCST
+}
+
 type Cow {
   alias: String!
   birthdate: DateTime!
@@ -25,23 +32,27 @@ type Cow {
   cowtagno: String!
   createdAt: DateTime!
   createdById: Int!
-  daily_milk_produce: String!
+  daily_milk_produce: String
   deletedAt: DateTime
   deletedById: Int
   farmerid: Int!
-  heat_period: String!
+  heat_period: String
   id: Int!
-  last_calf_birthdate: DateTime!
-  last_deworming_date: DateTime!
-  last_treatment_date: DateTime!
-  last_vaccine_date: DateTime!
-  noofcalves: Int!
-  photo1: String!
-  photo2: String!
-  photo3: String!
-  photo4: String!
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+  noofcalves: Int
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
   photocover: String!
-  remarks: String!
+  purchased_contact: String
+  purchased_date: DateTime
+  purchased_from: String
+  purchased_price: String
+  remarks: String
   sex: SEX!
   status: Status!
   updatedAt: DateTime!
@@ -57,6 +68,35 @@ input CreateBirthInput {
 input CreateBreedInput {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+input CreateCowInput {
+  alias: String!
+  birthdate: DateTime!
+  breedid: Int!
+  cowname: String!
+  cowtagno: String!
+  daily_milk_produce: String
+  farmerid: Int!
+  heat_period: String
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+  noofcalves: Int!
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photocover: String!
+  purchased_contact: String
+  purchased_date: DateTime
+  purchased_from: String
+  purchased_price: String
+  remarks: String
+  sex: SEX!
+  status: Status!
+  weight: String!
 }
 
 input CreateLearnInput {
@@ -95,7 +135,7 @@ type Loan {
 }
 
 input LoginUserInput {
-  mobile: String!
+  code: String!
   password: String!
 }
 
@@ -112,6 +152,7 @@ type Medical {
 type Mutation {
   createBirth(createBirthInput: CreateBirthInput!): Birth!
   createBreed(createBreedInput: CreateBreedInput!): Breed!
+  createCow(createCowInput: CreateCowInput!): Cow!
   createLearn(createLearnInput: CreateLearnInput!): Learn!
   createLoan(createLoanInput: CreateLoanInput!): Loan!
   createMarket(createMarketInput: CreateMarketInput!): Market!
@@ -122,6 +163,7 @@ type Mutation {
   removeLoan(id: Int!): Loan!
   removeMarket(id: Int!): Market!
   removeMedical(id: Int!): Medical!
+  sendOtp(code: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
   updateBreed(updateBreedInput: UpdateBreedInput!): Breed!
@@ -129,12 +171,20 @@ type Mutation {
   updateLoan(updateLoanInput: UpdateLoanInput!): Loan!
   updateMarket(updateMarketInput: UpdateMarketInput!): Market!
   updateMedical(updateMedicalInput: UpdateMedicalInput!): Medical!
+  verifyOtp(otpInput: OtpInput!): User!
+}
+
+input OtpInput {
+  code: String!
+  otp: String!
 }
 
 type Query {
   birth(id: Int!): Birth!
   breed(id: Int!): Breed!
+  codeLogin(code: String!): User!
   getCowById(id: Int!): Cow!
+  getFarmerByCode(code: String!): User!
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
   learn(id: Int!): Learn!
@@ -142,7 +192,6 @@ type Query {
   login(loginUserInput: LoginUserInput!): User!
   market(id: Int!): Market!
   medical(id: Int!): Medical!
-  mobileLogin(mobile: String!): User!
 }
 
 enum Role {
@@ -214,6 +263,7 @@ type User {
   address: String
   alias: String
   beneficiary_code: String
+  category: Category!
   contact: String!
   contact_two: String
   createdAt: DateTime!
@@ -221,6 +271,7 @@ type User {
   district: String
   id: Int!
   name: String!
+  occupation: String
   password: String
   photo: String
   remark: String

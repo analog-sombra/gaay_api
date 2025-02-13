@@ -11,10 +11,7 @@ export class AuthResolver {
 
   @Query(() => User)
   login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
-    return this.authService.login(
-      loginUserInput.mobile,
-      loginUserInput.password,
-    );
+    return this.authService.login(loginUserInput.code, loginUserInput.password);
   }
 
   @Mutation(() => User)
@@ -27,19 +24,19 @@ export class AuthResolver {
   }
 
   @Query(() => User)
-  mobileLogin(@Args('mobile', { type: () => String }) mobile: string) {
-    return this.authService.mobileLogin(mobile);
+  codeLogin(@Args('code', { type: () => String }) code: string) {
+    return this.authService.codeLogin(code);
   }
 
-  // @Mutation(() => Auth)
-  // sendOtp(@Args('mobile', { type: () => String }) mobile: string) {
-  //   return this.authService.sendOtp(mobile);
-  // }
+  @Mutation(() => User)
+  sendOtp(@Args('code', { type: () => String }) code: string) {
+    return this.authService.sendOtp(code);
+  }
 
-  // @Mutation(() => Auth)
-  // verifyOtp(@Args('otpInput') otpInput: OtpInput) {
-  //   return this.authService.verifyOtp(otpInput);
-  // }
+  @Mutation(() => User)
+  verifyOtp(@Args('otpInput') otpInput: OtpInput) {
+    return this.authService.verifyOtp(otpInput);
+  }
 
   // @Mutation(() => Auth)
   // forgetPassword(@Args('mobile', { type: () => String }) ph_number: string) {

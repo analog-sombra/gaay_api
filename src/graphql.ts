@@ -8,6 +8,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum Category {
+    GENERAL = "GENERAL",
+    OBC = "OBC",
+    OTHERS = "OTHERS",
+    SCST = "SCST"
+}
+
 export enum Role {
     ACCOUNTS = "ACCOUNTS",
     ADMIN = "ADMIN",
@@ -39,6 +46,35 @@ export interface CreateBreedInput {
     exampleField: number;
 }
 
+export interface CreateCowInput {
+    alias: string;
+    birthdate: DateTime;
+    breedid: number;
+    cowname: string;
+    cowtagno: string;
+    daily_milk_produce?: Nullable<string>;
+    farmerid: number;
+    heat_period?: Nullable<string>;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
+    noofcalves: number;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photocover: string;
+    purchased_contact?: Nullable<string>;
+    purchased_date?: Nullable<DateTime>;
+    purchased_from?: Nullable<string>;
+    purchased_price?: Nullable<string>;
+    remarks?: Nullable<string>;
+    sex: SEX;
+    status: Status;
+    weight: string;
+}
+
 export interface CreateLearnInput {
     exampleField: number;
 }
@@ -56,8 +92,13 @@ export interface CreateMedicalInput {
 }
 
 export interface LoginUserInput {
-    mobile: string;
+    code: string;
     password: string;
+}
+
+export interface OtpInput {
+    code: string;
+    otp: string;
 }
 
 export interface SignUpUserInput {
@@ -118,23 +159,27 @@ export interface Cow {
     cowtagno: string;
     createdAt: DateTime;
     createdById: number;
-    daily_milk_produce: string;
+    daily_milk_produce?: Nullable<string>;
     deletedAt?: Nullable<DateTime>;
     deletedById?: Nullable<number>;
     farmerid: number;
-    heat_period: string;
+    heat_period?: Nullable<string>;
     id: number;
-    last_calf_birthdate: DateTime;
-    last_deworming_date: DateTime;
-    last_treatment_date: DateTime;
-    last_vaccine_date: DateTime;
-    noofcalves: number;
-    photo1: string;
-    photo2: string;
-    photo3: string;
-    photo4: string;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
+    noofcalves?: Nullable<number>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
     photocover: string;
-    remarks: string;
+    purchased_contact?: Nullable<string>;
+    purchased_date?: Nullable<DateTime>;
+    purchased_from?: Nullable<string>;
+    purchased_price?: Nullable<string>;
+    remarks?: Nullable<string>;
     sex: SEX;
     status: Status;
     updatedAt: DateTime;
@@ -161,6 +206,7 @@ export interface Medical {
 export interface IMutation {
     createBirth(createBirthInput: CreateBirthInput): Birth | Promise<Birth>;
     createBreed(createBreedInput: CreateBreedInput): Breed | Promise<Breed>;
+    createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
     createLearn(createLearnInput: CreateLearnInput): Learn | Promise<Learn>;
     createLoan(createLoanInput: CreateLoanInput): Loan | Promise<Loan>;
     createMarket(createMarketInput: CreateMarketInput): Market | Promise<Market>;
@@ -171,6 +217,7 @@ export interface IMutation {
     removeLoan(id: number): Loan | Promise<Loan>;
     removeMarket(id: number): Market | Promise<Market>;
     removeMedical(id: number): Medical | Promise<Medical>;
+    sendOtp(code: string): User | Promise<User>;
     signup(signUpUserInput: SignUpUserInput): User | Promise<User>;
     updateBirth(updateBirthInput: UpdateBirthInput): Birth | Promise<Birth>;
     updateBreed(updateBreedInput: UpdateBreedInput): Breed | Promise<Breed>;
@@ -178,12 +225,15 @@ export interface IMutation {
     updateLoan(updateLoanInput: UpdateLoanInput): Loan | Promise<Loan>;
     updateMarket(updateMarketInput: UpdateMarketInput): Market | Promise<Market>;
     updateMedical(updateMedicalInput: UpdateMedicalInput): Medical | Promise<Medical>;
+    verifyOtp(otpInput: OtpInput): User | Promise<User>;
 }
 
 export interface IQuery {
     birth(id: number): Birth | Promise<Birth>;
     breed(id: number): Breed | Promise<Breed>;
+    codeLogin(code: string): User | Promise<User>;
     getCowById(id: number): Cow | Promise<Cow>;
+    getFarmerByCode(code: string): User | Promise<User>;
     getUserById(id: number): User | Promise<User>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
     learn(id: number): Learn | Promise<Learn>;
@@ -191,13 +241,13 @@ export interface IQuery {
     login(loginUserInput: LoginUserInput): User | Promise<User>;
     market(id: number): Market | Promise<Market>;
     medical(id: number): Medical | Promise<Medical>;
-    mobileLogin(mobile: string): User | Promise<User>;
 }
 
 export interface User {
     address?: Nullable<string>;
     alias?: Nullable<string>;
     beneficiary_code?: Nullable<string>;
+    category: Category;
     contact: string;
     contact_two?: Nullable<string>;
     createdAt: DateTime;
@@ -205,6 +255,7 @@ export interface User {
     district?: Nullable<string>;
     id: number;
     name: string;
+    occupation?: Nullable<string>;
     password?: Nullable<string>;
     photo?: Nullable<string>;
     remark?: Nullable<string>;

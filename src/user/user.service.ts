@@ -12,6 +12,7 @@ export class UserService {
       const is_user = await this.prisma.user.findUnique({
         where: {
           id: id,
+          deletedAt: null,
         },
         include: {
           cow: {
@@ -37,6 +38,23 @@ export class UserService {
       const user_data = await this.prisma.user.findUnique({
         where: {
           id: id,
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+  async getFarmerByCode(code: string) {
+    try {
+      const user_data = await this.prisma.user.findFirst({
+        where: {
+          beneficiary_code: code,
+          status: 'ACTIVE',
+          deletedAt: null,
         },
       });
       if (!user_data) {

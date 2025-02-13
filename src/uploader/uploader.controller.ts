@@ -78,14 +78,15 @@ export class UploaderController {
       response.send(res);
       response.end();
     }
-    const filePath = `/public/images/${path}/${file.filename}`;
-    const filename = `${req.protocol}://${req.get('Host')}${filePath.replace(
-      /\\/g,
-      '/',
-    )}`;
+    // const filePath = `/public/images/${path}/${file.filename}`;
+    // const filename = `${req.protocol}://${req.get('Host')}${filePath.replace(
+    //   /\\/g,
+    //   '/',
+    // )}`;
+    const filePath = `public/images/${path}/${file.filename}`;
 
     const res: response = {
-      data: filename,
+      data: filePath,
       function: 'uploadFile',
       status: true,
       message: 'image store sussfully',
