@@ -48,6 +48,7 @@ export class CowService {
           last_calf_birthdate: new Date(),
           heat_period: new Date().toDateString(),
           createdById: createCowInput.farmerid,
+          daily_milk_produce: createCowInput.daily_milk_produce,
         },
       });
       if (!cow_data) {
