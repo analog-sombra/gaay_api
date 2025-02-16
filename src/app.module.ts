@@ -21,6 +21,8 @@ import { UploaderModule } from './uploader/uploader.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './interceptor/responseinterceptor';
 import { CacheModule } from '@nestjs/cache-manager';
+import { VaccinationModule } from './vaccination/vaccination.module';
+import { FeedbackModule } from './feedback/feedback.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -63,6 +65,8 @@ import * as redisStore from 'cache-manager-redis-store';
     MedicalModule,
     BreedModule,
     UploaderModule,
+    VaccinationModule,
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService],

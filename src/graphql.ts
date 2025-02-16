@@ -75,6 +75,14 @@ export interface CreateCowInput {
     weight: string;
 }
 
+export interface CreateFeedbackInput {
+    createdById: number;
+    description: string;
+    happy: boolean;
+    status: Status;
+    suggestion: string;
+}
+
 export interface CreateLearnInput {
     exampleField: number;
 }
@@ -88,6 +96,10 @@ export interface CreateMarketInput {
 }
 
 export interface CreateMedicalInput {
+    exampleField: number;
+}
+
+export interface CreateVaccinationInput {
     exampleField: number;
 }
 
@@ -187,6 +199,20 @@ export interface Cow {
     weight: string;
 }
 
+export interface Feedback {
+    createdAt: DateTime;
+    createdById: number;
+    deletedAt?: Nullable<DateTime>;
+    deletedById?: Nullable<number>;
+    description: string;
+    happy: boolean;
+    id: number;
+    status: Status;
+    suggestion: string;
+    updatedAt: DateTime;
+    updatedById: number;
+}
+
 export interface Learn {
     exampleField: number;
 }
@@ -207,10 +233,12 @@ export interface IMutation {
     createBirth(createBirthInput: CreateBirthInput): Birth | Promise<Birth>;
     createBreed(createBreedInput: CreateBreedInput): Breed | Promise<Breed>;
     createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
+    createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
     createLearn(createLearnInput: CreateLearnInput): Learn | Promise<Learn>;
     createLoan(createLoanInput: CreateLoanInput): Loan | Promise<Loan>;
     createMarket(createMarketInput: CreateMarketInput): Market | Promise<Market>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
+    createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     removeBirth(id: number): Birth | Promise<Birth>;
     removeBreed(id: number): Breed | Promise<Breed>;
     removeLearn(id: number): Learn | Promise<Learn>;
@@ -263,6 +291,43 @@ export interface User {
     status: Status;
     updatedAt: DateTime;
     village?: Nullable<string>;
+}
+
+export interface Vaccination {
+    alias: string;
+    birthdate: DateTime;
+    breed: Breed;
+    breedid: number;
+    cowname: string;
+    cowtagno: string;
+    createdAt: DateTime;
+    createdById: number;
+    daily_milk_produce?: Nullable<string>;
+    deletedAt?: Nullable<DateTime>;
+    deletedById?: Nullable<number>;
+    farmerid: number;
+    heat_period?: Nullable<string>;
+    id: number;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
+    noofcalves?: Nullable<number>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photocover: string;
+    purchased_contact?: Nullable<string>;
+    purchased_date?: Nullable<DateTime>;
+    purchased_from?: Nullable<string>;
+    purchased_price?: Nullable<string>;
+    remarks?: Nullable<string>;
+    sex: SEX;
+    status: Status;
+    updatedAt: DateTime;
+    updatedById: number;
+    weight: string;
 }
 
 export type DateTime = any;

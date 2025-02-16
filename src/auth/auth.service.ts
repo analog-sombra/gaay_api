@@ -2,6 +2,7 @@ import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import * as argon2 from 'argon2';
 import { user } from '@prisma/client';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -101,22 +102,35 @@ export class AuthService {
 
       const otp = this.generateOTP(6);
 
-      const opt_response = await this.prisma.user.update({
-        where: {
-          beneficiary_code: code,
-          deletedAt: null,
-          status: 'ACTIVE',
-        },
-        data: {
-          otp: otp,
-        },
-      });
+      console.log(is_user);
 
-      if (!opt_response) {
+      // const response = await axios.get(
+      //   `https://api.arihantsms.com/api/v2/SendSMS?SenderId=DNHPDA&Is_Unicode=false&Is_Flash=false&Message=The%20OTP%20for%20Planning%20and%20Development%20Authority%20Portal%20login%20is%20${otp}.%20The%20OTP%20is%20valid%20for%205%20mins.&MobileNumbers=91${is_user.contact}&ApiKey=rL56LBkGeOa1MKFm5SrSKtz%2Bq55zMVdxk5PNvQkg2nY%3D&ClientId=ebff4d6c-072b-4342-b71f-dcca677713f8`,
+      // );
+      const response = await axios.get(
+        `https://api.arihantsms.com/api/v2/SendSMS?SenderId=DNHPDA&Is_Unicode=false&Is_Flash=false&Message=The%20OTP%20for%20Planning%20and%20Development%20Authority%20Portal%20login%20is%20${otp}.%20The%20OTP%20is%20valid%20for%205%20mins.&MobileNumbers=919773356997&ApiKey=rL56LBkGeOa1MKFm5SrSKtz%2Bq55zMVdxk5PNvQkg2nY%3D&ClientId=ebff4d6c-072b-4342-b71f-dcca677713f8`,
+      );
+
+      if (response.data.Data[0].MessageErrorDescription == 'Success') {
+        const opt_response = await this.prisma.user.update({
+          where: {
+            beneficiary_code: code,
+            deletedAt: null,
+            status: 'ACTIVE',
+          },
+          data: {
+            otp: otp,
+          },
+        });
+
+        if (!opt_response) {
+          throw new BadGatewayException('OTP not sent');
+        }
+
+        return is_user;
+      } else {
         throw new BadGatewayException('OTP not sent');
       }
-
-      return is_user;
     } catch (error) {
       throw new BadGatewayException(error);
     }

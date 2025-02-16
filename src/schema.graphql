@@ -99,6 +99,14 @@ input CreateCowInput {
   weight: String!
 }
 
+input CreateFeedbackInput {
+  createdById: Int!
+  description: String!
+  happy: Boolean!
+  status: Status!
+  suggestion: String!
+}
+
 input CreateLearnInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -119,10 +127,29 @@ input CreateMedicalInput {
   exampleField: Int!
 }
 
+input CreateVaccinationInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Feedback {
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int
+  description: String!
+  happy: Boolean!
+  id: Int!
+  status: Status!
+  suggestion: String!
+  updatedAt: DateTime!
+  updatedById: Int!
+}
 
 type Learn {
   """Example field (placeholder)"""
@@ -153,10 +180,12 @@ type Mutation {
   createBirth(createBirthInput: CreateBirthInput!): Birth!
   createBreed(createBreedInput: CreateBreedInput!): Breed!
   createCow(createCowInput: CreateCowInput!): Cow!
+  createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
   createLearn(createLearnInput: CreateLearnInput!): Learn!
   createLoan(createLoanInput: CreateLoanInput!): Loan!
   createMarket(createMarketInput: CreateMarketInput!): Market!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
+  createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
   removeLearn(id: Int!): Learn!
@@ -279,4 +308,41 @@ type User {
   status: Status!
   updatedAt: DateTime!
   village: String
+}
+
+type Vaccination {
+  alias: String!
+  birthdate: DateTime!
+  breed: Breed!
+  breedid: Int!
+  cowname: String!
+  cowtagno: String!
+  createdAt: DateTime!
+  createdById: Int!
+  daily_milk_produce: String
+  deletedAt: DateTime
+  deletedById: Int
+  farmerid: Int!
+  heat_period: String
+  id: Int!
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+  noofcalves: Int
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photocover: String!
+  purchased_contact: String
+  purchased_date: DateTime
+  purchased_from: String
+  purchased_price: String
+  remarks: String
+  sex: SEX!
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int!
+  weight: String!
 }
