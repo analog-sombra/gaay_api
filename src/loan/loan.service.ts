@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { CreateLoanInput } from './dto/create-loan.input';
 import { UpdateLoanInput } from './dto/update-loan.input';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class LoanService {
-  create(createLoanInput: CreateLoanInput) {
-    return 'This action adds a new loan';
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all loan`;
-  }
+  async getUserCurrentLoan(id: number) {
+    const date = new Date();
+    try {
+      const loan_data = await this.prisma.loan.findFirst({
+        where: {
+          farmerid: id,
+          deletedAt: null,
+          status: 'ACTIVE',
+          start_date: {
+            lte: date,
+          },
+          end_date: {
+            gte: date,
+          },
+        },
+        include: {
+          farmer: true,
+          cow: {
+            include: {
+              breed: true,
+            },
+          },
+        },
+      });
 
-  findOne(id: number) {
-    return `This action returns a #${id} loan`;
-  }
+      if (!loan_data) {
+        throw new BadGatewayException(
+          'This user currently does not have any active loan',
+        );
+      }
 
-  update(id: number, updateLoanInput: UpdateLoanInput) {
-    return `This action updates a #${id} loan`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} loan`;
+      return loan_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }

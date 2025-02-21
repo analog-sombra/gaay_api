@@ -117,6 +117,7 @@ model learning {
   title       String
   description String
   link        String
+  cover       String
   type        Learn     @default(FOOD)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -255,15 +256,15 @@ model medical_request {
   farmerid            Int
   cow                 cow         @relation("cow", fields: [cowid], references: [id])
   cowid               Int
-  doctor              user        @relation("doctor", fields: [doctorid], references: [id])
-  doctorid            Int
+  doctor              user?       @relation("doctor", fields: [doctorid], references: [id])
+  doctorid            Int?
   date                DateTime
   reason              String
-  treatment_provided  String
-  follow_up_date      DateTime
-  follow_up_treatment String
+  treatment_provided  String?
+  follow_up_date      DateTime?
+  follow_up_treatment String?
   type                RequestType @default(MEDICAL)
-  remarks             String
+  remarks             String?
   status              Status      @default(ACTIVE)
   createdAt           DateTime    @default(now())
   createdBy           user        @relation("medical_createdby", fields: [createdById], references: [id])

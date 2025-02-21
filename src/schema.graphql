@@ -107,24 +107,15 @@ input CreateFeedbackInput {
   suggestion: String!
 }
 
-input CreateLearnInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateLoanInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 input CreateMarketInput {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
 input CreateMedicalInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  cowid: Int!
+  farmerid: Int!
+  reason: String!
 }
 
 input CreateVaccinationInput {
@@ -151,14 +142,41 @@ type Feedback {
   updatedById: Int!
 }
 
-type Learn {
-  """Example field (placeholder)"""
-  exampleField: Int!
+enum Learn {
+  FOOD
+  HEALTH
+  MEDICINE
+}
+
+type LearnData {
+  cover: String!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  id: Int!
+  link: String!
+  title: String!
+  type: Learn!
+  updatedAt: DateTime!
 }
 
 type Loan {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  amount: String!
+  cow: Cow
+  cowid: Int!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  emi_amount: String!
+  emi_date: DateTime!
+  end_date: DateTime!
+  farmer: User
+  farmerid: Int!
+  id: Int!
+  loan_id: String!
+  remark: String!
+  start_date: DateTime!
+  status: Status!
+  updatedAt: DateTime!
 }
 
 input LoginUserInput {
@@ -172,8 +190,27 @@ type Market {
 }
 
 type Medical {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  cow: Cow
+  cowid: Int!
+  createdAt: DateTime!
+  createdById: Int!
+  date: DateTime!
+  deletedAt: DateTime
+  deletedById: Int!
+  doctor: User
+  doctorid: Int
+  farmer: User
+  farmerid: Int!
+  follow_up_date: DateTime!
+  follow_up_treatment: String!
+  id: Int!
+  reason: String!
+  remarks: String!
+  status: Status!
+  treatment_provided: String!
+  type: RequestType!
+  updatedAt: DateTime!
+  updatedById: Int!
 }
 
 type Mutation {
@@ -181,25 +218,17 @@ type Mutation {
   createBreed(createBreedInput: CreateBreedInput!): Breed!
   createCow(createCowInput: CreateCowInput!): Cow!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
-  createLearn(createLearnInput: CreateLearnInput!): Learn!
-  createLoan(createLoanInput: CreateLoanInput!): Loan!
   createMarket(createMarketInput: CreateMarketInput!): Market!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
-  removeLearn(id: Int!): Learn!
-  removeLoan(id: Int!): Loan!
   removeMarket(id: Int!): Market!
-  removeMedical(id: Int!): Medical!
   sendOtp(code: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
   updateBreed(updateBreedInput: UpdateBreedInput!): Breed!
-  updateLearn(updateLearnInput: UpdateLearnInput!): Learn!
-  updateLoan(updateLoanInput: UpdateLoanInput!): Loan!
   updateMarket(updateMarketInput: UpdateMarketInput!): Market!
-  updateMedical(updateMedicalInput: UpdateMedicalInput!): Medical!
   verifyOtp(otpInput: OtpInput!): User!
 }
 
@@ -212,15 +241,20 @@ type Query {
   birth(id: Int!): Birth!
   breed(id: Int!): Breed!
   codeLogin(code: String!): User!
+  getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
   getFarmerByCode(code: String!): User!
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
-  learn(id: Int!): Learn!
-  loan(id: Int!): Loan!
+  getUserCurrentLoan(id: Int!): Loan!
   login(loginUserInput: LoginUserInput!): User!
   market(id: Int!): Market!
-  medical(id: Int!): Medical!
+}
+
+enum RequestType {
+  FOLLOWUP
+  MEDICAL
+  SELFASSESSED
 }
 
 enum Role {
@@ -264,25 +298,7 @@ input UpdateBreedInput {
   id: Int!
 }
 
-input UpdateLearnInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateLoanInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
 input UpdateMarketInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateMedicalInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

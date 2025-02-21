@@ -9,27 +9,9 @@ export class MedicalResolver {
   constructor(private readonly medicalService: MedicalService) {}
 
   @Mutation(() => Medical)
-  createMedical(@Args('createMedicalInput') createMedicalInput: CreateMedicalInput) {
-    return this.medicalService.create(createMedicalInput);
-  }
-
-  @Query(() => [Medical], { name: 'medical' })
-  findAll() {
-    return this.medicalService.findAll();
-  }
-
-  @Query(() => Medical, { name: 'medical' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.medicalService.findOne(id);
-  }
-
-  @Mutation(() => Medical)
-  updateMedical(@Args('updateMedicalInput') updateMedicalInput: UpdateMedicalInput) {
-    return this.medicalService.update(updateMedicalInput.id, updateMedicalInput);
-  }
-
-  @Mutation(() => Medical)
-  removeMedical(@Args('id', { type: () => Int }) id: number) {
-    return this.medicalService.remove(id);
+  createMedical(
+    @Args('createMedicalInput') createMedicalInput: CreateMedicalInput,
+  ) {
+    return this.medicalService.createMedical(createMedicalInput);
   }
 }

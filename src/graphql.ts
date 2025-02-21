@@ -15,6 +15,18 @@ export enum Category {
     SCST = "SCST"
 }
 
+export enum Learn {
+    FOOD = "FOOD",
+    HEALTH = "HEALTH",
+    MEDICINE = "MEDICINE"
+}
+
+export enum RequestType {
+    FOLLOWUP = "FOLLOWUP",
+    MEDICAL = "MEDICAL",
+    SELFASSESSED = "SELFASSESSED"
+}
+
 export enum Role {
     ACCOUNTS = "ACCOUNTS",
     ADMIN = "ADMIN",
@@ -83,20 +95,14 @@ export interface CreateFeedbackInput {
     suggestion: string;
 }
 
-export interface CreateLearnInput {
-    exampleField: number;
-}
-
-export interface CreateLoanInput {
-    exampleField: number;
-}
-
 export interface CreateMarketInput {
     exampleField: number;
 }
 
 export interface CreateMedicalInput {
-    exampleField: number;
+    cowid: number;
+    farmerid: number;
+    reason: string;
 }
 
 export interface CreateVaccinationInput {
@@ -129,22 +135,7 @@ export interface UpdateBreedInput {
     id: number;
 }
 
-export interface UpdateLearnInput {
-    exampleField?: Nullable<number>;
-    id: number;
-}
-
-export interface UpdateLoanInput {
-    exampleField?: Nullable<number>;
-    id: number;
-}
-
 export interface UpdateMarketInput {
-    exampleField?: Nullable<number>;
-    id: number;
-}
-
-export interface UpdateMedicalInput {
     exampleField?: Nullable<number>;
     id: number;
 }
@@ -213,12 +204,35 @@ export interface Feedback {
     updatedById: number;
 }
 
-export interface Learn {
-    exampleField: number;
+export interface LearnData {
+    cover: string;
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    description: string;
+    id: number;
+    link: string;
+    title: string;
+    type: Learn;
+    updatedAt: DateTime;
 }
 
 export interface Loan {
-    exampleField: number;
+    amount: string;
+    cow?: Nullable<Cow>;
+    cowid: number;
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    emi_amount: string;
+    emi_date: DateTime;
+    end_date: DateTime;
+    farmer?: Nullable<User>;
+    farmerid: number;
+    id: number;
+    loan_id: string;
+    remark: string;
+    start_date: DateTime;
+    status: Status;
+    updatedAt: DateTime;
 }
 
 export interface Market {
@@ -226,7 +240,27 @@ export interface Market {
 }
 
 export interface Medical {
-    exampleField: number;
+    cow?: Nullable<Cow>;
+    cowid: number;
+    createdAt: DateTime;
+    createdById: number;
+    date: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    deletedById: number;
+    doctor?: Nullable<User>;
+    doctorid?: Nullable<number>;
+    farmer?: Nullable<User>;
+    farmerid: number;
+    follow_up_date: DateTime;
+    follow_up_treatment: string;
+    id: number;
+    reason: string;
+    remarks: string;
+    status: Status;
+    treatment_provided: string;
+    type: RequestType;
+    updatedAt: DateTime;
+    updatedById: number;
 }
 
 export interface IMutation {
@@ -234,25 +268,17 @@ export interface IMutation {
     createBreed(createBreedInput: CreateBreedInput): Breed | Promise<Breed>;
     createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
-    createLearn(createLearnInput: CreateLearnInput): Learn | Promise<Learn>;
-    createLoan(createLoanInput: CreateLoanInput): Loan | Promise<Loan>;
     createMarket(createMarketInput: CreateMarketInput): Market | Promise<Market>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     removeBirth(id: number): Birth | Promise<Birth>;
     removeBreed(id: number): Breed | Promise<Breed>;
-    removeLearn(id: number): Learn | Promise<Learn>;
-    removeLoan(id: number): Loan | Promise<Loan>;
     removeMarket(id: number): Market | Promise<Market>;
-    removeMedical(id: number): Medical | Promise<Medical>;
     sendOtp(code: string): User | Promise<User>;
     signup(signUpUserInput: SignUpUserInput): User | Promise<User>;
     updateBirth(updateBirthInput: UpdateBirthInput): Birth | Promise<Birth>;
     updateBreed(updateBreedInput: UpdateBreedInput): Breed | Promise<Breed>;
-    updateLearn(updateLearnInput: UpdateLearnInput): Learn | Promise<Learn>;
-    updateLoan(updateLoanInput: UpdateLoanInput): Loan | Promise<Loan>;
     updateMarket(updateMarketInput: UpdateMarketInput): Market | Promise<Market>;
-    updateMedical(updateMedicalInput: UpdateMedicalInput): Medical | Promise<Medical>;
     verifyOtp(otpInput: OtpInput): User | Promise<User>;
 }
 
@@ -260,15 +286,14 @@ export interface IQuery {
     birth(id: number): Birth | Promise<Birth>;
     breed(id: number): Breed | Promise<Breed>;
     codeLogin(code: string): User | Promise<User>;
+    getAllLearn(): LearnData[] | Promise<LearnData[]>;
     getCowById(id: number): Cow | Promise<Cow>;
     getFarmerByCode(code: string): User | Promise<User>;
     getUserById(id: number): User | Promise<User>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
-    learn(id: number): Learn | Promise<Learn>;
-    loan(id: number): Loan | Promise<Loan>;
+    getUserCurrentLoan(id: number): Loan | Promise<Loan>;
     login(loginUserInput: LoginUserInput): User | Promise<User>;
     market(id: number): Market | Promise<Market>;
-    medical(id: number): Medical | Promise<Medical>;
 }
 
 export interface User {

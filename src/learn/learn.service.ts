@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { CreateLearnInput } from './dto/create-learn.input';
 import { UpdateLearnInput } from './dto/update-learn.input';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class LearnService {
-  create(createLearnInput: CreateLearnInput) {
-    return 'This action adds a new learn';
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all learn`;
-  }
+  async getAllLearn() {
+    try {
+      const learn_data = await this.prisma.learning.findMany({
+        where: {
+          deletedAt: null,
+        },
+      });
 
-  findOne(id: number) {
-    return `This action returns a #${id} learn`;
-  }
+      if (!learn_data) {
+        throw new BadGatewayException('No learning data found');
+      }
 
-  update(id: number, updateLearnInput: UpdateLearnInput) {
-    return `This action updates a #${id} learn`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} learn`;
+      return learn_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }
