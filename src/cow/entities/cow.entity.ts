@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { SEX, Status } from '@prisma/client';
 import { Breed } from 'src/breed/entities/breed.entity';
+import { Healthreport } from 'src/healthreport/entities/healthreport.entity';
 
 registerEnumType(SEX, {
   name: 'SEX',
@@ -59,23 +60,8 @@ export class Cow {
   @Field(() => String)
   weight: string;
 
-  @Field(() => Date, { nullable: true })
-  last_vaccine_date?: Date;
-
-  @Field(() => Date, { nullable: true })
-  last_treatment_date?: Date;
-
-  @Field(() => Date, { nullable: true })
-  last_deworming_date?: Date;
-
-  @Field(() => Date, { nullable: true })
-  last_calf_birthdate?: Date;
-
   @Field(() => String, { nullable: true })
   daily_milk_produce?: string;
-
-  @Field(() => String, { nullable: true })
-  heat_period?: string;
 
   @Field(() => String, { nullable: true })
   remarks?: string;
@@ -115,4 +101,7 @@ export class Cow {
 
   @Field(() => Breed)
   breed: Breed;
+
+  @Field(() => [Healthreport])
+  cow_health_report: Healthreport[];
 }

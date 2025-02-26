@@ -28,6 +28,7 @@ type Cow {
   birthdate: DateTime!
   breed: Breed!
   breedid: Int!
+  cow_health_report: [Healthreport!]!
   cowname: String!
   cowtagno: String!
   createdAt: DateTime!
@@ -36,12 +37,7 @@ type Cow {
   deletedAt: DateTime
   deletedById: Int
   farmerid: Int!
-  heat_period: String
   id: Int!
-  last_calf_birthdate: DateTime
-  last_deworming_date: DateTime
-  last_treatment_date: DateTime
-  last_vaccine_date: DateTime
   noofcalves: Int
   photo1: String
   photo2: String
@@ -78,11 +74,6 @@ input CreateCowInput {
   cowtagno: String!
   daily_milk_produce: String
   farmerid: Int!
-  heat_period: String
-  last_calf_birthdate: DateTime
-  last_deworming_date: DateTime
-  last_treatment_date: DateTime
-  last_vaccine_date: DateTime
   noofcalves: Int!
   photo1: String
   photo2: String
@@ -107,9 +98,28 @@ input CreateFeedbackInput {
   suggestion: String!
 }
 
+input CreateHealthreportInput {
+  black_quarter_date: DateTime
+  brucellossis_date: DateTime
+  cowid: Int!
+  createdById: Int!
+  food_and_mouth_date: DateTime
+  heat_period: DateTime
+  hemorrhagic_septicemia_date: DateTime
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_sickness_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+}
+
 input CreateMarketInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  cowid: Int!
+  farmerid: Int!
+  price: String!
+  remarks: String!
+  status: Status!
+  verified: Boolean!
 }
 
 input CreateMedicalInput {
@@ -140,6 +150,39 @@ type Feedback {
   suggestion: String!
   updatedAt: DateTime!
   updatedById: Int!
+}
+
+type Food {
+  cover: String!
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int!
+  description: String!
+  id: Int!
+  name: String!
+  price: String!
+  purpose: String!
+  size: String!
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int
+}
+
+type Healthreport {
+  black_quarter_date: DateTime
+  brucellossis_date: DateTime
+  cow: Cow
+  cowid: Int!
+  food_and_mouth_date: DateTime
+  heat_period: DateTime
+  hemorrhagic_septicemia_date: DateTime
+  id: Int!
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_sickness_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
 }
 
 enum Learn {
@@ -185,8 +228,22 @@ input LoginUserInput {
 }
 
 type Market {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  cow: Cow
+  cowid: Int!
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int!
+  farmer: User
+  farmerid: Int!
+  id: Int!
+  listingdate: DateTime!
+  price: String!
+  remarks: String!
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int
+  verified: Boolean!
 }
 
 type Medical {
@@ -210,25 +267,41 @@ type Medical {
   treatment_provided: String!
   type: RequestType!
   updatedAt: DateTime!
-  updatedById: Int!
+  updatedById: Int
+}
+
+type Medicine {
+  cover: String!
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int!
+  description: String!
+  id: Int!
+  name: String!
+  price: String!
+  purpose: String!
+  size: String!
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int
 }
 
 type Mutation {
+  addMarketCow(createMarketInput: CreateMarketInput!): Market!
   createBirth(createBirthInput: CreateBirthInput!): Birth!
   createBreed(createBreedInput: CreateBreedInput!): Breed!
   createCow(createCowInput: CreateCowInput!): Cow!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
-  createMarket(createMarketInput: CreateMarketInput!): Market!
+  createHealthreport(createHealthreportInput: CreateHealthreportInput!): Healthreport!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
-  removeMarket(id: Int!): Market!
   sendOtp(code: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
   updateBreed(updateBreedInput: UpdateBreedInput!): Breed!
-  updateMarket(updateMarketInput: UpdateMarketInput!): Market!
   verifyOtp(otpInput: OtpInput!): User!
 }
 
@@ -244,11 +317,13 @@ type Query {
   getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
   getFarmerByCode(code: String!): User!
+  getMarketCow: [Market!]!
+  getMarketFood: [Food!]!
+  getMarketMedicine: [Medicine!]!
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
   getUserCurrentLoan(id: Int!): Loan!
   login(loginUserInput: LoginUserInput!): User!
-  market(id: Int!): Market!
 }
 
 enum RequestType {
@@ -293,12 +368,6 @@ input UpdateBirthInput {
 }
 
 input UpdateBreedInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateMarketInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

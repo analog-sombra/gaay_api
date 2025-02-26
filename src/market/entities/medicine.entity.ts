@@ -4,33 +4,27 @@ import { Cow } from 'src/cow/entities/cow.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @ObjectType()
-export class Market {
+export class Medicine {
   @Field(() => Int)
   id: number;
 
-  @Field(() => Int)
-  farmerid: number;
+  @Field(() => String)
+  name: string;
 
-  @Field(() => User, { nullable: true })
-  farmer: User;
+  @Field(() => String)
+  cover: string;
 
-  @Field(() => Int)
-  cowid: number;
-
-  @Field(() => Cow, { nullable: true })
-  cow: Cow;
-
-  @Field(() => Date)
-  listingdate: Date;
+  @Field(() => String)
+  size: string;
 
   @Field(() => String)
   price: string;
 
-  @Field(() => Boolean)
-  verified: boolean;
+  @Field(() => String)
+  description: string;
 
   @Field(() => String)
-  remarks: string;
+  purpose: string;
 
   @Field(() => Status)
   status: Status;

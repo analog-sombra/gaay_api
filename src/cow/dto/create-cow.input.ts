@@ -71,34 +71,9 @@ export class CreateCowInput {
   weight: string;
 
   @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  last_vaccine_date?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  last_treatment_date?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  last_deworming_date?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  last_calf_birthdate?: Date;
-
-  @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
   daily_milk_produce?: string;
-
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  heat_period?: string;
 
   @IsOptional()
   @IsString()

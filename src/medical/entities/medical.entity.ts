@@ -63,8 +63,8 @@ export class Medical {
   @Field(() => Date)
   updatedAt: Date;
 
-  @Field(() => Int)
-  updatedById: number;
+  @Field(() => Int, { nullable: true })
+  updatedById?: number;
 
   @Field(() => Date, { nullable: true })
   deletedAt?: Date;

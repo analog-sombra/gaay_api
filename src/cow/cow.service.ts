@@ -14,6 +14,11 @@ export class CowService {
         },
         include: {
           breed: true,
+          cow_health_report: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
         },
       });
       if (!cow_data) {
@@ -24,6 +29,7 @@ export class CowService {
       throw new BadGatewayException(error);
     }
   }
+
   async createCow(createCowInput: CreateCowInput) {
     try {
       const cow_data = await this.prisma.cow.create({
@@ -42,11 +48,6 @@ export class CowService {
           birthdate: createCowInput.birthdate,
           noofcalves: createCowInput.noofcalves,
           weight: createCowInput.weight,
-          last_vaccine_date: new Date(),
-          last_deworming_date: new Date(),
-          last_treatment_date: new Date(),
-          last_calf_birthdate: new Date(),
-          heat_period: new Date().toDateString(),
           createdById: createCowInput.farmerid,
           daily_milk_produce: createCowInput.daily_milk_produce,
         },

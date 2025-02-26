@@ -18,11 +18,11 @@ import { MedicalModule } from './medical/medical.module';
 import { BreedModule } from './breed/breed.module';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { UploaderModule } from './uploader/uploader.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './interceptor/responseinterceptor';
 import { CacheModule } from '@nestjs/cache-manager';
 import { VaccinationModule } from './vaccination/vaccination.module';
 import { FeedbackModule } from './feedback/feedback.module';
+import { HealthreportModule } from './healthreport/healthreport.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -67,6 +67,7 @@ import * as redisStore from 'cache-manager-redis-store';
     UploaderModule,
     VaccinationModule,
     FeedbackModule,
+    HealthreportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
