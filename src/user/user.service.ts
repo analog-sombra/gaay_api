@@ -1,6 +1,4 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
@@ -18,10 +16,16 @@ export class UserService {
           cow: {
             include: {
               breed: true,
+              cow_health_report: {
+                orderBy: {
+                  createdAt: 'desc',
+                },
+              },
             },
           },
         },
       });
+      console.log(is_user);
 
       if (!is_user) {
         throw new BadGatewayException('User not found');
