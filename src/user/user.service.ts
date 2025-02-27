@@ -25,7 +25,6 @@ export class UserService {
           },
         },
       });
-      console.log(is_user);
 
       if (!is_user) {
         throw new BadGatewayException('User not found');
