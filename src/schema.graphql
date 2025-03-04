@@ -69,11 +69,21 @@ input CreateBreedInput {
 input CreateCowInput {
   alias: String!
   birthdate: DateTime!
+  black_quarter_date: DateTime
   breedid: Int!
+  brucellossis_date: DateTime
   cowname: String!
   cowtagno: String!
   daily_milk_produce: String
   farmerid: Int!
+  food_and_mouth_date: DateTime
+  heat_period: DateTime
+  hemorrhagic_septicemia_date: DateTime
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_sickness_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
   noofcalves: Int!
   photo1: String
   photo2: String

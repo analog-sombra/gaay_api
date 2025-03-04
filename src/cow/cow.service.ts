@@ -55,6 +55,28 @@ export class CowService {
       if (!cow_data) {
         throw new BadGatewayException('Cow not created');
       }
+
+      const cow_health_report = await this.prisma.cow_health_report.create({
+        data: {
+          cowid: cow_data.id,
+          createdById: createCowInput.farmerid,
+          black_quarter_date: createCowInput.black_quarter_date,
+          brucellossis_date: createCowInput.brucellossis_date,
+          food_and_mouth_date: createCowInput.food_and_mouth_date,
+          hemorrhagic_septicemia_date:
+            createCowInput.hemorrhagic_septicemia_date,
+          last_calf_birthdate: createCowInput.last_calf_birthdate,
+          last_deworming_date: createCowInput.last_deworming_date,
+          last_sickness_date: createCowInput.last_sickness_date,
+          last_treatment_date: createCowInput.last_treatment_date,
+          last_vaccine_date: createCowInput.last_vaccine_date,
+          heat_period: createCowInput.heat_period,
+        },
+      });
+
+      if (!cow_health_report) {
+        throw new BadGatewayException('Cow health report not created');
+      }
       return cow_data;
     } catch (error) {
       throw new BadGatewayException(error);

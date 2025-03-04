@@ -61,11 +61,21 @@ export interface CreateBreedInput {
 export interface CreateCowInput {
     alias: string;
     birthdate: DateTime;
+    black_quarter_date?: Nullable<DateTime>;
     breedid: number;
+    brucellossis_date?: Nullable<DateTime>;
     cowname: string;
     cowtagno: string;
     daily_milk_produce?: Nullable<string>;
     farmerid: number;
+    food_and_mouth_date?: Nullable<DateTime>;
+    heat_period?: Nullable<DateTime>;
+    hemorrhagic_septicemia_date?: Nullable<DateTime>;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_sickness_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
     noofcalves: number;
     photo1?: Nullable<string>;
     photo2?: Nullable<string>;
