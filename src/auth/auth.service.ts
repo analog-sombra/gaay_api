@@ -171,11 +171,18 @@ export class AuthService {
       // const response = await axios.get(
       //   `https://api.arihantsms.com/api/v2/SendSMS?SenderId=DNHPDA&Is_Unicode=false&Is_Flash=false&Message=The%20OTP%20for%20Planning%20and%20Development%20Authority%20Portal%20login%20is%20${otp}.%20The%20OTP%20is%20valid%20for%205%20mins.&MobileNumbers=919773356997&ApiKey=rL56LBkGeOa1MKFm5SrSKtz%2Bq55zMVdxk5PNvQkg2nY%3D&ClientId=ebff4d6c-072b-4342-b71f-dcca677713f8`,
       // );
+
+      // if (response.data.Data[0].MessageErrorDescription == 'Success') {
+
+      // dont send otp when otp is fixed
+
+      if (['12', '19', '24', '25', '26', '6'].includes(is_user.id.toString())) {
+        return is_user;
+      }
+
       const response = await axios.get(
         `http://sms.smartechwebworks.com/submitsms.jsp?user=ScstDnhdd&key=641a638cd0XX&mobile=+91${is_user.contact}&message=Your OTP for GAAY App login is ${otp}. Do not share this code with anyone. -SCSTDNHDD&senderid=DNSCST&accusage=1&entityid=1701174041475054210&tempid=1707174065094223303`,
       );
-
-      // if (response.data.Data[0].MessageErrorDescription == 'Success') {
 
       if (response.data.toString().split(',')[0].trim() == 'sent') {
         const opt_response = await this.prisma.user.update({
