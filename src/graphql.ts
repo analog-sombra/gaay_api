@@ -35,6 +35,9 @@ export enum Role {
     DYCOLL = "DYCOLL",
     FARMER = "FARMER",
     SCSCT = "SCSCT",
+    SELLERCOW = "SELLERCOW",
+    SELLERFODDER = "SELLERFODDER",
+    SELLERMEDICINE = "SELLERMEDICINE",
     STOCKMEN = "STOCKMEN",
     SYSTEM = "SYSTEM"
 }
@@ -42,6 +45,14 @@ export enum Role {
 export enum SEX {
     FEMALE = "FEMALE",
     MALE = "MALE"
+}
+
+export enum SizeUnit {
+    GRAM = "GRAM",
+    KG = "KG",
+    LITRE = "LITRE",
+    ML = "ML",
+    PIECE = "PIECE"
 }
 
 export enum Status {
@@ -100,6 +111,29 @@ export interface CreateFeedbackInput {
     suggestion: string;
 }
 
+export interface CreateFoodInput {
+    composition?: Nullable<string>;
+    cover: string;
+    createdById: number;
+    description: string;
+    large_description?: Nullable<string>;
+    manufacturer?: Nullable<string>;
+    mrp: string;
+    name: string;
+    pack_size?: Nullable<string>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photo5?: Nullable<string>;
+    purchase_price: string;
+    purpose: string;
+    sale_price?: Nullable<string>;
+    size: string;
+    size_unit: SizeUnit;
+    status: Status;
+}
+
 export interface CreateHealthreportInput {
     black_quarter_date?: Nullable<DateTime>;
     brucellossis_date?: Nullable<DateTime>;
@@ -130,6 +164,30 @@ export interface CreateMedicalInput {
     reason: string;
 }
 
+export interface CreateMedicineInput {
+    composition?: Nullable<string>;
+    cover: string;
+    createdById: number;
+    description: string;
+    dosage?: Nullable<string>;
+    large_description?: Nullable<string>;
+    manufacturer?: Nullable<string>;
+    mrp: string;
+    name: string;
+    pack_size?: Nullable<string>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photo5?: Nullable<string>;
+    purchase_price: string;
+    purpose: string;
+    sale_price?: Nullable<string>;
+    size: string;
+    size_unit: SizeUnit;
+    status: Status;
+}
+
 export interface CreateVaccinationInput {
     exampleField: number;
 }
@@ -142,6 +200,11 @@ export interface LoginUserInput {
 export interface OtpInput {
     code: string;
     otp: string;
+}
+
+export interface SignInUserInput {
+    mobile: string;
+    password: string;
 }
 
 export interface SignUpUserInput {
@@ -221,6 +284,7 @@ export interface Feedback {
 }
 
 export interface Food {
+    composition?: Nullable<string>;
     cover: string;
     createdAt: DateTime;
     createdById: number;
@@ -228,10 +292,21 @@ export interface Food {
     deletedById: number;
     description: string;
     id: number;
+    large_description?: Nullable<string>;
+    manufacturer?: Nullable<string>;
+    mrp: string;
     name: string;
-    price: string;
+    pack_size?: Nullable<string>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photo5?: Nullable<string>;
+    purchase_price: string;
     purpose: string;
+    sale_price?: Nullable<string>;
     size: string;
+    size_unit: SizeUnit;
     status: Status;
     updatedAt: DateTime;
     updatedById?: Nullable<number>;
@@ -328,17 +403,30 @@ export interface Medical {
 }
 
 export interface Medicine {
+    composition?: Nullable<string>;
     cover: string;
     createdAt: DateTime;
     createdById: number;
     deletedAt?: Nullable<DateTime>;
     deletedById: number;
     description: string;
+    dosage?: Nullable<string>;
     id: number;
+    large_description?: Nullable<string>;
+    manufacturer?: Nullable<string>;
+    mrp: string;
     name: string;
-    price: string;
+    pack_size?: Nullable<string>;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photo5?: Nullable<string>;
+    purchase_price: string;
     purpose: string;
+    sale_price?: Nullable<string>;
     size: string;
+    size_unit: SizeUnit;
     status: Status;
     updatedAt: DateTime;
     updatedById?: Nullable<number>;
@@ -351,6 +439,8 @@ export interface IMutation {
     createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
     createHealthreport(createHealthreportInput: CreateHealthreportInput): Healthreport | Promise<Healthreport>;
+    createMarketFood(createFoodInput: CreateFoodInput): Food | Promise<Food>;
+    createMarketMedicine(createMedicineInput: CreateMedicineInput): Medicine | Promise<Medicine>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     removeBirth(id: number): Birth | Promise<Birth>;
@@ -370,12 +460,16 @@ export interface IQuery {
     getCowById(id: number): Cow | Promise<Cow>;
     getFarmerByCode(code: string): User | Promise<User>;
     getMarketCow(): Market[] | Promise<Market[]>;
+    getMarketCowByUser(id: number): Market[] | Promise<Market[]>;
     getMarketFood(): Food[] | Promise<Food[]>;
+    getMarketFoodByUser(id: number): Food[] | Promise<Food[]>;
     getMarketMedicine(): Medicine[] | Promise<Medicine[]>;
+    getMarketMedicineByUser(id: number): Medicine[] | Promise<Medicine[]>;
     getUserById(id: number): User | Promise<User>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
     getUserCurrentLoan(id: number): Loan | Promise<Loan>;
     login(loginUserInput: LoginUserInput): User | Promise<User>;
+    signIn(signInUserInput: SignInUserInput): User | Promise<User>;
 }
 
 export interface User {

@@ -108,6 +108,29 @@ input CreateFeedbackInput {
   suggestion: String!
 }
 
+input CreateFoodInput {
+  composition: String
+  cover: String!
+  createdById: Int!
+  description: String!
+  large_description: String
+  manufacturer: String
+  mrp: String!
+  name: String!
+  pack_size: String
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photo5: String
+  purchase_price: String!
+  purpose: String!
+  sale_price: String
+  size: String!
+  size_unit: SizeUnit!
+  status: Status!
+}
+
 input CreateHealthreportInput {
   black_quarter_date: DateTime
   brucellossis_date: DateTime
@@ -138,6 +161,30 @@ input CreateMedicalInput {
   reason: String!
 }
 
+input CreateMedicineInput {
+  composition: String
+  cover: String!
+  createdById: Int!
+  description: String!
+  dosage: String
+  large_description: String
+  manufacturer: String
+  mrp: String!
+  name: String!
+  pack_size: String
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photo5: String
+  purchase_price: String!
+  purpose: String!
+  sale_price: String
+  size: String!
+  size_unit: SizeUnit!
+  status: Status!
+}
+
 input CreateVaccinationInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -163,6 +210,7 @@ type Feedback {
 }
 
 type Food {
+  composition: String
   cover: String!
   createdAt: DateTime!
   createdById: Int!
@@ -170,10 +218,21 @@ type Food {
   deletedById: Int!
   description: String!
   id: Int!
+  large_description: String
+  manufacturer: String
+  mrp: String!
   name: String!
-  price: String!
+  pack_size: String
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photo5: String
+  purchase_price: String!
   purpose: String!
+  sale_price: String
   size: String!
+  size_unit: SizeUnit!
   status: Status!
   updatedAt: DateTime!
   updatedById: Int
@@ -281,17 +340,30 @@ type Medical {
 }
 
 type Medicine {
+  composition: String
   cover: String!
   createdAt: DateTime!
   createdById: Int!
   deletedAt: DateTime
   deletedById: Int!
   description: String!
+  dosage: String
   id: Int!
+  large_description: String
+  manufacturer: String
+  mrp: String!
   name: String!
-  price: String!
+  pack_size: String
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photo5: String
+  purchase_price: String!
   purpose: String!
+  sale_price: String
   size: String!
+  size_unit: SizeUnit!
   status: Status!
   updatedAt: DateTime!
   updatedById: Int
@@ -304,6 +376,8 @@ type Mutation {
   createCow(createCowInput: CreateCowInput!): Cow!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
   createHealthreport(createHealthreportInput: CreateHealthreportInput!): Healthreport!
+  createMarketFood(createFoodInput: CreateFoodInput!): Food!
+  createMarketMedicine(createMedicineInput: CreateMedicineInput!): Medicine!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   removeBirth(id: Int!): Birth!
@@ -328,12 +402,16 @@ type Query {
   getCowById(id: Int!): Cow!
   getFarmerByCode(code: String!): User!
   getMarketCow: [Market!]!
+  getMarketCowByUser(id: Int!): [Market!]!
   getMarketFood: [Food!]!
+  getMarketFoodByUser(id: Int!): [Food!]!
   getMarketMedicine: [Medicine!]!
+  getMarketMedicineByUser(id: Int!): [Medicine!]!
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
   getUserCurrentLoan(id: Int!): Loan!
   login(loginUserInput: LoginUserInput!): User!
+  signIn(signInUserInput: SignInUserInput!): User!
 }
 
 enum RequestType {
@@ -350,6 +428,9 @@ enum Role {
   DYCOLL
   FARMER
   SCSCT
+  SELLERCOW
+  SELLERFODDER
+  SELLERMEDICINE
   STOCKMEN
   SYSTEM
 }
@@ -359,10 +440,23 @@ enum SEX {
   MALE
 }
 
+input SignInUserInput {
+  mobile: String!
+  password: String!
+}
+
 input SignUpUserInput {
   mobile: String!
   name: String!
   password: String!
+}
+
+enum SizeUnit {
+  GRAM
+  KG
+  LITRE
+  ML
+  PIECE
 }
 
 enum Status {

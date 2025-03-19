@@ -4,6 +4,7 @@ import { LoginUserInput } from './dto/login.input';
 import { SignUpUserInput } from './dto/register.input';
 import { OtpInput } from './dto/otp.input';
 import { User } from 'src/user/entities/user.entity';
+import { SignInUserInput } from './dto/signin.input';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -21,6 +22,11 @@ export class AuthResolver {
       signUpUserInput.name,
       signUpUserInput.password,
     );
+  }
+
+  @Query(() => User)
+  signIn(@Args('signInUserInput') signInUserInput: SignInUserInput) {
+    return this.authService.signIn(signInUserInput.mobile, signInUserInput.password);
   }
 
   @Query(() => User)

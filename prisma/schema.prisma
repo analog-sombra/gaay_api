@@ -23,6 +23,9 @@ enum Role {
   DOCTOR
   STOCKMEN
   ANIMALHUSBANDRY
+  SELLERCOW
+  SELLERMEDICINE
+  SELLERFODDER
 }
 
 enum Status {
@@ -53,6 +56,14 @@ enum Category {
   SCST
   OBC
   OTHERS
+}
+
+enum SizeUnit {
+  ML
+  LITRE
+  KG
+  GRAM
+  PIECE
 }
 
 model user {
@@ -332,43 +343,68 @@ model feedback {
 }
 
 model food {
-  id          Int       @id @default(autoincrement())
-  name        String
-  cover       String
-  size        String
-  price       String
-  description String
-  purpose     String
-  status      Status    @default(ACTIVE)
-  createdAt   DateTime  @default(now())
-  createdBy   user      @relation("food_createdby", fields: [createdById], references: [id])
-  createdById Int
-  updatedAt   DateTime  @updatedAt
-  updatedBy   user?     @relation("food_updatedby", fields: [updatedById], references: [id])
-  updatedById Int?
-  deletedAt   DateTime?
-  deletedBy   user?     @relation("food_deletedby", fields: [deletedById], references: [id])
-  deletedById Int?
+  id                Int       @id @default(autoincrement())
+  name              String
+  cover             String
+  size              String
+  size_unit         SizeUnit
+  pack_size         String?
+  mrp               String
+  sale_price        String?
+  description       String
+  purpose           String
+  composition       String?
+  manufacturer      String?
+  large_description String?
+  photo1            String?
+  photo2            String?
+  photo3            String?
+  photo4            String?
+  photo5            String?
+  purchase_price    String
+  status            Status    @default(ACTIVE)
+  createdAt         DateTime  @default(now())
+  createdBy         user      @relation("food_createdby", fields: [createdById], references: [id])
+  createdById       Int
+  updatedAt         DateTime  @updatedAt
+  updatedBy         user?     @relation("food_updatedby", fields: [updatedById], references: [id])
+  updatedById       Int?
+  deletedAt         DateTime?
+  deletedBy         user?     @relation("food_deletedby", fields: [deletedById], references: [id])
+  deletedById       Int?
 }
 
 model medicine {
-  id          Int       @id @default(autoincrement())
-  name        String
-  cover       String
-  size        String
-  price       String
-  description String
-  purpose     String
-  status      Status    @default(ACTIVE)
-  createdAt   DateTime  @default(now())
-  createdBy   user      @relation("medicine_createdby", fields: [createdById], references: [id])
-  createdById Int
-  updatedAt   DateTime  @updatedAt
-  updatedBy   user?     @relation("medicine_updatedby", fields: [updatedById], references: [id])
-  updatedById Int?
-  deletedAt   DateTime?
-  deletedBy   user?     @relation("medicine_deletedby", fields: [deletedById], references: [id])
-  deletedById Int?
+  id                Int       @id @default(autoincrement())
+  name              String
+  cover             String
+  size              String
+  size_unit         SizeUnit
+  pack_size         String?
+  mrp               String
+  sale_price        String?
+  description       String
+  purpose           String
+  composition       String?
+  dosage            String?
+  manufacturer      String?
+  large_description String?
+  photo1            String?
+  photo2            String?
+  photo3            String?
+  photo4            String?
+  photo5            String?
+  purchase_price    String
+  status            Status    @default(ACTIVE)
+  createdAt         DateTime  @default(now())
+  createdBy         user      @relation("medicine_createdby", fields: [createdById], references: [id])
+  createdById       Int
+  updatedAt         DateTime  @updatedAt
+  updatedBy         user?     @relation("medicine_updatedby", fields: [updatedById], references: [id])
+  updatedById       Int?
+  deletedAt         DateTime?
+  deletedBy         user?     @relation("medicine_deletedby", fields: [deletedById], references: [id])
+  deletedById       Int?
 }
 
 model cow_health_report {

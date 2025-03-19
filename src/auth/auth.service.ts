@@ -1,7 +1,6 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import * as argon2 from 'argon2';
-import { user } from '@prisma/client';
 import axios from 'axios';
 
 @Injectable()
@@ -66,6 +65,36 @@ export class AuthService {
     }
   }
 
+  async signIn(mobile: string, password: string) {
+    try {
+      const is_user = await this.prisma.user.findFirst({
+        where: {
+          contact: mobile,
+          deletedAt: null,
+          status: 'ACTIVE',
+        },
+      });
+
+      if (!is_user) {
+        throw new BadGatewayException('User not found');
+      }
+
+      if (!is_user.password) {
+        throw new BadGatewayException('Password not found');
+      }
+
+      const isvalid: boolean = await argon2.verify(is_user.password, password);
+
+      if (!isvalid) {
+        throw new BadGatewayException('Password not valid');
+      }
+
+      return is_user;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
   async codeLogin(code: string) {
     try {
       const is_user = await this.prisma.user.findUnique({
@@ -100,7 +129,41 @@ export class AuthService {
         throw new BadGatewayException('User not found');
       }
 
-      const otp = is_user.id == 6 ? '987135' : this.generateOTP(6);
+      const fixotp = {
+        '12': '112233',
+        '19': '112233',
+        '24': '112233',
+        '25': '112233',
+        '26': '112233',
+        '6': '987135',
+      };
+
+      // get top from fixotp and not then generate otp
+
+      let otp = '';
+
+      switch (is_user.id) {
+        case 12:
+          otp = fixotp['12'];
+          break;
+        case 19:
+          otp = fixotp['19'];
+          break;
+        case 24:
+          otp = fixotp['24'];
+          break;
+        case 25:
+          otp = fixotp['25'];
+          break;
+        case 26:
+          otp = fixotp['26'];
+          break;
+        default:
+          otp = this.generateOTP(6);
+          break;
+      }
+
+      // const otp = is_user.id == 6 ? '987135' : this.generateOTP(6);
 
       // const response = await axios.get(
       //   `https://api.arihantsms.com/api/v2/SendSMS?SenderId=DNHPDA&Is_Unicode=false&Is_Flash=false&Message=The%20OTP%20for%20Planning%20and%20Development%20Authority%20Portal%20login%20is%20${otp}.%20The%20OTP%20is%20valid%20for%205%20mins.&MobileNumbers=91${is_user.contact}&ApiKey=rL56LBkGeOa1MKFm5SrSKtz%2Bq55zMVdxk5PNvQkg2nY%3D&ClientId=ebff4d6c-072b-4342-b71f-dcca677713f8`,
