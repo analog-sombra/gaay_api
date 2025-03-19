@@ -347,9 +347,9 @@ model food {
   name              String
   cover             String
   size              String
-  size_unit         SizeUnit
+  size_unit         SizeUnit?
   pack_size         String?
-  mrp               String
+  mrp               String?
   sale_price        String?
   description       String
   purpose           String
@@ -361,7 +361,7 @@ model food {
   photo3            String?
   photo4            String?
   photo5            String?
-  purchase_price    String
+  purchase_price    String?
   status            Status    @default(ACTIVE)
   createdAt         DateTime  @default(now())
   createdBy         user      @relation("food_createdby", fields: [createdById], references: [id])
@@ -379,9 +379,9 @@ model medicine {
   name              String
   cover             String
   size              String
-  size_unit         SizeUnit
+  size_unit         SizeUnit?
   pack_size         String?
-  mrp               String
+  mrp               String?
   sale_price        String?
   description       String
   purpose           String
@@ -394,7 +394,7 @@ model medicine {
   photo3            String?
   photo4            String?
   photo5            String?
-  purchase_price    String
+  purchase_price    String?
   status            Status    @default(ACTIVE)
   createdAt         DateTime  @default(now())
   createdBy         user      @relation("medicine_createdby", fields: [createdById], references: [id])
