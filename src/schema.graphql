@@ -30,6 +30,7 @@ type Cow {
   breedid: Int!
   cow_health_report: [Healthreport!]!
   cowname: String!
+  cowstatus: CowStatus!
   cowtagno: String!
   createdAt: DateTime!
   createdById: Int!
@@ -56,6 +57,12 @@ type Cow {
   weight: String!
 }
 
+enum CowStatus {
+  ALIVE
+  DEAD
+  SOLD
+}
+
 input CreateBirthInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -73,6 +80,7 @@ input CreateCowInput {
   breedid: Int!
   brucellossis_date: DateTime
   cowname: String!
+  cowstatus: CowStatus!
   cowtagno: String!
   daily_milk_produce: String
   farmerid: Int!
@@ -386,6 +394,7 @@ type Mutation {
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
   updateBreed(updateBreedInput: UpdateBreedInput!): Breed!
+  updateCow(updateCowInput: UpdateCowInput!): Cow!
   verifyOtp(otpInput: OtpInput!): User!
 }
 
@@ -475,6 +484,42 @@ input UpdateBreedInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input UpdateCowInput {
+  alias: String!
+  birthdate: DateTime!
+  black_quarter_date: DateTime
+  breedid: Int!
+  brucellossis_date: DateTime
+  cowname: String!
+  cowstatus: CowStatus!
+  cowtagno: String!
+  daily_milk_produce: String
+  farmerid: Int!
+  food_and_mouth_date: DateTime
+  heat_period: DateTime
+  hemorrhagic_septicemia_date: DateTime
+  id: Int!
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_sickness_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+  noofcalves: Int!
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photocover: String!
+  purchased_contact: String
+  purchased_date: DateTime
+  purchased_from: String
+  purchased_price: String
+  remarks: String
+  sex: SEX!
+  status: Status!
+  weight: String!
 }
 
 type User {

@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { SEX, Status } from '@prisma/client';
+import { CowStatus, SEX, Status } from '@prisma/client';
 import {
   IsDate,
   IsEnum,
@@ -57,6 +57,11 @@ export class CreateCowInput {
   @IsEnum(SEX)
   @Field(() => SEX)
   sex: SEX;
+
+  @IsOptional()
+  @IsEnum(CowStatus)
+  @Field(() => CowStatus)
+  cowstatus: CowStatus;
 
   @IsDate()
   @Field(() => Date)

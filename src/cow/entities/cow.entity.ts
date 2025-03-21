@@ -5,12 +5,15 @@ import {
   Float,
   registerEnumType,
 } from '@nestjs/graphql';
-import { SEX, Status } from '@prisma/client';
+import { CowStatus, SEX, Status } from '@prisma/client';
 import { Breed } from 'src/breed/entities/breed.entity';
 import { Healthreport } from 'src/healthreport/entities/healthreport.entity';
 
 registerEnumType(SEX, {
   name: 'SEX',
+});
+registerEnumType(CowStatus, {
+  name: 'CowStatus',
 });
 
 @ObjectType()
@@ -50,6 +53,9 @@ export class Cow {
 
   @Field(() => SEX)
   sex: SEX;
+
+  @Field(() => CowStatus)
+  cowstatus: CowStatus;
 
   @Field(() => Date)
   birthdate: Date;

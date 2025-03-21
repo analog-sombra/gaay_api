@@ -15,6 +15,12 @@ export enum Category {
     SCST = "SCST"
 }
 
+export enum CowStatus {
+    ALIVE = "ALIVE",
+    DEAD = "DEAD",
+    SOLD = "SOLD"
+}
+
 export enum Learn {
     FOOD = "FOOD",
     HEALTH = "HEALTH",
@@ -76,6 +82,7 @@ export interface CreateCowInput {
     breedid: number;
     brucellossis_date?: Nullable<DateTime>;
     cowname: string;
+    cowstatus: CowStatus;
     cowtagno: string;
     daily_milk_produce?: Nullable<string>;
     farmerid: number;
@@ -223,6 +230,42 @@ export interface UpdateBreedInput {
     id: number;
 }
 
+export interface UpdateCowInput {
+    alias: string;
+    birthdate: DateTime;
+    black_quarter_date?: Nullable<DateTime>;
+    breedid: number;
+    brucellossis_date?: Nullable<DateTime>;
+    cowname: string;
+    cowstatus: CowStatus;
+    cowtagno: string;
+    daily_milk_produce?: Nullable<string>;
+    farmerid: number;
+    food_and_mouth_date?: Nullable<DateTime>;
+    heat_period?: Nullable<DateTime>;
+    hemorrhagic_septicemia_date?: Nullable<DateTime>;
+    id: number;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_sickness_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
+    noofcalves: number;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photocover: string;
+    purchased_contact?: Nullable<string>;
+    purchased_date?: Nullable<DateTime>;
+    purchased_from?: Nullable<string>;
+    purchased_price?: Nullable<string>;
+    remarks?: Nullable<string>;
+    sex: SEX;
+    status: Status;
+    weight: string;
+}
+
 export interface Birth {
     exampleField: number;
 }
@@ -243,6 +286,7 @@ export interface Cow {
     breedid: number;
     cow_health_report: Healthreport[];
     cowname: string;
+    cowstatus: CowStatus;
     cowtagno: string;
     createdAt: DateTime;
     createdById: number;
@@ -449,6 +493,7 @@ export interface IMutation {
     signup(signUpUserInput: SignUpUserInput): User | Promise<User>;
     updateBirth(updateBirthInput: UpdateBirthInput): Birth | Promise<Birth>;
     updateBreed(updateBreedInput: UpdateBreedInput): Breed | Promise<Breed>;
+    updateCow(updateCowInput: UpdateCowInput): Cow | Promise<Cow>;
     verifyOtp(otpInput: OtpInput): User | Promise<User>;
 }
 

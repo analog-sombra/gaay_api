@@ -34,6 +34,12 @@ enum Status {
   INACTIVE
 }
 
+enum CowStatus {
+  ALIVE
+  DEAD
+  SOLD
+}
+
 enum Learn {
   FOOD
   HEALTH
@@ -66,26 +72,33 @@ enum SizeUnit {
   PIECE
 }
 
+enum BeneficiaryType {
+  SSDU
+  IDDP
+}
+
 model user {
-  id               Int       @id @default(autoincrement())
+  id               Int             @id @default(autoincrement())
   name             String
   password         String?
   photo            String?
   alias            String?
   contact          String
   contact_two      String?
-  beneficiary_code String?   @unique
+  beneficiary_code String?         @unique
   address          String?
   otp              String?
   village          String?
   district         String?
-  role             Role      @default(FARMER)
+  cow_count        Int             @default(1)
+  beneficiary_type BeneficiaryType @default(IDDP)
+  role             Role            @default(FARMER)
   remark           String?
   occupation       String?
-  category         Category  @default(GENERAL)
-  status           Status    @default(ACTIVE)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  category         Category        @default(GENERAL)
+  status           Status          @default(ACTIVE)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
 
   cow_createdby cow[] @relation("cow_createdby")
@@ -182,6 +195,7 @@ model cow {
   purchased_contact  String?
   purchased_price    String?
   status             Status        @default(ACTIVE)
+  cowstatus          CowStatus     @default(ALIVE)
   createdAt          DateTime      @default(now())
   createdBy          user          @relation("cow_createdby", fields: [createdById], references: [id])
   createdById        Int
