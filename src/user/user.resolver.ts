@@ -23,4 +23,12 @@ export class UserResolver {
   getFarmerByCode(@Args('code', { type: () => String }) code: string) {
     return this.userService.getFarmerByCode(code);
   }
+
+  @Mutation(() => User)
+  editUserPhoto(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('photo', { type: () => String }) photo: string,
+  ) {
+    return this.userService.editUserPhoto(id, photo);
+  }
 }

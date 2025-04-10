@@ -388,6 +388,7 @@ type Mutation {
   createMarketMedicine(createMedicineInput: CreateMedicineInput!): Medicine!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
+  editUserPhoto(id: Int!, photo: String!): User!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
   sendOtp(code: String!): User!

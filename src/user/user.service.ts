@@ -68,4 +68,23 @@ export class UserService {
       throw new BadGatewayException(error);
     }
   }
+
+  async editUserPhoto(id: number, photo: string) {
+    try {
+      const user_data = await this.prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          photo: photo,
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
 }

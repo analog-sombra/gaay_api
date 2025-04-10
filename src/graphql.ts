@@ -487,6 +487,7 @@ export interface IMutation {
     createMarketMedicine(createMedicineInput: CreateMedicineInput): Medicine | Promise<Medicine>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
+    editUserPhoto(id: number, photo: string): User | Promise<User>;
     removeBirth(id: number): Birth | Promise<Birth>;
     removeBreed(id: number): Breed | Promise<Breed>;
     sendOtp(code: string): User | Promise<User>;
