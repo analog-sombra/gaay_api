@@ -158,4 +158,44 @@ export class CreateCowInput {
   @IsDate()
   @Field(() => Date, { nullable: true })
   heat_period?: Date;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  insurance_id?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  insurance_name?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  insurance_type?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  insurance_amount?: string;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  insurance_date?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  insurance_renewal_date?: Date;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  insurance_renewal_amount?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  premium_amount?: string;
 }

@@ -32,7 +32,6 @@ export class CowService {
   }
 
   async createCow(createCowInput: CreateCowInput) {
-    console.log(createCowInput);
     try {
       const cow_data = await this.prisma.cow.create({
         data: {
@@ -83,6 +82,26 @@ export class CowService {
 
       if (!cow_health_report) {
         throw new BadGatewayException('Cow health report not created');
+      }
+
+      const cow_insurance = await this.prisma.insurance.create({
+        data: {
+          cowid: cow_data.id,
+          createdById: createCowInput.farmerid,
+          insurance_id: createCowInput.insurance_id,
+          insurance_name: createCowInput.insurance_name,
+          insurance_type: createCowInput.insurance_type,
+          insurance_amount: createCowInput.insurance_amount,
+          insurance_date: createCowInput.insurance_date!.toISOString(),
+          insurance_renewal_date:
+            createCowInput.insurance_renewal_date!.toISOString(),
+          premium_amount: createCowInput.premium_amount,
+          insurance_renewal_amount: createCowInput.insurance_renewal_amount,
+        },
+      });
+
+      if (!cow_insurance) {
+        throw new BadGatewayException('Cow insurance not created');
       }
       return cow_data;
     } catch (error) {

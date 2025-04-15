@@ -146,6 +146,10 @@ model user {
   cow_health_report_createdby cow_health_report[] @relation("cow_health_report_createdby")
   cow_health_report_updatedby cow_health_report[] @relation("cow_health_report_updatedby")
   cow_health_report_deletedby cow_health_report[] @relation("cow_health_report_deletedby")
+
+  insurance_createdby insurance[] @relation("insurance_createdby")
+  insurance_updatedby insurance[] @relation("insurance_updatedby")
+  insurance_deletedby insurance[] @relation("insurance_deletedby")
 }
 
 model learning {
@@ -214,6 +218,7 @@ model cow {
   cow               medical_request[]   @relation("cow")
   loan              loan[]
   cow_health_report cow_health_report[]
+  insurance         insurance[]
 }
 
 model market {
@@ -445,4 +450,28 @@ model cow_health_report {
   deletedAt                   DateTime?
   deletedBy                   user?     @relation("cow_health_report_deletedby", fields: [deletedById], references: [id])
   deletedById                 Int?
+}
+
+model insurance {
+  id                       Int       @id @default(autoincrement())
+  cow                      cow       @relation(fields: [cowid], references: [id])
+  cowid                    Int
+  insurance_id             String?
+  insurance_name           String?
+  insurance_type           String?
+  insurance_amount         String?
+  insurance_date           DateTime?
+  insurance_renewal_date   DateTime?
+  insurance_renewal_amount String?
+  premium_amount           String?
+  status                   Status    @default(ACTIVE)
+  createdAt                DateTime  @default(now())
+  createdBy                user      @relation("insurance_createdby", fields: [createdById], references: [id])
+  createdById              Int
+  updatedAt                DateTime  @updatedAt
+  updatedBy                user?     @relation("insurance_updatedby", fields: [updatedById], references: [id])
+  updatedById              Int?
+  deletedAt                DateTime?
+  deletedBy                user?     @relation("insurance_deletedby", fields: [deletedById], references: [id])
+  deletedById              Int?
 }

@@ -89,6 +89,13 @@ export interface CreateCowInput {
     food_and_mouth_date?: Nullable<DateTime>;
     heat_period?: Nullable<DateTime>;
     hemorrhagic_septicemia_date?: Nullable<DateTime>;
+    insurance_amount?: Nullable<string>;
+    insurance_date?: Nullable<DateTime>;
+    insurance_id?: Nullable<string>;
+    insurance_name?: Nullable<string>;
+    insurance_renewal_amount?: Nullable<string>;
+    insurance_renewal_date?: Nullable<DateTime>;
+    insurance_type?: Nullable<string>;
     last_calf_birthdate?: Nullable<DateTime>;
     last_deworming_date?: Nullable<DateTime>;
     last_sickness_date?: Nullable<DateTime>;
@@ -100,6 +107,7 @@ export interface CreateCowInput {
     photo3?: Nullable<string>;
     photo4?: Nullable<string>;
     photocover: string;
+    premium_amount?: Nullable<string>;
     purchased_contact?: Nullable<string>;
     purchased_date?: Nullable<DateTime>;
     purchased_from?: Nullable<string>;
@@ -245,6 +253,13 @@ export interface UpdateCowInput {
     heat_period?: Nullable<DateTime>;
     hemorrhagic_septicemia_date?: Nullable<DateTime>;
     id: number;
+    insurance_amount?: Nullable<string>;
+    insurance_date?: Nullable<DateTime>;
+    insurance_id?: Nullable<string>;
+    insurance_name?: Nullable<string>;
+    insurance_renewal_amount?: Nullable<string>;
+    insurance_renewal_date?: Nullable<DateTime>;
+    insurance_type?: Nullable<string>;
     last_calf_birthdate?: Nullable<DateTime>;
     last_deworming_date?: Nullable<DateTime>;
     last_sickness_date?: Nullable<DateTime>;
@@ -256,6 +271,7 @@ export interface UpdateCowInput {
     photo3?: Nullable<string>;
     photo4?: Nullable<string>;
     photocover: string;
+    premium_amount?: Nullable<string>;
     purchased_contact?: Nullable<string>;
     purchased_date?: Nullable<DateTime>;
     purchased_from?: Nullable<string>;
@@ -311,6 +327,13 @@ export interface Cow {
     updatedAt: DateTime;
     updatedById: number;
     weight: string;
+}
+
+export interface DashboardData {
+    cows: number;
+    medical: number;
+    user: number;
+    venders: number;
 }
 
 export interface Feedback {
@@ -476,6 +499,11 @@ export interface Medicine {
     updatedById?: Nullable<number>;
 }
 
+export interface MonthData {
+    count: number;
+    month: string;
+}
+
 export interface IMutation {
     addMarketCow(createMarketInput: CreateMarketInput): Market | Promise<Market>;
     createBirth(createBirthInput: CreateBirthInput): Birth | Promise<Birth>;
@@ -504,6 +532,7 @@ export interface IQuery {
     codeLogin(code: string): User | Promise<User>;
     getAllLearn(): LearnData[] | Promise<LearnData[]>;
     getCowById(id: number): Cow | Promise<Cow>;
+    getDashbordData(): DashboardData | Promise<DashboardData>;
     getFarmerByCode(code: string): User | Promise<User>;
     getMarketCow(): Market[] | Promise<Market[]>;
     getMarketCowByUser(id: number): Market[] | Promise<Market[]>;
@@ -516,6 +545,11 @@ export interface IQuery {
     getUserCurrentLoan(id: number): Loan | Promise<Loan>;
     login(loginUserInput: LoginUserInput): User | Promise<User>;
     signIn(signInUserInput: SignInUserInput): User | Promise<User>;
+    treatmentGraph(year: string): TreatmentData | Promise<TreatmentData>;
+}
+
+export interface TreatmentData {
+    monthlyData: MonthData[];
 }
 
 export interface User {

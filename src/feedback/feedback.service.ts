@@ -1,6 +1,5 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { CreateFeedbackInput } from './dto/create-feedback.input';
-import { UpdateFeedbackInput } from './dto/update-feedback.input';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()

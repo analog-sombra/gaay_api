@@ -87,6 +87,13 @@ input CreateCowInput {
   food_and_mouth_date: DateTime
   heat_period: DateTime
   hemorrhagic_septicemia_date: DateTime
+  insurance_amount: String
+  insurance_date: DateTime
+  insurance_id: String
+  insurance_name: String
+  insurance_renewal_amount: String
+  insurance_renewal_date: DateTime
+  insurance_type: String
   last_calf_birthdate: DateTime
   last_deworming_date: DateTime
   last_sickness_date: DateTime
@@ -98,6 +105,7 @@ input CreateCowInput {
   photo3: String
   photo4: String
   photocover: String!
+  premium_amount: String
   purchased_contact: String
   purchased_date: DateTime
   purchased_from: String
@@ -196,6 +204,13 @@ input CreateMedicineInput {
 input CreateVaccinationInput {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+type DashboardData {
+  cows: Int!
+  medical: Int!
+  user: Int!
+  venders: Int!
 }
 
 """
@@ -377,6 +392,11 @@ type Medicine {
   updatedById: Int
 }
 
+type MonthData {
+  count: Int!
+  month: String!
+}
+
 type Mutation {
   addMarketCow(createMarketInput: CreateMarketInput!): Market!
   createBirth(createBirthInput: CreateBirthInput!): Birth!
@@ -410,6 +430,7 @@ type Query {
   codeLogin(code: String!): User!
   getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
+  getDashbordData: DashboardData!
   getFarmerByCode(code: String!): User!
   getMarketCow: [Market!]!
   getMarketCowByUser(id: Int!): [Market!]!
@@ -422,6 +443,7 @@ type Query {
   getUserCurrentLoan(id: Int!): Loan!
   login(loginUserInput: LoginUserInput!): User!
   signIn(signInUserInput: SignInUserInput!): User!
+  treatmentGraph(year: String!): TreatmentData!
 }
 
 enum RequestType {
@@ -475,6 +497,10 @@ enum Status {
   NONE
 }
 
+type TreatmentData {
+  monthlyData: [MonthData!]!
+}
+
 input UpdateBirthInput {
   """Example field (placeholder)"""
   exampleField: Int
@@ -502,6 +528,13 @@ input UpdateCowInput {
   heat_period: DateTime
   hemorrhagic_septicemia_date: DateTime
   id: Int!
+  insurance_amount: String
+  insurance_date: DateTime
+  insurance_id: String
+  insurance_name: String
+  insurance_renewal_amount: String
+  insurance_renewal_date: DateTime
+  insurance_type: String
   last_calf_birthdate: DateTime
   last_deworming_date: DateTime
   last_sickness_date: DateTime
@@ -513,6 +546,7 @@ input UpdateCowInput {
   photo3: String
   photo4: String
   photocover: String!
+  premium_amount: String
   purchased_contact: String
   purchased_date: DateTime
   purchased_from: String

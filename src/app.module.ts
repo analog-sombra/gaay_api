@@ -23,6 +23,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { VaccinationModule } from './vaccination/vaccination.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { HealthreportModule } from './healthreport/healthreport.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -68,6 +69,7 @@ import * as redisStore from 'cache-manager-redis-store';
     VaccinationModule,
     FeedbackModule,
     HealthreportModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
