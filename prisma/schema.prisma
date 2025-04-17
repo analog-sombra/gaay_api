@@ -213,7 +213,6 @@ model cow {
   vaccination        vaccination[]
 
   mothercow_birth   birth[]             @relation("mothercow")
-  fathercow_birth   birth[]             @relation("fathercow")
   calf_birth        birth[]             @relation("calf")
   cow               medical_request[]   @relation("cow")
   loan              loan[]
@@ -275,8 +274,7 @@ model birth {
   id          Int       @id @default(autoincrement())
   mothercow   cow       @relation("mothercow", fields: [mothercowid], references: [id])
   mothercowid Int
-  fathercow   cow       @relation("fathercow", fields: [fathercowid], references: [id])
-  fathercowid Int
+  fathercowid String?
   calf        cow       @relation("calf", fields: [calfid], references: [id])
   calfid      Int
   remarks     String

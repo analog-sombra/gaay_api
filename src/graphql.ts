@@ -75,6 +75,51 @@ export interface CreateBreedInput {
     exampleField: number;
 }
 
+export interface CreateCowCalfInput {
+    alias: string;
+    birthdate: DateTime;
+    black_quarter_date?: Nullable<DateTime>;
+    breedid: number;
+    brucellossis_date?: Nullable<DateTime>;
+    cowid: number;
+    cowname: string;
+    cowstatus: CowStatus;
+    cowtagno: string;
+    daily_milk_produce?: Nullable<string>;
+    farmerid: number;
+    fathercowid: string;
+    food_and_mouth_date?: Nullable<DateTime>;
+    heat_period?: Nullable<DateTime>;
+    hemorrhagic_septicemia_date?: Nullable<DateTime>;
+    insurance_amount?: Nullable<string>;
+    insurance_date?: Nullable<DateTime>;
+    insurance_id?: Nullable<string>;
+    insurance_name?: Nullable<string>;
+    insurance_renewal_amount?: Nullable<string>;
+    insurance_renewal_date?: Nullable<DateTime>;
+    insurance_type?: Nullable<string>;
+    last_calf_birthdate?: Nullable<DateTime>;
+    last_deworming_date?: Nullable<DateTime>;
+    last_sickness_date?: Nullable<DateTime>;
+    last_treatment_date?: Nullable<DateTime>;
+    last_vaccine_date?: Nullable<DateTime>;
+    noofcalves: number;
+    photo1?: Nullable<string>;
+    photo2?: Nullable<string>;
+    photo3?: Nullable<string>;
+    photo4?: Nullable<string>;
+    photocover: string;
+    premium_amount?: Nullable<string>;
+    purchased_contact?: Nullable<string>;
+    purchased_date?: Nullable<DateTime>;
+    purchased_from?: Nullable<string>;
+    purchased_price?: Nullable<string>;
+    remarks?: Nullable<string>;
+    sex: SEX;
+    status: Status;
+    weight: string;
+}
+
 export interface CreateCowInput {
     alias: string;
     birthdate: DateTime;
@@ -509,6 +554,7 @@ export interface IMutation {
     createBirth(createBirthInput: CreateBirthInput): Birth | Promise<Birth>;
     createBreed(createBreedInput: CreateBreedInput): Breed | Promise<Breed>;
     createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
+    createCowCalf(createCowCalfInput: CreateCowCalfInput): Cow | Promise<Cow>;
     createFeedback(createFeedbackInput: CreateFeedbackInput): Feedback | Promise<Feedback>;
     createHealthreport(createHealthreportInput: CreateHealthreportInput): Healthreport | Promise<Healthreport>;
     createMarketFood(createFoodInput: CreateFoodInput): Food | Promise<Food>;

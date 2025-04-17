@@ -3,6 +3,7 @@ import { CowService } from './cow.service';
 import { Cow } from './entities/cow.entity';
 import { CreateCowInput } from './dto/create-cow.input';
 import { UpdateCowInput } from './dto/update-cow.input';
+import { CreateCowCalfInput } from './dto/create-cow-calf.input';
 
 @Resolver(() => Cow)
 export class CowResolver {
@@ -16,6 +17,11 @@ export class CowResolver {
   @Mutation(() => Cow)
   createCow(@Args('createCowInput') createCowInput: CreateCowInput) {
     return this.cowService.createCow(createCowInput);
+  }
+
+  @Mutation(() => Cow)
+  createCowCalf(@Args('createCowCalfInput') createCowCalfInput: CreateCowCalfInput) {
+    return this.cowService.createCowCalf(createCowCalfInput);
   }
 
   @Mutation(() => Cow)

@@ -2,6 +2,7 @@ import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateCowInput } from './dto/create-cow.input';
 import { UpdateCowInput } from './dto/update-cow.input';
+import { CreateCowCalfInput } from './dto/create-cow-calf.input';
 
 @Injectable()
 export class CowService {
@@ -102,6 +103,101 @@ export class CowService {
 
       if (!cow_insurance) {
         throw new BadGatewayException('Cow insurance not created');
+      }
+      return cow_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+  async createCowCalf(createCowCalfInput: CreateCowCalfInput) {
+    try {
+      const cow_data = await this.prisma.cow.create({
+        data: {
+          farmerid: createCowCalfInput.farmerid,
+          cowtagno: createCowCalfInput.cowtagno,
+          cowname: createCowCalfInput.cowname,
+          alias: createCowCalfInput.alias,
+          photocover: createCowCalfInput.photocover,
+          photo1: createCowCalfInput.photo1,
+          photo2: createCowCalfInput.photo2,
+          photo3: createCowCalfInput.photo3,
+          photo4: createCowCalfInput.photo4,
+          breedid: createCowCalfInput.breedid,
+          sex: createCowCalfInput.sex,
+          birthdate: createCowCalfInput.birthdate.toISOString(),
+          noofcalves: createCowCalfInput.noofcalves,
+          weight: createCowCalfInput.weight,
+          createdById: createCowCalfInput.farmerid,
+          daily_milk_produce: createCowCalfInput.daily_milk_produce,
+          cowstatus: createCowCalfInput.cowstatus,
+        },
+      });
+      if (!cow_data) {
+        throw new BadGatewayException('Cow not created');
+      }
+
+      const cow_health_report = await this.prisma.cow_health_report.create({
+        data: {
+          cowid: cow_data.id,
+          createdById: createCowCalfInput.farmerid,
+          black_quarter_date:
+            createCowCalfInput.black_quarter_date!.toISOString(),
+          brucellossis_date:
+            createCowCalfInput.brucellossis_date!.toISOString(),
+          food_and_mouth_date:
+            createCowCalfInput.food_and_mouth_date!.toISOString(),
+          hemorrhagic_septicemia_date:
+            createCowCalfInput.hemorrhagic_septicemia_date!.toISOString(),
+          last_calf_birthdate:
+            createCowCalfInput.last_calf_birthdate!.toISOString(),
+          last_deworming_date:
+            createCowCalfInput.last_deworming_date!.toISOString(),
+          last_sickness_date:
+            createCowCalfInput.last_sickness_date!.toISOString(),
+          last_treatment_date:
+            createCowCalfInput.last_treatment_date!.toISOString(),
+          last_vaccine_date:
+            createCowCalfInput.last_vaccine_date!.toISOString(),
+          heat_period: createCowCalfInput.heat_period!.toISOString(),
+        },
+      });
+
+      if (!cow_health_report) {
+        throw new BadGatewayException('Cow health report not created');
+      }
+
+      const cow_insurance = await this.prisma.insurance.create({
+        data: {
+          cowid: cow_data.id,
+          createdById: createCowCalfInput.farmerid,
+          insurance_id: createCowCalfInput.insurance_id,
+          insurance_name: createCowCalfInput.insurance_name,
+          insurance_type: createCowCalfInput.insurance_type,
+          insurance_amount: createCowCalfInput.insurance_amount,
+          insurance_date: createCowCalfInput.insurance_date!.toISOString(),
+          insurance_renewal_date:
+            createCowCalfInput.insurance_renewal_date!.toISOString(),
+          premium_amount: createCowCalfInput.premium_amount,
+          insurance_renewal_amount: createCowCalfInput.insurance_renewal_amount,
+        },
+      });
+
+      if (!cow_insurance) {
+        throw new BadGatewayException('Cow insurance not created');
+      }
+
+      const cow_calf = await this.prisma.birth.create({
+        data: {
+          createdById: createCowCalfInput.farmerid,
+          mothercowid: createCowCalfInput.cowid,
+          calfid: cow_data.id,
+          fathercowid: createCowCalfInput.fathercowid,
+          remarks: 'Calf born',
+        },
+      });
+
+      if (!cow_calf) {
+        throw new BadGatewayException('Cow calf not created');
       }
       return cow_data;
     } catch (error) {

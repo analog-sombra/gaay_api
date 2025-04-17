@@ -73,6 +73,51 @@ input CreateBreedInput {
   exampleField: Int!
 }
 
+input CreateCowCalfInput {
+  alias: String!
+  birthdate: DateTime!
+  black_quarter_date: DateTime
+  breedid: Int!
+  brucellossis_date: DateTime
+  cowid: Int!
+  cowname: String!
+  cowstatus: CowStatus!
+  cowtagno: String!
+  daily_milk_produce: String
+  farmerid: Int!
+  fathercowid: String!
+  food_and_mouth_date: DateTime
+  heat_period: DateTime
+  hemorrhagic_septicemia_date: DateTime
+  insurance_amount: String
+  insurance_date: DateTime
+  insurance_id: String
+  insurance_name: String
+  insurance_renewal_amount: String
+  insurance_renewal_date: DateTime
+  insurance_type: String
+  last_calf_birthdate: DateTime
+  last_deworming_date: DateTime
+  last_sickness_date: DateTime
+  last_treatment_date: DateTime
+  last_vaccine_date: DateTime
+  noofcalves: Int!
+  photo1: String
+  photo2: String
+  photo3: String
+  photo4: String
+  photocover: String!
+  premium_amount: String
+  purchased_contact: String
+  purchased_date: DateTime
+  purchased_from: String
+  purchased_price: String
+  remarks: String
+  sex: SEX!
+  status: Status!
+  weight: String!
+}
+
 input CreateCowInput {
   alias: String!
   birthdate: DateTime!
@@ -402,6 +447,7 @@ type Mutation {
   createBirth(createBirthInput: CreateBirthInput!): Birth!
   createBreed(createBreedInput: CreateBreedInput!): Breed!
   createCow(createCowInput: CreateCowInput!): Cow!
+  createCowCalf(createCowCalfInput: CreateCowCalfInput!): Cow!
   createFeedback(createFeedbackInput: CreateFeedbackInput!): Feedback!
   createHealthreport(createHealthreportInput: CreateHealthreportInput!): Healthreport!
   createMarketFood(createFoodInput: CreateFoodInput!): Food!
