@@ -35,10 +35,14 @@ type Cow {
   createdAt: DateTime!
   createdById: Int!
   daily_milk_produce: String
+  death_date: DateTime
+  death_reason: String
   deletedAt: DateTime
   deletedById: Int
+  farmer: User!
   farmerid: Int!
   id: Int!
+  insurance: [Insurance!]!
   noofcalves: Int
   photo1: String
   photo2: String
@@ -51,10 +55,21 @@ type Cow {
   purchased_price: String
   remarks: String
   sex: SEX!
+  sold_contact: String
+  sold_date: DateTime
+  sold_price: String
+  sold_to: String
   status: Status!
   updatedAt: DateTime!
   updatedById: Int!
   weight: String!
+}
+
+type CowPagination {
+  data: [Cow!]!
+  skip: Int!
+  take: Int!
+  total: Int!
 }
 
 enum CowStatus {
@@ -84,6 +99,7 @@ input CreateCowCalfInput {
   cowstatus: CowStatus!
   cowtagno: String!
   daily_milk_produce: String
+  death_date: DateTime
   farmerid: Int!
   fathercowid: String!
   food_and_mouth_date: DateTime
@@ -114,6 +130,10 @@ input CreateCowCalfInput {
   purchased_price: String
   remarks: String
   sex: SEX!
+  sold_contact: String
+  sold_date: DateTime
+  sold_price: String
+  sold_to: String
   status: Status!
   weight: String!
 }
@@ -128,6 +148,7 @@ input CreateCowInput {
   cowstatus: CowStatus!
   cowtagno: String!
   daily_milk_produce: String
+  death_date: DateTime
   farmerid: Int!
   food_and_mouth_date: DateTime
   heat_period: DateTime
@@ -157,6 +178,10 @@ input CreateCowInput {
   purchased_price: String
   remarks: String
   sex: SEX!
+  sold_contact: String
+  sold_date: DateTime
+  sold_price: String
+  sold_to: String
   status: Status!
   weight: String!
 }
@@ -322,6 +347,26 @@ type Healthreport {
   last_vaccine_date: DateTime
 }
 
+type Insurance {
+  cowid: Int!
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int
+  id: Int!
+  insurance_amount: String
+  insurance_date: DateTime
+  insurance_id: String
+  insurance_name: String
+  insurance_renewal_amount: String
+  insurance_renewal_date: DateTime
+  insurance_type: String
+  premium_amount: String
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int!
+}
+
 enum Learn {
   FOOD
   HEALTH
@@ -338,6 +383,13 @@ type LearnData {
   title: String!
   type: Learn!
   updatedAt: DateTime!
+}
+
+type LearnPagination {
+  data: [LearnData!]!
+  skip: Int!
+  take: Int!
+  total: Int!
 }
 
 type Loan {
@@ -407,6 +459,13 @@ type Medical {
   updatedById: Int
 }
 
+type MedicalPagination {
+  data: [Medical!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
 type Medicine {
   composition: String
   cover: String!
@@ -457,6 +516,10 @@ type Mutation {
   editUserPhoto(id: Int!, photo: String!): User!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
+  searchCows(searchCowPaginationInput: SearchCowPaginationInput!): CowPagination!
+  searchLearn(searchLearnPaginationInput: SearchLearnPaginationInput!): LearnPagination!
+  searchMedicalRequest(searchMedicalPaginationInput: SearchMedicalPaginationInput!): MedicalPagination!
+  searchUsers(searchUserPaginationInput: SearchUserPaginationInput!): UserPagination!
   sendOtp(code: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
@@ -518,6 +581,32 @@ enum SEX {
   MALE
 }
 
+input SearchCowPaginationInput {
+  search: String
+  skip: Int!
+  take: Int!
+}
+
+input SearchLearnPaginationInput {
+  learn: Learn
+  search: String
+  skip: Int!
+  take: Int!
+}
+
+input SearchMedicalPaginationInput {
+  search: String
+  skip: Int!
+  take: Int!
+}
+
+input SearchUserPaginationInput {
+  roles: [Role!]
+  search: String
+  skip: Int!
+  take: Int!
+}
+
 input SignInUserInput {
   mobile: String!
   password: String!
@@ -569,6 +658,7 @@ input UpdateCowInput {
   cowstatus: CowStatus!
   cowtagno: String!
   daily_milk_produce: String
+  death_date: DateTime
   farmerid: Int!
   food_and_mouth_date: DateTime
   heat_period: DateTime
@@ -599,6 +689,10 @@ input UpdateCowInput {
   purchased_price: String
   remarks: String
   sex: SEX!
+  sold_contact: String
+  sold_date: DateTime
+  sold_price: String
+  sold_to: String
   status: Status!
   weight: String!
 }
@@ -607,9 +701,11 @@ type User {
   address: String
   alias: String
   beneficiary_code: String
+  beneficiary_type: String
   category: Category!
   contact: String!
   contact_two: String
+  cow_count: Int
   createdAt: DateTime!
   deletedAt: DateTime
   district: String
@@ -623,6 +719,13 @@ type User {
   status: Status!
   updatedAt: DateTime!
   village: String
+}
+
+type UserPagination {
+  data: [User!]!
+  skip: Int!
+  take: Int!
+  total: Int!
 }
 
 type Vaccination {

@@ -56,6 +56,12 @@ export class User {
   @Field(() => String, { nullable: true })
   occupation?: string;
 
+  @Field(() => String, { nullable: true })
+  beneficiary_type?: string;
+
+  @Field(() => Int, { nullable: true })
+  cow_count?: number;
+
   @Field(() => Status)
   status: Status;
 

@@ -206,4 +206,29 @@ export class CreateCowCalfInput {
   @IsString()
   @Field(() => String, { nullable: true })
   premium_amount?: string;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  death_date?: Date;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  sold_to?: string;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  sold_date?: Date;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  sold_contact?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  sold_price?: string;
 }

@@ -86,6 +86,7 @@ export interface CreateCowCalfInput {
     cowstatus: CowStatus;
     cowtagno: string;
     daily_milk_produce?: Nullable<string>;
+    death_date?: Nullable<DateTime>;
     farmerid: number;
     fathercowid: string;
     food_and_mouth_date?: Nullable<DateTime>;
@@ -116,6 +117,10 @@ export interface CreateCowCalfInput {
     purchased_price?: Nullable<string>;
     remarks?: Nullable<string>;
     sex: SEX;
+    sold_contact?: Nullable<string>;
+    sold_date?: Nullable<DateTime>;
+    sold_price?: Nullable<string>;
+    sold_to?: Nullable<string>;
     status: Status;
     weight: string;
 }
@@ -130,6 +135,7 @@ export interface CreateCowInput {
     cowstatus: CowStatus;
     cowtagno: string;
     daily_milk_produce?: Nullable<string>;
+    death_date?: Nullable<DateTime>;
     farmerid: number;
     food_and_mouth_date?: Nullable<DateTime>;
     heat_period?: Nullable<DateTime>;
@@ -159,6 +165,10 @@ export interface CreateCowInput {
     purchased_price?: Nullable<string>;
     remarks?: Nullable<string>;
     sex: SEX;
+    sold_contact?: Nullable<string>;
+    sold_date?: Nullable<DateTime>;
+    sold_price?: Nullable<string>;
+    sold_to?: Nullable<string>;
     status: Status;
     weight: string;
 }
@@ -262,6 +272,32 @@ export interface OtpInput {
     otp: string;
 }
 
+export interface SearchCowPaginationInput {
+    search?: Nullable<string>;
+    skip: number;
+    take: number;
+}
+
+export interface SearchLearnPaginationInput {
+    learn?: Nullable<Learn>;
+    search?: Nullable<string>;
+    skip: number;
+    take: number;
+}
+
+export interface SearchMedicalPaginationInput {
+    search?: Nullable<string>;
+    skip: number;
+    take: number;
+}
+
+export interface SearchUserPaginationInput {
+    roles?: Nullable<Role[]>;
+    search?: Nullable<string>;
+    skip: number;
+    take: number;
+}
+
 export interface SignInUserInput {
     mobile: string;
     password: string;
@@ -293,6 +329,7 @@ export interface UpdateCowInput {
     cowstatus: CowStatus;
     cowtagno: string;
     daily_milk_produce?: Nullable<string>;
+    death_date?: Nullable<DateTime>;
     farmerid: number;
     food_and_mouth_date?: Nullable<DateTime>;
     heat_period?: Nullable<DateTime>;
@@ -323,6 +360,10 @@ export interface UpdateCowInput {
     purchased_price?: Nullable<string>;
     remarks?: Nullable<string>;
     sex: SEX;
+    sold_contact?: Nullable<string>;
+    sold_date?: Nullable<DateTime>;
+    sold_price?: Nullable<string>;
+    sold_to?: Nullable<string>;
     status: Status;
     weight: string;
 }
@@ -352,10 +393,14 @@ export interface Cow {
     createdAt: DateTime;
     createdById: number;
     daily_milk_produce?: Nullable<string>;
+    death_date?: Nullable<DateTime>;
+    death_reason?: Nullable<string>;
     deletedAt?: Nullable<DateTime>;
     deletedById?: Nullable<number>;
+    farmer: User;
     farmerid: number;
     id: number;
+    insurance: Insurance[];
     noofcalves?: Nullable<number>;
     photo1?: Nullable<string>;
     photo2?: Nullable<string>;
@@ -368,10 +413,21 @@ export interface Cow {
     purchased_price?: Nullable<string>;
     remarks?: Nullable<string>;
     sex: SEX;
+    sold_contact?: Nullable<string>;
+    sold_date?: Nullable<DateTime>;
+    sold_price?: Nullable<string>;
+    sold_to?: Nullable<string>;
     status: Status;
     updatedAt: DateTime;
     updatedById: number;
     weight: string;
+}
+
+export interface CowPagination {
+    data: Cow[];
+    skip: number;
+    take: number;
+    total: number;
 }
 
 export interface DashboardData {
@@ -440,6 +496,26 @@ export interface Healthreport {
     last_vaccine_date?: Nullable<DateTime>;
 }
 
+export interface Insurance {
+    cowid: number;
+    createdAt: DateTime;
+    createdById: number;
+    deletedAt?: Nullable<DateTime>;
+    deletedById?: Nullable<number>;
+    id: number;
+    insurance_amount?: Nullable<string>;
+    insurance_date?: Nullable<DateTime>;
+    insurance_id?: Nullable<string>;
+    insurance_name?: Nullable<string>;
+    insurance_renewal_amount?: Nullable<string>;
+    insurance_renewal_date?: Nullable<DateTime>;
+    insurance_type?: Nullable<string>;
+    premium_amount?: Nullable<string>;
+    status: Status;
+    updatedAt: DateTime;
+    updatedById: number;
+}
+
 export interface LearnData {
     cover: string;
     createdAt: DateTime;
@@ -450,6 +526,13 @@ export interface LearnData {
     title: string;
     type: Learn;
     updatedAt: DateTime;
+}
+
+export interface LearnPagination {
+    data: LearnData[];
+    skip: number;
+    take: number;
+    total: number;
 }
 
 export interface Loan {
@@ -514,6 +597,13 @@ export interface Medical {
     updatedById?: Nullable<number>;
 }
 
+export interface MedicalPagination {
+    data: Medical[];
+    skip: number;
+    take: number;
+    total: number;
+}
+
 export interface Medicine {
     composition?: Nullable<string>;
     cover: string;
@@ -564,6 +654,10 @@ export interface IMutation {
     editUserPhoto(id: number, photo: string): User | Promise<User>;
     removeBirth(id: number): Birth | Promise<Birth>;
     removeBreed(id: number): Breed | Promise<Breed>;
+    searchCows(searchCowPaginationInput: SearchCowPaginationInput): CowPagination | Promise<CowPagination>;
+    searchLearn(searchLearnPaginationInput: SearchLearnPaginationInput): LearnPagination | Promise<LearnPagination>;
+    searchMedicalRequest(searchMedicalPaginationInput: SearchMedicalPaginationInput): MedicalPagination | Promise<MedicalPagination>;
+    searchUsers(searchUserPaginationInput: SearchUserPaginationInput): UserPagination | Promise<UserPagination>;
     sendOtp(code: string): User | Promise<User>;
     signup(signUpUserInput: SignUpUserInput): User | Promise<User>;
     updateBirth(updateBirthInput: UpdateBirthInput): Birth | Promise<Birth>;
@@ -602,9 +696,11 @@ export interface User {
     address?: Nullable<string>;
     alias?: Nullable<string>;
     beneficiary_code?: Nullable<string>;
+    beneficiary_type?: Nullable<string>;
     category: Category;
     contact: string;
     contact_two?: Nullable<string>;
+    cow_count?: Nullable<number>;
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     district?: Nullable<string>;
@@ -618,6 +714,13 @@ export interface User {
     status: Status;
     updatedAt: DateTime;
     village?: Nullable<string>;
+}
+
+export interface UserPagination {
+    data: User[];
+    skip: number;
+    take: number;
+    total: number;
 }
 
 export interface Vaccination {

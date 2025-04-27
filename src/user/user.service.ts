@@ -1,5 +1,6 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
+import { SearchUserPaginationInput } from './dto/search-user-pagination';
 
 @Injectable()
 export class UserService {
@@ -83,6 +84,62 @@ export class UserService {
         throw new BadGatewayException('User not found');
       }
       return user_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async searchUsers(searchUserPaginationInput: SearchUserPaginationInput) {
+    try {
+      const { skip, take, search, roles } = searchUserPaginationInput;
+
+      const [data, total] = await this.prisma.$transaction([
+        this.prisma.user.findMany({
+          where: {
+            ...(search && {
+              OR: [
+                { name: { contains: search || undefined } },
+                { contact: { contains: search || undefined } },
+                { beneficiary_code: { contains: search || undefined } },
+              ],
+            }),
+            ...(roles?.length && {
+              role: {
+                in: roles,
+              },
+            }),
+            status: 'ACTIVE',
+            deletedAt: null,
+          },
+          skip,
+          take,
+        }),
+        this.prisma.user.count({
+          where: {
+            ...(search && {
+              OR: [
+                { name: { contains: search || undefined } },
+                { contact: { contains: search || undefined } },
+                { beneficiary_code: { contains: search || undefined } },
+              ],
+            }),
+            ...(roles?.length && {
+              role: {
+                in: roles,
+              },
+            }),
+            status: 'ACTIVE',
+            deletedAt: null,
+          },
+        }),
+      ]);
+
+      return {
+        data,
+        total,
+        skip,
+        take,
+      };
     } catch (error) {
       throw new BadGatewayException(error);
     }

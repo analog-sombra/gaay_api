@@ -8,6 +8,7 @@ import {
 import { CowStatus, SEX, Status } from '@prisma/client';
 import { Breed } from 'src/breed/entities/breed.entity';
 import { Healthreport } from 'src/healthreport/entities/healthreport.entity';
+import { User } from 'src/user/entities/user.entity';
 
 registerEnumType(SEX, {
   name: 'SEX',
@@ -15,6 +16,60 @@ registerEnumType(SEX, {
 registerEnumType(CowStatus, {
   name: 'CowStatus',
 });
+
+@ObjectType()
+export class Insurance {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => Int)
+  cowid: number;
+
+  @Field(() => String, { nullable: true })
+  insurance_id: string;
+
+  @Field(() => String, { nullable: true })
+  insurance_name: string;
+
+  @Field(() => String, { nullable: true })
+  insurance_type: string;
+
+  @Field(() => String, { nullable: true })
+  insurance_amount: string;
+
+  @Field(() => Date, { nullable: true })
+  insurance_date: Date;
+
+  @Field(() => Date, { nullable: true })
+  insurance_renewal_date: Date;
+
+  @Field(() => String, { nullable: true })
+  insurance_renewal_amount: string;
+
+  @Field(() => String, { nullable: true })
+  premium_amount: string;
+
+  @Field(() => Status)
+  status: Status;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Int)
+  createdById: number;
+
+  @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => Int)
+  updatedById: number;
+
+  @Field(() => Date, { nullable: true })
+  deletedAt?: Date;
+
+  @Field(() => Int, { nullable: true })
+  deletedById?: number;
+}
 
 @ObjectType()
 export class Cow {
@@ -84,6 +139,24 @@ export class Cow {
   @Field(() => String, { nullable: true })
   purchased_price?: string;
 
+  @Field(() => String, { nullable: true })
+  sold_to?: string;
+
+  @Field(() => Date, { nullable: true })
+  sold_date?: Date;
+
+  @Field(() => String, { nullable: true })
+  sold_contact?: string;
+
+  @Field(() => String, { nullable: true })
+  sold_price?: string;
+
+  @Field(() => Date, { nullable: true })
+  death_date?: Date;
+
+  @Field(() => String, { nullable: true })
+  death_reason?: string;
+
   @Field(() => Status)
   status: Status;
 
@@ -110,4 +183,10 @@ export class Cow {
 
   @Field(() => [Healthreport])
   cow_health_report: Healthreport[];
+
+  @Field(() => [Insurance])
+  insurance: Insurance[];
+
+  @Field(() => User)
+  farmer: User;
 }

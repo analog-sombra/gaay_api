@@ -198,6 +198,12 @@ model cow {
   purchased_date     DateTime?
   purchased_contact  String?
   purchased_price    String?
+  sold_to            String?
+  sold_date          DateTime?
+  sold_contact       String?
+  sold_price         String?
+  death_date         DateTime?
+  death_reason       String?
   status             Status        @default(ACTIVE)
   cowstatus          CowStatus     @default(ALIVE)
   createdAt          DateTime      @default(now())
@@ -451,25 +457,39 @@ model cow_health_report {
 }
 
 model insurance {
-  id                       Int       @id @default(autoincrement())
-  cow                      cow       @relation(fields: [cowid], references: [id])
-  cowid                    Int
-  insurance_id             String?
-  insurance_name           String?
-  insurance_type           String?
-  insurance_amount         String?
-  insurance_date           DateTime?
-  insurance_renewal_date   DateTime?
-  insurance_renewal_amount String?
-  premium_amount           String?
-  status                   Status    @default(ACTIVE)
-  createdAt                DateTime  @default(now())
-  createdBy                user      @relation("insurance_createdby", fields: [createdById], references: [id])
-  createdById              Int
-  updatedAt                DateTime  @updatedAt
-  updatedBy                user?     @relation("insurance_updatedby", fields: [updatedById], references: [id])
-  updatedById              Int?
-  deletedAt                DateTime?
-  deletedBy                user?     @relation("insurance_deletedby", fields: [deletedById], references: [id])
-  deletedById              Int?
+  id                             Int       @id @default(autoincrement())
+  cow                            cow       @relation(fields: [cowid], references: [id])
+  cowid                          Int
+  insurance_id                   String?
+  insurance_name                 String?
+  insurance_type                 String?
+  insurance_amount               String?
+  insurance_date                 DateTime?
+  insurance_renewal_date         DateTime?
+  insurance_renewal_amount       String?
+  premium_amount                 String?
+  inspection_date                DateTime?
+  death_inspection_date          DateTime?
+  death_inspection_name          String?
+  death_inspection_id            String?
+  death_inspection_contact       String?
+  death_inspection_report        String?   @db.MediumText
+  insurance_claim_amount         String?
+  insurance_settle_date          DateTime?
+  insurance_settle_paymode       String?
+  insurance_settle_bank_name     String?
+  insurance_settle_transactionid String?
+  insurance_settle_trackid       String?
+  insurance_settle_orderid       String?
+
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  createdBy   user      @relation("insurance_createdby", fields: [createdById], references: [id])
+  createdById Int
+  updatedAt   DateTime  @updatedAt
+  updatedBy   user?     @relation("insurance_updatedby", fields: [updatedById], references: [id])
+  updatedById Int?
+  deletedAt   DateTime?
+  deletedBy   user?     @relation("insurance_deletedby", fields: [deletedById], references: [id])
+  deletedById Int?
 }
