@@ -116,4 +116,26 @@ export class MedicalService {
       throw new BadGatewayException(error);
     }
   }
+
+  async getMedicalRequestById(id: number) {
+    try {
+      const medical_data = await this.prisma.medical_request.findUnique({
+        where: { id },
+        include: {
+          cow: {
+            include: {
+              breed: true,
+            },
+          },
+          farmer: true,
+        },
+      });
+      if (!medical_data) {
+        throw new BadGatewayException('Medical request not found');
+      }
+      return medical_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
 }

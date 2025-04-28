@@ -331,6 +331,13 @@ type Food {
   updatedById: Int
 }
 
+type FoodPagination {
+  data: [Food!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
 type Healthreport {
   black_quarter_date: DateTime
   brucellossis_date: DateTime
@@ -435,6 +442,13 @@ type Market {
   verified: Boolean!
 }
 
+type MarketPagination {
+  data: [Market!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
 type Medical {
   cow: Cow
   cowid: Int!
@@ -447,13 +461,13 @@ type Medical {
   doctorid: Int
   farmer: User
   farmerid: Int!
-  follow_up_date: DateTime!
-  follow_up_treatment: String!
+  follow_up_date: DateTime
+  follow_up_treatment: String
   id: Int!
   reason: String!
-  remarks: String!
+  remarks: String
   status: Status!
-  treatment_provided: String!
+  treatment_provided: String
   type: RequestType!
   updatedAt: DateTime!
   updatedById: Int
@@ -494,6 +508,13 @@ type Medicine {
   status: Status!
   updatedAt: DateTime!
   updatedById: Int
+}
+
+type MedicinePagination {
+  data: [Medicine!]!
+  skip: Int!
+  take: Int!
+  total: Int!
 }
 
 type MonthData {
@@ -542,11 +563,12 @@ type Query {
   getDashbordData: DashboardData!
   getFarmerByCode(code: String!): User!
   getMarketCow: [Market!]!
-  getMarketCowByUser(id: Int!): [Market!]!
+  getMarketCowByUser(id: Int!, skip: Int!, take: Int!): MarketPagination!
   getMarketFood: [Food!]!
-  getMarketFoodByUser(id: Int!): [Food!]!
+  getMarketFoodByUser(id: Int!, skip: Int!, take: Int!): FoodPagination!
   getMarketMedicine: [Medicine!]!
-  getMarketMedicineByUser(id: Int!): [Medicine!]!
+  getMarketMedicineByUser(id: Int!, skip: Int!, take: Int!): MedicinePagination!
+  getMedicalRequestById(id: Int!): Medical!
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
   getUserCurrentLoan(id: Int!): Loan!

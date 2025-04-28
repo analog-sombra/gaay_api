@@ -36,19 +36,19 @@ export class Medical {
   @Field(() => String)
   reason: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   treatment_provided: string;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   follow_up_date: Date;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   follow_up_treatment: string;
 
   @Field(() => RequestType)
   type: RequestType;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   remarks: string;
 
   @Field(() => Status)

@@ -7,6 +7,9 @@ import { Food } from './entities/food.entity';
 import { Medicine } from './entities/medicine.entity';
 import { CreateFoodInput } from './dto/create-food.input';
 import { CreateMedicineInput } from './dto/create-medicine.input';
+import { MedicinePagination } from './entities/medicine.pagination.entity';
+import { FoodPagination } from './entities/food.pagination.entity';
+import { MarketPagination } from './entities/market.pagination.entity';
 
 @Resolver(() => Market)
 export class MarketResolver {
@@ -46,18 +49,30 @@ export class MarketResolver {
     return this.marketService.createMarketMedicine(createMedicineInput);
   }
 
-  @Query(() => [Food])
-  getMarketFoodByUser(@Args('id', { type: () => Int }) id: number) {
-    return this.marketService.getMarketFoodByUser(id);
+  @Query(() => FoodPagination)
+  getMarketFoodByUser(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('skip', { type: () => Int }) skip: number,
+    @Args('take', { type: () => Int }) take: number,
+  ) {
+    return this.marketService.getMarketFoodByUser(id, skip, take);
   }
 
-  @Query(() => [Medicine])
-  getMarketMedicineByUser(@Args('id', { type: () => Int }) id: number) {
-    return this.marketService.getMarketMedicineByUser(id);
+  @Query(() => MedicinePagination)
+  getMarketMedicineByUser(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('skip', { type: () => Int }) skip: number,
+    @Args('take', { type: () => Int }) take: number,
+  ) {
+    return this.marketService.getMarketMedicineByUser(id, skip, take);
   }
 
-  @Query(() => [Market])
-  getMarketCowByUser(@Args('id', { type: () => Int }) id: number) {
-    return this.marketService.getMarketCowByUser(id);
+  @Query(() => MarketPagination)
+  getMarketCowByUser(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('skip', { type: () => Int }) skip: number,
+    @Args('take', { type: () => Int }) take: number,
+  ) {
+    return this.marketService.getMarketCowByUser(id, skip, take);
   }
 }

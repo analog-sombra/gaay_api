@@ -132,60 +132,129 @@ export class MarketService {
     }
   }
 
-  async getMarketFoodByUser(id: number) {
+  async getMarketFoodByUser(id: number, skip: number, take: number) {
     try {
-      const food_data = await this.prisma.food.findMany({
-        where: {
-          status: 'ACTIVE',
-          deletedAt: null,
-          deletedById: null,
-          createdById: id,
-        },
-      });
+      const [food_data, total] = await this.prisma.$transaction([
+        this.prisma.food.findMany({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+          skip: skip,
+          take: take,
+        }),
+        this.prisma.food.count({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+        }),
+      ]);
       if (!food_data) {
         throw new BadGatewayException('Market food data not found');
       }
-      return food_data;
+      return {
+        skip: skip,
+        take: take,
+        data: food_data,
+        total: total,
+      };
     } catch (error) {
       throw new BadGatewayException(error);
     }
   }
-  async getMarketMedicineByUser(id: number) {
+  async getMarketMedicineByUser(id: number, skip: number, take: number) {
     try {
-      const food_data = await this.prisma.medicine.findMany({
-        where: {
-          status: 'ACTIVE',
-          deletedAt: null,
-          deletedById: null,
-          createdById: id,
-        },
-      });
-      if (!food_data) {
-        throw new BadGatewayException('Market food data not found');
+      // const food_data = await this.prisma.medicine.findMany({
+      //   where: {
+      //     status: 'ACTIVE',
+      //     deletedAt: null,
+      //     deletedById: null,
+      //     createdById: id,
+      //   },
+      // });
+      // if (!food_data) {
+      //   throw new BadGatewayException('Market food data not found');
+      // }
+      // return food_data;
+      const [medicine_data, total] = await this.prisma.$transaction([
+        this.prisma.medicine.findMany({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+          skip: skip,
+          take: take,
+        }),
+        this.prisma.medicine.count({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+        }),
+      ]);
+      if (!medicine_data) {
+        throw new BadGatewayException('Market medicine data not found');
       }
-      return food_data;
+      return {
+        skip: skip,
+        take: take,
+        data: medicine_data,
+        total: total,
+      };
     } catch (error) {
       throw new BadGatewayException(error);
     }
   }
-  async getMarketCowByUser(id: number) {
+  async getMarketCowByUser(id: number, skip: number, take: number) {
     try {
-      const food_data = await this.prisma.market.findMany({
-        where: {
-          status: 'ACTIVE',
-          deletedAt: null,
-          deletedById: null,
-          createdById: id,
-        },
-        include: {
-          cow: true,
-          farmer: true,
-        },
-      });
-      if (!food_data) {
-        throw new BadGatewayException('Market food data not found');
+      const [market_data, total] = await this.prisma.$transaction([
+        this.prisma.market.findMany({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+          include: {
+            cow: {
+              include: {
+                breed: true,
+              },
+            },
+            farmer: true,
+          },
+          skip: skip,
+          take: take,
+        }),
+        this.prisma.market.count({
+          where: {
+            status: 'ACTIVE',
+            deletedAt: null,
+            deletedById: null,
+            createdById: id,
+          },
+        }),
+      ]);
+
+      if (!market_data) {
+        throw new BadGatewayException('Market cow data not found');
       }
-      return food_data;
+
+      return {
+        skip: skip,
+        take: take,
+        data: market_data,
+        total: total,
+      };
     } catch (error) {
       throw new BadGatewayException(error);
     }

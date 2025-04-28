@@ -26,4 +26,14 @@ export class MedicalResolver {
       searchMedicalPaginationInput,
     );
   }
+
+    @Query(() => Medical)
+    getMedicalRequestById(@Args('id', { type: () => Int }) id: number) {
+      return this.medicalService.getMedicalRequestById(id);
+    }
+  
+ 
+
+
+
 }

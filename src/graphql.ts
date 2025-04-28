@@ -480,6 +480,13 @@ export interface Food {
     updatedById?: Nullable<number>;
 }
 
+export interface FoodPagination {
+    data: Food[];
+    skip: number;
+    take: number;
+    total: number;
+}
+
 export interface Healthreport {
     black_quarter_date?: Nullable<DateTime>;
     brucellossis_date?: Nullable<DateTime>;
@@ -573,6 +580,13 @@ export interface Market {
     verified: boolean;
 }
 
+export interface MarketPagination {
+    data: Market[];
+    skip: number;
+    take: number;
+    total: number;
+}
+
 export interface Medical {
     cow?: Nullable<Cow>;
     cowid: number;
@@ -585,13 +599,13 @@ export interface Medical {
     doctorid?: Nullable<number>;
     farmer?: Nullable<User>;
     farmerid: number;
-    follow_up_date: DateTime;
-    follow_up_treatment: string;
+    follow_up_date?: Nullable<DateTime>;
+    follow_up_treatment?: Nullable<string>;
     id: number;
     reason: string;
-    remarks: string;
+    remarks?: Nullable<string>;
     status: Status;
-    treatment_provided: string;
+    treatment_provided?: Nullable<string>;
     type: RequestType;
     updatedAt: DateTime;
     updatedById?: Nullable<number>;
@@ -632,6 +646,13 @@ export interface Medicine {
     status: Status;
     updatedAt: DateTime;
     updatedById?: Nullable<number>;
+}
+
+export interface MedicinePagination {
+    data: Medicine[];
+    skip: number;
+    take: number;
+    total: number;
 }
 
 export interface MonthData {
@@ -675,11 +696,12 @@ export interface IQuery {
     getDashbordData(): DashboardData | Promise<DashboardData>;
     getFarmerByCode(code: string): User | Promise<User>;
     getMarketCow(): Market[] | Promise<Market[]>;
-    getMarketCowByUser(id: number): Market[] | Promise<Market[]>;
+    getMarketCowByUser(id: number, skip: number, take: number): MarketPagination | Promise<MarketPagination>;
     getMarketFood(): Food[] | Promise<Food[]>;
-    getMarketFoodByUser(id: number): Food[] | Promise<Food[]>;
+    getMarketFoodByUser(id: number, skip: number, take: number): FoodPagination | Promise<FoodPagination>;
     getMarketMedicine(): Medicine[] | Promise<Medicine[]>;
-    getMarketMedicineByUser(id: number): Medicine[] | Promise<Medicine[]>;
+    getMarketMedicineByUser(id: number, skip: number, take: number): MedicinePagination | Promise<MedicinePagination>;
+    getMedicalRequestById(id: number): Medical | Promise<Medical>;
     getUserById(id: number): User | Promise<User>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
     getUserCurrentLoan(id: number): Loan | Promise<Loan>;
