@@ -24,11 +24,6 @@ export class LoanService {
         },
         include: {
           farmer: true,
-          cow: {
-            include: {
-              breed: true,
-            },
-          },
         },
       });
 

@@ -14,12 +14,6 @@ export class Loan {
   @Field(() => User, { nullable: true })
   farmer?: User;
 
-  @Field(() => Cow, { nullable: true })
-  cow?: Cow;
-
-  @Field(() => Int)
-  cowid: number;
-
   @Field(() => String)
   amount: string;
 

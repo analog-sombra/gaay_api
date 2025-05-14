@@ -544,8 +544,6 @@ export interface LearnPagination {
 
 export interface Loan {
     amount: string;
-    cow?: Nullable<Cow>;
-    cowid: number;
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     emi_amount: string;

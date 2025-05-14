@@ -221,7 +221,6 @@ model cow {
   mothercow_birth   birth[]             @relation("mothercow")
   calf_birth        birth[]             @relation("calf")
   cow               medical_request[]   @relation("cow")
-  loan              loan[]
   cow_health_report cow_health_report[]
   insurance         insurance[]
 }
@@ -327,8 +326,6 @@ model loan {
   id          Int       @id @default(autoincrement())
   farmer      user      @relation(fields: [farmerid], references: [id])
   farmerid    Int
-  cow         cow       @relation(fields: [cowid], references: [id])
-  cowid       Int
   amount      String
   start_date  DateTime
   end_date    DateTime

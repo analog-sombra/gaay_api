@@ -401,8 +401,6 @@ type LearnPagination {
 
 type Loan {
   amount: String!
-  cow: Cow
-  cowid: Int!
   createdAt: DateTime!
   deletedAt: DateTime
   emi_amount: String!

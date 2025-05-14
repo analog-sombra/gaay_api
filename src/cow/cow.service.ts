@@ -38,6 +38,7 @@ export class CowService {
 
   async createCow(createCowInput: CreateCowInput) {
     try {
+      console.log('createCowInput', createCowInput);
       const cow_data = await this.prisma.cow.create({
         data: {
           farmerid: createCowInput.farmerid,
@@ -78,23 +79,45 @@ export class CowService {
           data: {
             cowid: cow_data.id,
             createdById: createCowInput.farmerid,
-            black_quarter_date:
-              createCowInput.black_quarter_date!.toISOString(),
-            brucellossis_date: createCowInput.brucellossis_date!.toISOString(),
-            food_and_mouth_date:
-              createCowInput.food_and_mouth_date!.toISOString(),
-            hemorrhagic_septicemia_date:
-              createCowInput.hemorrhagic_septicemia_date!.toISOString(),
-            last_calf_birthdate:
-              createCowInput.last_calf_birthdate!.toISOString(),
-            last_deworming_date:
-              createCowInput.last_deworming_date!.toISOString(),
-            last_sickness_date:
-              createCowInput.last_sickness_date!.toISOString(),
-            last_treatment_date:
-              createCowInput.last_treatment_date!.toISOString(),
-            last_vaccine_date: createCowInput.last_vaccine_date!.toISOString(),
-            heat_period: createCowInput.heat_period!.toISOString(),
+            ...(createCowInput.black_quarter_date && {
+              black_quarter_date:
+                createCowInput.black_quarter_date!.toISOString(),
+            }),
+            ...(createCowInput.brucellossis_date && {
+              brucellossis_date:
+                createCowInput.brucellossis_date!.toISOString(),
+            }),
+            ...(createCowInput.food_and_mouth_date && {
+              food_and_mouth_date:
+                createCowInput.food_and_mouth_date!.toISOString(),
+            }),
+            ...(createCowInput.hemorrhagic_septicemia_date && {
+              hemorrhagic_septicemia_date:
+                createCowInput.hemorrhagic_septicemia_date!.toISOString(),
+            }),
+            ...(createCowInput.last_calf_birthdate && {
+              last_calf_birthdate:
+                createCowInput.last_calf_birthdate!.toISOString(),
+            }),
+            ...(createCowInput.last_deworming_date && {
+              last_deworming_date:
+                createCowInput.last_deworming_date!.toISOString(),
+            }),
+            ...(createCowInput.last_sickness_date && {
+              last_sickness_date:
+                createCowInput.last_sickness_date!.toISOString(),
+            }),
+            ...(createCowInput.last_treatment_date && {
+              last_treatment_date:
+                createCowInput.last_treatment_date!.toISOString(),
+            }),
+            ...(createCowInput.last_vaccine_date && {
+              last_vaccine_date:
+                createCowInput.last_vaccine_date!.toISOString(),
+            }),
+            ...(createCowInput.heat_period && {
+              heat_period: createCowInput.heat_period!.toISOString(),
+            }),
           },
         });
 
@@ -103,25 +126,32 @@ export class CowService {
         }
       }
 
-      const cow_insurance = await this.prisma.insurance.create({
-        data: {
-          cowid: cow_data.id,
-          createdById: createCowInput.farmerid,
-          insurance_id: createCowInput.insurance_id,
-          insurance_name: createCowInput.insurance_name,
-          insurance_type: createCowInput.insurance_type,
-          insurance_amount: createCowInput.insurance_amount,
-          insurance_date: createCowInput.insurance_date!.toISOString(),
-          insurance_renewal_date:
-            createCowInput.insurance_renewal_date!.toISOString(),
-          premium_amount: createCowInput.premium_amount,
-          insurance_renewal_amount: createCowInput.insurance_renewal_amount,
-        },
-      });
+      if (
+        createCowInput.insurance_id != null &&
+        createCowInput.insurance_id != undefined &&
+        createCowInput.insurance_id != ''
+      ) {
+        const cow_insurance = await this.prisma.insurance.create({
+          data: {
+            cowid: cow_data.id,
+            createdById: createCowInput.farmerid,
+            insurance_id: createCowInput.insurance_id,
+            insurance_name: createCowInput.insurance_name,
+            insurance_type: createCowInput.insurance_type,
+            insurance_amount: createCowInput.insurance_amount,
+            insurance_date: createCowInput.insurance_date!.toISOString(),
+            insurance_renewal_date:
+              createCowInput.insurance_renewal_date!.toISOString(),
+            premium_amount: createCowInput.premium_amount,
+            insurance_renewal_amount: createCowInput.insurance_renewal_amount,
+          },
+        });
 
-      if (!cow_insurance) {
-        throw new BadGatewayException('Cow insurance not created');
+        if (!cow_insurance) {
+          throw new BadGatewayException('Cow insurance not created');
+        }
       }
+
       return cow_data;
     } catch (error) {
       throw new BadGatewayException(error);
@@ -170,25 +200,45 @@ export class CowService {
           data: {
             cowid: cow_data.id,
             createdById: createCowCalfInput.farmerid,
-            black_quarter_date:
-              createCowCalfInput.black_quarter_date!.toISOString(),
-            brucellossis_date:
-              createCowCalfInput.brucellossis_date!.toISOString(),
-            food_and_mouth_date:
-              createCowCalfInput.food_and_mouth_date!.toISOString(),
-            hemorrhagic_septicemia_date:
-              createCowCalfInput.hemorrhagic_septicemia_date!.toISOString(),
-            last_calf_birthdate:
-              createCowCalfInput.last_calf_birthdate!.toISOString(),
-            last_deworming_date:
-              createCowCalfInput.last_deworming_date!.toISOString(),
-            last_sickness_date:
-              createCowCalfInput.last_sickness_date!.toISOString(),
-            last_treatment_date:
-              createCowCalfInput.last_treatment_date!.toISOString(),
-            last_vaccine_date:
-              createCowCalfInput.last_vaccine_date!.toISOString(),
-            heat_period: createCowCalfInput.heat_period!.toISOString(),
+            ...(createCowCalfInput.black_quarter_date && {
+              black_quarter_date:
+                createCowCalfInput.black_quarter_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.brucellossis_date && {
+              brucellossis_date:
+                createCowCalfInput.brucellossis_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.food_and_mouth_date && {
+              food_and_mouth_date:
+                createCowCalfInput.food_and_mouth_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.hemorrhagic_septicemia_date && {
+              hemorrhagic_septicemia_date:
+                createCowCalfInput.hemorrhagic_septicemia_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.last_calf_birthdate && {
+              last_calf_birthdate:
+                createCowCalfInput.last_calf_birthdate!.toISOString(),
+            }),
+            ...(createCowCalfInput.last_deworming_date && {
+              last_deworming_date:
+                createCowCalfInput.last_deworming_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.last_sickness_date && {
+              last_sickness_date:
+                createCowCalfInput.last_sickness_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.last_treatment_date && {
+              last_treatment_date:
+                createCowCalfInput.last_treatment_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.last_vaccine_date && {
+              last_vaccine_date:
+                createCowCalfInput.last_vaccine_date!.toISOString(),
+            }),
+            ...(createCowCalfInput.heat_period && {
+              heat_period: createCowCalfInput.heat_period!.toISOString(),
+            }),
           },
         });
 
@@ -197,24 +247,31 @@ export class CowService {
         }
       }
 
-      const cow_insurance = await this.prisma.insurance.create({
-        data: {
-          cowid: cow_data.id,
-          createdById: createCowCalfInput.farmerid,
-          insurance_id: createCowCalfInput.insurance_id,
-          insurance_name: createCowCalfInput.insurance_name,
-          insurance_type: createCowCalfInput.insurance_type,
-          insurance_amount: createCowCalfInput.insurance_amount,
-          insurance_date: createCowCalfInput.insurance_date!.toISOString(),
-          insurance_renewal_date:
-            createCowCalfInput.insurance_renewal_date!.toISOString(),
-          premium_amount: createCowCalfInput.premium_amount,
-          insurance_renewal_amount: createCowCalfInput.insurance_renewal_amount,
-        },
-      });
+      if (
+        createCowCalfInput.insurance_id != null &&
+        createCowCalfInput.insurance_id != undefined &&
+        createCowCalfInput.insurance_id != ''
+      ) {
+        const cow_insurance = await this.prisma.insurance.create({
+          data: {
+            cowid: cow_data.id,
+            createdById: createCowCalfInput.farmerid,
+            insurance_id: createCowCalfInput.insurance_id,
+            insurance_name: createCowCalfInput.insurance_name,
+            insurance_type: createCowCalfInput.insurance_type,
+            insurance_amount: createCowCalfInput.insurance_amount,
+            insurance_date: createCowCalfInput.insurance_date!.toISOString(),
+            insurance_renewal_date:
+              createCowCalfInput.insurance_renewal_date!.toISOString(),
+            premium_amount: createCowCalfInput.premium_amount,
+            insurance_renewal_amount:
+              createCowCalfInput.insurance_renewal_amount,
+          },
+        });
 
-      if (!cow_insurance) {
-        throw new BadGatewayException('Cow insurance not created');
+        if (!cow_insurance) {
+          throw new BadGatewayException('Cow insurance not created');
+        }
       }
 
       const cow_calf = await this.prisma.birth.create({
@@ -278,34 +335,69 @@ export class CowService {
             sold_contact: updateCowInput.sold_contact,
           }),
         },
+        include: {
+          cow_health_report: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
+        },
       });
 
       if (!updated_cow) {
         throw new BadGatewayException('Cow not updated');
       }
 
-      if (updateCowInput.cowstatus === 'ALIVE') {
-        const cow_health_report = await this.prisma.cow_health_report.create({
+      if (
+        updateCowInput.cowstatus === 'ALIVE' &&
+        updated_cow.cow_health_report.length > 0
+      ) {
+        const cow_health_report = await this.prisma.cow_health_report.update({
+          where: {
+            id: updated_cow.cow_health_report[0].id,
+          },
           data: {
             cowid: cow_data.id,
             createdById: updateCowInput.farmerid,
-            black_quarter_date:
-              updateCowInput.black_quarter_date!.toISOString(),
-            brucellossis_date: updateCowInput.brucellossis_date!.toISOString(),
-            food_and_mouth_date:
-              updateCowInput.food_and_mouth_date!.toISOString(),
-            hemorrhagic_septicemia_date:
-              updateCowInput.hemorrhagic_septicemia_date!.toISOString(),
-            last_calf_birthdate:
-              updateCowInput.last_calf_birthdate!.toISOString(),
-            last_deworming_date:
-              updateCowInput.last_deworming_date!.toISOString(),
-            last_sickness_date:
-              updateCowInput.last_sickness_date!.toISOString(),
-            last_treatment_date:
-              updateCowInput.last_treatment_date!.toISOString(),
-            last_vaccine_date: updateCowInput.last_vaccine_date!.toISOString(),
-            heat_period: updateCowInput.heat_period!.toISOString(),
+            ...(updateCowInput.black_quarter_date && {
+              black_quarter_date:
+                updateCowInput.black_quarter_date!.toISOString(),
+            }),
+            ...(updateCowInput.brucellossis_date && {
+              brucellossis_date:
+                updateCowInput.brucellossis_date!.toISOString(),
+            }),
+            ...(updateCowInput.food_and_mouth_date && {
+              food_and_mouth_date:
+                updateCowInput.food_and_mouth_date!.toISOString(),
+            }),
+            ...(updateCowInput.hemorrhagic_septicemia_date && {
+              hemorrhagic_septicemia_date:
+                updateCowInput.hemorrhagic_septicemia_date!.toISOString(),
+            }),
+            ...(updateCowInput.last_calf_birthdate && {
+              last_calf_birthdate:
+                updateCowInput.last_calf_birthdate!.toISOString(),
+            }),
+            ...(updateCowInput.last_deworming_date && {
+              last_deworming_date:
+                updateCowInput.last_deworming_date!.toISOString(),
+            }),
+            ...(updateCowInput.last_sickness_date && {
+              last_sickness_date:
+                updateCowInput.last_sickness_date!.toISOString(),
+            }),
+            ...(updateCowInput.last_treatment_date && {
+              last_treatment_date:
+                updateCowInput.last_treatment_date!.toISOString(),
+            }),
+            ...(updateCowInput.last_vaccine_date && {
+              last_vaccine_date:
+                updateCowInput.last_vaccine_date!.toISOString(),
+            }),
+            ...(updateCowInput.heat_period && {
+              heat_period: updateCowInput.heat_period!.toISOString(),
+            }),
           },
         });
 
