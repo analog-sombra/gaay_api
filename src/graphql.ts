@@ -85,6 +85,7 @@ export interface CreateCowCalfInput {
     cowname: string;
     cowstatus: CowStatus;
     cowtagno: string;
+    createdById: number;
     daily_milk_produce?: Nullable<string>;
     death_date?: Nullable<DateTime>;
     farmerid: number;
@@ -134,6 +135,7 @@ export interface CreateCowInput {
     cowname: string;
     cowstatus: CowStatus;
     cowtagno: string;
+    createdById: number;
     daily_milk_produce?: Nullable<string>;
     death_date?: Nullable<DateTime>;
     farmerid: number;
@@ -328,6 +330,7 @@ export interface UpdateCowInput {
     cowname: string;
     cowstatus: CowStatus;
     cowtagno: string;
+    createdById?: Nullable<number>;
     daily_milk_produce?: Nullable<string>;
     death_date?: Nullable<DateTime>;
     farmerid: number;
@@ -365,11 +368,23 @@ export interface UpdateCowInput {
     sold_price?: Nullable<string>;
     sold_to?: Nullable<string>;
     status: Status;
+    updatedById: number;
     weight: string;
 }
 
 export interface Birth {
-    exampleField: number;
+    calfid: number;
+    createdAt: DateTime;
+    createdById: number;
+    deletedAt?: Nullable<DateTime>;
+    deletedById?: Nullable<number>;
+    fathercowid?: Nullable<string>;
+    id: number;
+    mothercowid: number;
+    remarks: string;
+    status: Status;
+    updatedAt: DateTime;
+    updatedById: number;
 }
 
 export interface Breed {
@@ -386,6 +401,7 @@ export interface Cow {
     birthdate: DateTime;
     breed: Breed;
     breedid: number;
+    calf_birth: Birth[];
     cow_health_report: Healthreport[];
     cowname: string;
     cowstatus: CowStatus;
@@ -401,6 +417,7 @@ export interface Cow {
     farmerid: number;
     id: number;
     insurance: Insurance[];
+    mothercow_birth: Birth[];
     noofcalves?: Nullable<number>;
     photo1?: Nullable<string>;
     photo2?: Nullable<string>;

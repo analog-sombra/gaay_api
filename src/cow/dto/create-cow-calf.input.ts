@@ -22,6 +22,10 @@ export class CreateCowCalfInput {
   @Field(() => Int)
   farmerid: number;
 
+  @IsNumber()
+  @Field(() => Int)
+  createdById: number;
+
   @IsString()
   @Field(() => String)
   cowtagno: string;

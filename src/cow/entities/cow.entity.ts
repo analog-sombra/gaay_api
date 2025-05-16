@@ -6,6 +6,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { CowStatus, SEX, Status } from '@prisma/client';
+import { Birth } from 'src/birth/entities/birth.entity';
 import { Breed } from 'src/breed/entities/breed.entity';
 import { Healthreport } from 'src/healthreport/entities/healthreport.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -189,4 +190,10 @@ export class Cow {
 
   @Field(() => User)
   farmer: User;
+
+  @Field(() => [Birth])
+  mothercow_birth: Birth[];
+
+  @Field(() => [Birth])
+  calf_birth: Birth[];
 }

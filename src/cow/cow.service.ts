@@ -19,6 +19,8 @@ export class CowService {
           breed: true,
           farmer: true,
           insurance: true,
+          mothercow_birth: true,
+          calf_birth: true,
           cow_health_report: {
             orderBy: {
               createdAt: 'desc',
@@ -30,6 +32,7 @@ export class CowService {
       if (!cow_data) {
         throw new BadGatewayException('Cow not found');
       }
+      console.log(cow_data);
       return cow_data;
     } catch (error) {
       throw new BadGatewayException(error);
@@ -38,7 +41,6 @@ export class CowService {
 
   async createCow(createCowInput: CreateCowInput) {
     try {
-      console.log('createCowInput', createCowInput);
       const cow_data = await this.prisma.cow.create({
         data: {
           farmerid: createCowInput.farmerid,
@@ -55,7 +57,7 @@ export class CowService {
           birthdate: createCowInput.birthdate.toISOString(),
           noofcalves: createCowInput.noofcalves,
           weight: createCowInput.weight,
-          createdById: createCowInput.farmerid,
+          createdById: createCowInput.createdById,
           daily_milk_produce: createCowInput.daily_milk_produce,
           cowstatus: createCowInput.cowstatus,
           // death_date
@@ -78,7 +80,7 @@ export class CowService {
         const cow_health_report = await this.prisma.cow_health_report.create({
           data: {
             cowid: cow_data.id,
-            createdById: createCowInput.farmerid,
+            createdById: createCowInput.createdById,
             ...(createCowInput.black_quarter_date && {
               black_quarter_date:
                 createCowInput.black_quarter_date!.toISOString(),
@@ -134,7 +136,7 @@ export class CowService {
         const cow_insurance = await this.prisma.insurance.create({
           data: {
             cowid: cow_data.id,
-            createdById: createCowInput.farmerid,
+            createdById: createCowInput.createdById,
             insurance_id: createCowInput.insurance_id,
             insurance_name: createCowInput.insurance_name,
             insurance_type: createCowInput.insurance_type,
@@ -175,7 +177,7 @@ export class CowService {
           birthdate: createCowCalfInput.birthdate.toISOString(),
           noofcalves: createCowCalfInput.noofcalves,
           weight: createCowCalfInput.weight,
-          createdById: createCowCalfInput.farmerid,
+          createdById: createCowCalfInput.createdById,
           daily_milk_produce: createCowCalfInput.daily_milk_produce,
           cowstatus: createCowCalfInput.cowstatus,
           // death_date
@@ -199,7 +201,7 @@ export class CowService {
         const cow_health_report = await this.prisma.cow_health_report.create({
           data: {
             cowid: cow_data.id,
-            createdById: createCowCalfInput.farmerid,
+            createdById: createCowCalfInput.createdById,
             ...(createCowCalfInput.black_quarter_date && {
               black_quarter_date:
                 createCowCalfInput.black_quarter_date!.toISOString(),
@@ -255,7 +257,7 @@ export class CowService {
         const cow_insurance = await this.prisma.insurance.create({
           data: {
             cowid: cow_data.id,
-            createdById: createCowCalfInput.farmerid,
+            createdById: createCowCalfInput.createdById,
             insurance_id: createCowCalfInput.insurance_id,
             insurance_name: createCowCalfInput.insurance_name,
             insurance_type: createCowCalfInput.insurance_type,
@@ -276,7 +278,7 @@ export class CowService {
 
       const cow_calf = await this.prisma.birth.create({
         data: {
-          createdById: createCowCalfInput.farmerid,
+          createdById: createCowCalfInput.createdById,
           mothercowid: createCowCalfInput.cowid,
           calfid: cow_data.id,
           fathercowid: createCowCalfInput.fathercowid,
@@ -324,6 +326,7 @@ export class CowService {
           noofcalves: updateCowInput.noofcalves,
           weight: updateCowInput.weight,
           daily_milk_produce: updateCowInput.daily_milk_produce,
+          updatedById: updateCowInput.updatedById,
           cowstatus: updateCowInput.cowstatus,
           ...(updateCowInput.cowstatus === 'DEAD' && {
             death_date: updateCowInput.death_date!.toISOString(),
@@ -358,7 +361,7 @@ export class CowService {
           },
           data: {
             cowid: cow_data.id,
-            createdById: updateCowInput.farmerid,
+            updatedById: updateCowInput.updatedById,
             ...(updateCowInput.black_quarter_date && {
               black_quarter_date:
                 updateCowInput.black_quarter_date!.toISOString(),

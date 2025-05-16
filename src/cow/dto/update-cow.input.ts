@@ -20,6 +20,10 @@ export class UpdateCowInput extends PartialType(CreateCowInput) {
   @Field(() => Int)
   farmerid: number;
 
+  @IsNumber()
+  @Field(() => Int)
+  updatedById: number;
+
   @IsOptional()
   @IsString()
   @Field(() => String)

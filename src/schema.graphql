@@ -3,8 +3,18 @@
 # ------------------------------------------------------
 
 type Birth {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  calfid: Int!
+  createdAt: DateTime!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedById: Int
+  fathercowid: String
+  id: Int!
+  mothercowid: Int!
+  remarks: String!
+  status: Status!
+  updatedAt: DateTime!
+  updatedById: Int!
 }
 
 type Breed {
@@ -28,6 +38,7 @@ type Cow {
   birthdate: DateTime!
   breed: Breed!
   breedid: Int!
+  calf_birth: [Birth!]!
   cow_health_report: [Healthreport!]!
   cowname: String!
   cowstatus: CowStatus!
@@ -43,6 +54,7 @@ type Cow {
   farmerid: Int!
   id: Int!
   insurance: [Insurance!]!
+  mothercow_birth: [Birth!]!
   noofcalves: Int
   photo1: String
   photo2: String
@@ -98,6 +110,7 @@ input CreateCowCalfInput {
   cowname: String!
   cowstatus: CowStatus!
   cowtagno: String!
+  createdById: Int!
   daily_milk_produce: String
   death_date: DateTime
   farmerid: Int!
@@ -147,6 +160,7 @@ input CreateCowInput {
   cowname: String!
   cowstatus: CowStatus!
   cowtagno: String!
+  createdById: Int!
   daily_milk_produce: String
   death_date: DateTime
   farmerid: Int!
@@ -677,6 +691,7 @@ input UpdateCowInput {
   cowname: String!
   cowstatus: CowStatus!
   cowtagno: String!
+  createdById: Int
   daily_milk_produce: String
   death_date: DateTime
   farmerid: Int!
@@ -714,6 +729,7 @@ input UpdateCowInput {
   sold_price: String
   sold_to: String
   status: Status!
+  updatedById: Int!
   weight: String!
 }
 
