@@ -8,6 +8,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum BeneficiaryType {
+    IDDP = "IDDP",
+    SSDU = "SSDU"
+}
+
 export enum Category {
     GENERAL = "GENERAL",
     OBC = "OBC",
@@ -258,6 +263,15 @@ export interface CreateMedicineInput {
     size: string;
     size_unit: SizeUnit;
     status: Status;
+}
+
+export interface CreateUserInput {
+    beneficiary_code: string;
+    beneficiary_type: BeneficiaryType;
+    contact: string;
+    cow_count: number;
+    name: string;
+    role: Role;
 }
 
 export interface CreateVaccinationInput {
@@ -686,6 +700,7 @@ export interface IMutation {
     createMarketFood(createFoodInput: CreateFoodInput): Food | Promise<Food>;
     createMarketMedicine(createMedicineInput: CreateMedicineInput): Medicine | Promise<Medicine>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
+    createUser(createUserInput: CreateUserInput): User | Promise<User>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     editUserPhoto(id: number, photo: string): User | Promise<User>;
     removeBirth(id: number): Birth | Promise<Birth>;
@@ -733,7 +748,7 @@ export interface User {
     address?: Nullable<string>;
     alias?: Nullable<string>;
     beneficiary_code?: Nullable<string>;
-    beneficiary_type?: Nullable<string>;
+    beneficiary_type?: Nullable<BeneficiaryType>;
     category: Category;
     contact: string;
     contact_two?: Nullable<string>;

@@ -1,5 +1,6 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { BeneficiaryType, Role } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class CreateUserInput {
@@ -22,4 +23,14 @@ export class CreateUserInput {
   @IsNotEmpty()
   @Field(() => Int)
   cow_count: number;
+
+  @IsEnum(Role)
+  @IsNotEmpty()
+  @Field(() => Role)
+  role: Role;
+
+  @IsEnum(BeneficiaryType)
+  @IsNotEmpty()
+  @Field(() => BeneficiaryType)
+  beneficiary_type: BeneficiaryType;
 }

@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Category, Role, Status } from '@prisma/client';
+import { BeneficiaryType, Category, Role, Status } from '@prisma/client';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -10,6 +10,9 @@ registerEnumType(Status, {
 });
 registerEnumType(Category, {
   name: 'Category',
+});
+registerEnumType(BeneficiaryType, {
+  name: 'BeneficiaryType',
 });
 
 @ObjectType()
@@ -56,8 +59,8 @@ export class User {
   @Field(() => String, { nullable: true })
   occupation?: string;
 
-  @Field(() => String, { nullable: true })
-  beneficiary_type?: string;
+  @Field(() => BeneficiaryType, { nullable: true })
+  beneficiary_type?: BeneficiaryType;
 
   @Field(() => Int, { nullable: true })
   cow_count?: number;

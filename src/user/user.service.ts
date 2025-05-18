@@ -1,6 +1,7 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { SearchUserPaginationInput } from './dto/search-user-pagination';
+import { CreateUserInput } from './dto/create-user.input';
 
 @Injectable()
 export class UserService {
@@ -140,6 +141,38 @@ export class UserService {
         skip,
         take,
       };
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async createUser(createUserInput: CreateUserInput) {
+    try {
+      // if beneficiary_code is not unique, throw error
+      const is_user = await this.prisma.user.findUnique({
+        where: {
+          beneficiary_code: createUserInput.beneficiary_code,
+        },
+      });
+      if (is_user) {
+        throw new BadGatewayException('Beneficiary code already exists');
+      }
+
+      const user_data = await this.prisma.user.create({
+        data: {
+          ...createUserInput,
+          address: 'Silvassa',
+          village: 'Silvassa',
+          district: 'Dadra and Nagar Haveli',
+          status: 'ACTIVE',
+          category: 'SCST',
+          occupation: 'Farmer',
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
     } catch (error) {
       throw new BadGatewayException(error);
     }

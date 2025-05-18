@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+enum BeneficiaryType {
+  IDDP
+  SSDU
+}
+
 type Birth {
   calfid: Int!
   createdAt: DateTime!
@@ -285,6 +290,15 @@ input CreateMedicineInput {
   status: Status!
 }
 
+input CreateUserInput {
+  beneficiary_code: String!
+  beneficiary_type: BeneficiaryType!
+  contact: String!
+  cow_count: Int!
+  name: String!
+  role: Role!
+}
+
 input CreateVaccinationInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -545,6 +559,7 @@ type Mutation {
   createMarketFood(createFoodInput: CreateFoodInput!): Food!
   createMarketMedicine(createMedicineInput: CreateMedicineInput!): Medicine!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
+  createUser(createUserInput: CreateUserInput!): User!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   editUserPhoto(id: Int!, photo: String!): User!
   removeBirth(id: Int!): Birth!
@@ -737,7 +752,7 @@ type User {
   address: String
   alias: String
   beneficiary_code: String
-  beneficiary_type: String
+  beneficiary_type: BeneficiaryType
   category: Category!
   contact: String!
   contact_two: String

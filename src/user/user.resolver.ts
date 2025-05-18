@@ -41,4 +41,11 @@ export class UserResolver {
   ) {
     return this.userService.searchUsers(searchUserPaginationInput);
   }
+
+  @Mutation(() => User)
+  createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ) {
+    return this.userService.createUser(createUserInput);
+  }
 }
