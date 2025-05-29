@@ -290,13 +290,28 @@ input CreateMedicineInput {
   status: Status!
 }
 
+input CreateStaffInput {
+  address: String!
+  contact: String!
+  contact_two: String
+  district: String!
+  name: String!
+  role: Role!
+  village: String!
+}
+
 input CreateUserInput {
+  address: String!
   beneficiary_code: String!
   beneficiary_type: BeneficiaryType!
   contact: String!
+  contact_two: String
   cow_count: Int!
+  district: String!
   name: String!
+  occupation: String
   role: Role!
+  village: String!
 }
 
 input CreateVaccinationInput {
@@ -559,6 +574,7 @@ type Mutation {
   createMarketFood(createFoodInput: CreateFoodInput!): Food!
   createMarketMedicine(createMedicineInput: CreateMedicineInput!): Medicine!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
+  createStaff(createStaffInput: CreateStaffInput!): User!
   createUser(createUserInput: CreateUserInput!): User!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   editUserPhoto(id: Int!, photo: String!): User!

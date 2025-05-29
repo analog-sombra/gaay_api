@@ -76,6 +76,22 @@ export class CowService {
       if (!cow_data) {
         throw new BadGatewayException('Cow not created');
       }
+
+      const user_update = await this.prisma.user.update({
+        where: {
+          id: createCowInput.farmerid,
+        },
+        data: {
+          cow_count: {
+            increment: 1,
+          },
+        },
+      });
+
+      if (!user_update) {
+        throw new BadGatewayException('User not updated');
+      }
+
       if (createCowInput.cowstatus === 'ALIVE') {
         const cow_health_report = await this.prisma.cow_health_report.create({
           data: {
@@ -195,6 +211,21 @@ export class CowService {
       });
       if (!cow_data) {
         throw new BadGatewayException('Cow not created');
+      }
+
+      const user_update = await this.prisma.user.update({
+        where: {
+          id: createCowCalfInput.farmerid,
+        },
+        data: {
+          cow_count: {
+            increment: 1,
+          },
+        },
+      });
+
+      if (!user_update) {
+        throw new BadGatewayException('User not updated');
       }
 
       if (createCowCalfInput.cowstatus === 'ALIVE') {

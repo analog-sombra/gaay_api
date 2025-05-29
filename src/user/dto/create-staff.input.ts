@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class CreateUserInput {
+export class CreateStaffInput {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
@@ -40,28 +40,8 @@ export class CreateUserInput {
   @Field(() => String)
   district: string;
 
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  occupation?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  beneficiary_code: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Field(() => Int)
-  cow_count: number;
-
   @IsEnum(Role)
   @IsNotEmpty()
   @Field(() => Role)
   role: Role;
-
-  @IsEnum(BeneficiaryType)
-  @IsNotEmpty()
-  @Field(() => BeneficiaryType)
-  beneficiary_type: BeneficiaryType;
 }

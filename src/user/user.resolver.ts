@@ -6,6 +6,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { Cow } from 'src/cow/entities/cow.entity';
 import { UserPagination } from './entities/user.pagination.entity';
 import { SearchUserPaginationInput } from './dto/search-user-pagination';
+import { CreateStaffInput } from './dto/create-staff.input';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -47,5 +48,12 @@ export class UserResolver {
     @Args('createUserInput') createUserInput: CreateUserInput,
   ) {
     return this.userService.createUser(createUserInput);
+  }
+
+  @Mutation(() => User)
+  createStaff(
+    @Args('createStaffInput') createStaffInput: CreateStaffInput,
+  ) {
+    return this.userService.createStaff(createStaffInput);
   }
 }

@@ -265,13 +265,28 @@ export interface CreateMedicineInput {
     status: Status;
 }
 
+export interface CreateStaffInput {
+    address: string;
+    contact: string;
+    contact_two?: Nullable<string>;
+    district: string;
+    name: string;
+    role: Role;
+    village: string;
+}
+
 export interface CreateUserInput {
+    address: string;
     beneficiary_code: string;
     beneficiary_type: BeneficiaryType;
     contact: string;
+    contact_two?: Nullable<string>;
     cow_count: number;
+    district: string;
     name: string;
+    occupation?: Nullable<string>;
     role: Role;
+    village: string;
 }
 
 export interface CreateVaccinationInput {
@@ -700,6 +715,7 @@ export interface IMutation {
     createMarketFood(createFoodInput: CreateFoodInput): Food | Promise<Food>;
     createMarketMedicine(createMedicineInput: CreateMedicineInput): Medicine | Promise<Medicine>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
+    createStaff(createStaffInput: CreateStaffInput): User | Promise<User>;
     createUser(createUserInput: CreateUserInput): User | Promise<User>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     editUserPhoto(id: number, photo: string): User | Promise<User>;

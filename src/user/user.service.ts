@@ -2,6 +2,7 @@ import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { SearchUserPaginationInput } from './dto/search-user-pagination';
 import { CreateUserInput } from './dto/create-user.input';
+import { CreateStaffInput } from './dto/create-staff.input';
 
 @Injectable()
 export class UserService {
@@ -161,12 +162,27 @@ export class UserService {
       const user_data = await this.prisma.user.create({
         data: {
           ...createUserInput,
-          address: 'Silvassa',
-          village: 'Silvassa',
-          district: 'Dadra and Nagar Haveli',
           status: 'ACTIVE',
           category: 'SCST',
-          occupation: 'Farmer',
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+  async createStaff(createStaffInput: CreateStaffInput) {
+    try {
+      const user_data = await this.prisma.user.create({
+        data: {
+          ...createStaffInput,
+          status: 'ACTIVE',
+          category: 'GENERAL',
+          cow_count: 0,
+          beneficiary_type: 'SSDU',
         },
       });
       if (!user_data) {
