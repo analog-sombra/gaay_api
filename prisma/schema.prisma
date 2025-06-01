@@ -295,30 +295,42 @@ model birth {
   deletedById Int?
 }
 
+enum MedicalStatus {
+  CREATED
+  SCHEDULED
+  POSTPONED
+  RESOLVED
+  CANCELLED
+  REJECTED
+}
+
 model medical_request {
-  id                  Int         @id @default(autoincrement())
-  farmer              user        @relation("farmer", fields: [farmerid], references: [id])
+  id                  Int           @id @default(autoincrement())
+  farmer              user          @relation("farmer", fields: [farmerid], references: [id])
   farmerid            Int
-  cow                 cow         @relation("cow", fields: [cowid], references: [id])
+  cow                 cow           @relation("cow", fields: [cowid], references: [id])
   cowid               Int
-  doctor              user?       @relation("doctor", fields: [doctorid], references: [id])
+  doctor              user?         @relation("doctor", fields: [doctorid], references: [id])
   doctorid            Int?
   date                DateTime
+  scheduled_date      DateTime?
+  complaint_no        String?
   reason              String
   treatment_provided  String?
   follow_up_date      DateTime?
   follow_up_treatment String?
-  type                RequestType @default(MEDICAL)
+  type                RequestType   @default(MEDICAL)
   remarks             String?
-  status              Status      @default(ACTIVE)
-  createdAt           DateTime    @default(now())
-  createdBy           user        @relation("medical_createdby", fields: [createdById], references: [id])
+  medicalStatus       MedicalStatus @default(CREATED)
+  status              Status        @default(ACTIVE)
+  createdAt           DateTime      @default(now())
+  createdBy           user          @relation("medical_createdby", fields: [createdById], references: [id])
   createdById         Int
-  updatedAt           DateTime    @updatedAt
-  updatedBy           user?       @relation("medical_updatedby", fields: [updatedById], references: [id])
+  updatedAt           DateTime      @updatedAt
+  updatedBy           user?         @relation("medical_updatedby", fields: [updatedById], references: [id])
   updatedById         Int?
   deletedAt           DateTime?
-  deletedBy           user?       @relation("medical_deletedby", fields: [deletedById], references: [id])
+  deletedBy           user?         @relation("medical_deletedby", fields: [deletedById], references: [id])
   deletedById         Int?
 }
 

@@ -1,10 +1,14 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
-import { RequestType, Status } from '@prisma/client';
+import { MedicalStatus, RequestType, Status } from '@prisma/client';
 import { Cow } from 'src/cow/entities/cow.entity';
 import { User } from 'src/user/entities/user.entity';
 
 registerEnumType(RequestType, {
   name: 'RequestType',
+});
+
+registerEnumType(MedicalStatus, {
+  name: 'MedicalStatus',
 });
 
 @ObjectType()
@@ -33,8 +37,14 @@ export class Medical {
   @Field(() => Date)
   date: Date;
 
+  @Field(() => Date, { nullable: true })
+  scheduled_date: Date;
+
   @Field(() => String)
   reason: string;
+
+  @Field(() => String)
+  complaint_no: string;
 
   @Field(() => String, { nullable: true })
   treatment_provided: string;
@@ -47,6 +57,9 @@ export class Medical {
 
   @Field(() => RequestType)
   type: RequestType;
+
+  @Field(() => MedicalStatus)
+  medicalStatus: MedicalStatus;
 
   @Field(() => String, { nullable: true })
   remarks: string;

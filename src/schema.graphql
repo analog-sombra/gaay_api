@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddDoctorInput {
+  doctorid: Int!
+  id: Int!
+  scheduled_date: DateTime!
+}
+
 enum BeneficiaryType {
   IDDP
   SSDU
@@ -36,6 +42,14 @@ enum Category {
   OBC
   OTHERS
   SCST
+}
+
+input CompleteMedicalInput {
+  follow_up_date: DateTime!
+  follow_up_treatment: String!
+  id: Int!
+  treatment_provided: String!
+  user_id: Int!
 }
 
 type Cow {
@@ -491,6 +505,7 @@ type MarketPagination {
 }
 
 type Medical {
+  complaint_no: String!
   cow: Cow
   cowid: Int!
   createdAt: DateTime!
@@ -505,8 +520,10 @@ type Medical {
   follow_up_date: DateTime
   follow_up_treatment: String
   id: Int!
+  medicalStatus: MedicalStatus!
   reason: String!
   remarks: String
+  scheduled_date: DateTime
   status: Status!
   treatment_provided: String
   type: RequestType!
@@ -519,6 +536,15 @@ type MedicalPagination {
   skip: Int!
   take: Int!
   total: Int!
+}
+
+enum MedicalStatus {
+  CANCELLED
+  CREATED
+  POSTPONED
+  REJECTED
+  RESOLVED
+  SCHEDULED
 }
 
 type Medicine {
@@ -564,7 +590,9 @@ type MonthData {
 }
 
 type Mutation {
+  addDoctor(addDoctorInput: AddDoctorInput!): Medical!
   addMarketCow(createMarketInput: CreateMarketInput!): Market!
+  completeMedicalRequest(completeMedicalInput: CompleteMedicalInput!): Medical!
   createBirth(createBirthInput: CreateBirthInput!): Birth!
   createBreed(createBreedInput: CreateBreedInput!): Breed!
   createCow(createCowInput: CreateCowInput!): Cow!
@@ -584,6 +612,7 @@ type Mutation {
   searchLearn(searchLearnPaginationInput: SearchLearnPaginationInput!): LearnPagination!
   searchMedicalRequest(searchMedicalPaginationInput: SearchMedicalPaginationInput!): MedicalPagination!
   searchUsers(searchUserPaginationInput: SearchUserPaginationInput!): UserPagination!
+  searchUsersByRole(role: [String!]!): [User!]!
   sendOtp(code: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
   updateBirth(updateBirthInput: UpdateBirthInput!): Birth!
@@ -604,6 +633,7 @@ type Query {
   getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
   getDashbordData: DashboardData!
+  getDoctorMedicalRequest(id: Int!, type: String!): [Medical!]!
   getFarmerByCode(code: String!): User!
   getMarketCow: [Market!]!
   getMarketCowByUser(id: Int!, skip: Int!, take: Int!): MarketPagination!

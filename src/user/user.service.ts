@@ -3,6 +3,7 @@ import { PrismaService } from 'prisma/prisma.service';
 import { SearchUserPaginationInput } from './dto/search-user-pagination';
 import { CreateUserInput } from './dto/create-user.input';
 import { CreateStaffInput } from './dto/create-staff.input';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -142,6 +143,26 @@ export class UserService {
         skip,
         take,
       };
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async searchUsersByRole(roles: string[]) {
+    try {
+      const user_data = await this.prisma.user.findMany({
+        where: {
+          role: {
+            in: roles as Role[],
+          },
+          status: 'ACTIVE',
+          deletedAt: null,
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('Users not found');
+      }
+      return user_data;
     } catch (error) {
       throw new BadGatewayException(error);
     }

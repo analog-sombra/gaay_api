@@ -32,6 +32,15 @@ export enum Learn {
     MEDICINE = "MEDICINE"
 }
 
+export enum MedicalStatus {
+    CANCELLED = "CANCELLED",
+    CREATED = "CREATED",
+    POSTPONED = "POSTPONED",
+    REJECTED = "REJECTED",
+    RESOLVED = "RESOLVED",
+    SCHEDULED = "SCHEDULED"
+}
+
 export enum RequestType {
     FOLLOWUP = "FOLLOWUP",
     MEDICAL = "MEDICAL",
@@ -70,6 +79,20 @@ export enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
     NONE = "NONE"
+}
+
+export interface AddDoctorInput {
+    doctorid: number;
+    id: number;
+    scheduled_date: DateTime;
+}
+
+export interface CompleteMedicalInput {
+    follow_up_date: DateTime;
+    follow_up_treatment: string;
+    id: number;
+    treatment_provided: string;
+    user_id: number;
 }
 
 export interface CreateBirthInput {
@@ -632,6 +655,7 @@ export interface MarketPagination {
 }
 
 export interface Medical {
+    complaint_no: string;
     cow?: Nullable<Cow>;
     cowid: number;
     createdAt: DateTime;
@@ -646,8 +670,10 @@ export interface Medical {
     follow_up_date?: Nullable<DateTime>;
     follow_up_treatment?: Nullable<string>;
     id: number;
+    medicalStatus: MedicalStatus;
     reason: string;
     remarks?: Nullable<string>;
+    scheduled_date?: Nullable<DateTime>;
     status: Status;
     treatment_provided?: Nullable<string>;
     type: RequestType;
@@ -705,7 +731,9 @@ export interface MonthData {
 }
 
 export interface IMutation {
+    addDoctor(addDoctorInput: AddDoctorInput): Medical | Promise<Medical>;
     addMarketCow(createMarketInput: CreateMarketInput): Market | Promise<Market>;
+    completeMedicalRequest(completeMedicalInput: CompleteMedicalInput): Medical | Promise<Medical>;
     createBirth(createBirthInput: CreateBirthInput): Birth | Promise<Birth>;
     createBreed(createBreedInput: CreateBreedInput): Breed | Promise<Breed>;
     createCow(createCowInput: CreateCowInput): Cow | Promise<Cow>;
@@ -725,6 +753,7 @@ export interface IMutation {
     searchLearn(searchLearnPaginationInput: SearchLearnPaginationInput): LearnPagination | Promise<LearnPagination>;
     searchMedicalRequest(searchMedicalPaginationInput: SearchMedicalPaginationInput): MedicalPagination | Promise<MedicalPagination>;
     searchUsers(searchUserPaginationInput: SearchUserPaginationInput): UserPagination | Promise<UserPagination>;
+    searchUsersByRole(role: string[]): User[] | Promise<User[]>;
     sendOtp(code: string): User | Promise<User>;
     signup(signUpUserInput: SignUpUserInput): User | Promise<User>;
     updateBirth(updateBirthInput: UpdateBirthInput): Birth | Promise<Birth>;
@@ -740,6 +769,7 @@ export interface IQuery {
     getAllLearn(): LearnData[] | Promise<LearnData[]>;
     getCowById(id: number): Cow | Promise<Cow>;
     getDashbordData(): DashboardData | Promise<DashboardData>;
+    getDoctorMedicalRequest(id: number, type: string): Medical[] | Promise<Medical[]>;
     getFarmerByCode(code: string): User | Promise<User>;
     getMarketCow(): Market[] | Promise<Market[]>;
     getMarketCowByUser(id: number, skip: number, take: number): MarketPagination | Promise<MarketPagination>;

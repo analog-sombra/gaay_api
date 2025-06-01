@@ -43,6 +43,13 @@ export class UserResolver {
     return this.userService.searchUsers(searchUserPaginationInput);
   }
 
+  @Mutation(() => [User])
+  searchUsersByRole(
+   @Args('role', { type: () => [String] }) role: string[],
+  ) {
+    return this.userService.searchUsersByRole(role);
+  }
+
   @Mutation(() => User)
   createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
