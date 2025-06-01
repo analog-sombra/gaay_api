@@ -63,4 +63,10 @@ export class UserResolver {
   ) {
     return this.userService.createStaff(createStaffInput);
   }
+
+  
+  @Query(() => User)
+  latestFarmer() {
+    return this.userService.getLatestFarmer();
+  }
 }

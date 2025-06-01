@@ -32,7 +32,28 @@ export class CowService {
       if (!cow_data) {
         throw new BadGatewayException('Cow not found');
       }
-      console.log(cow_data);
+      return cow_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async latestCow() {
+    try {
+      const cow_data = await this.prisma.cow.findFirst({
+        where: {
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          farmer: true,
+        },
+      });
+      if (!cow_data) {
+        throw new BadGatewayException('Cow not found');
+      }
       return cow_data;
     } catch (error) {
       throw new BadGatewayException(error);

@@ -48,8 +48,14 @@ export class MedicalResolver {
   }
 
   @Mutation(() => Medical)
-  completeMedicalRequest(@Args('completeMedicalInput') completeMedicalInput: CompleteMedicalInput) {
+  completeMedicalRequest(
+    @Args('completeMedicalInput') completeMedicalInput: CompleteMedicalInput,
+  ) {
     return this.medicalService.completeMedicalRequest(completeMedicalInput);
   }
 
+  @Query(() => Medical)
+  latestMedicalRequest() {
+    return this.medicalService.latestMedicalRequest();
+  }
 }

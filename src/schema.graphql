@@ -645,6 +645,9 @@ type Query {
   getUserById(id: Int!): User!
   getUserCows(id: Int!): [Cow!]!
   getUserCurrentLoan(id: Int!): Loan!
+  latestCow: Cow!
+  latestFarmer: User!
+  latestMedicalRequest: Medical!
   login(loginUserInput: LoginUserInput!): User!
   signIn(signInUserInput: SignInUserInput!): User!
   treatmentGraph(year: String!): TreatmentData!

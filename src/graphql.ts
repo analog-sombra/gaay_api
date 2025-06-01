@@ -781,6 +781,9 @@ export interface IQuery {
     getUserById(id: number): User | Promise<User>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
     getUserCurrentLoan(id: number): Loan | Promise<Loan>;
+    latestCow(): Cow | Promise<Cow>;
+    latestFarmer(): User | Promise<User>;
+    latestMedicalRequest(): Medical | Promise<Medical>;
     login(loginUserInput: LoginUserInput): User | Promise<User>;
     signIn(signInUserInput: SignInUserInput): User | Promise<User>;
     treatmentGraph(year: string): TreatmentData | Promise<TreatmentData>;

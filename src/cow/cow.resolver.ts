@@ -35,4 +35,9 @@ export class CowResolver {
   searchCows(@Args('searchCowPaginationInput') searchCowPaginationInput:  SearchCowPaginationInput) {
     return this.cowService.searchCows(searchCowPaginationInput);
   }
+
+  @Query(() => Cow)
+  latestCow() {
+    return this.cowService.latestCow();
+  }
 }

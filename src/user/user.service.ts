@@ -55,6 +55,27 @@ export class UserService {
       throw new BadGatewayException(error);
     }
   }
+
+  async getLatestFarmer() {
+    try {
+      const user_data = await this.prisma.user.findFirst({
+        where: {
+          role: 'FARMER',
+          status: 'ACTIVE',
+          deletedAt: null,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
   async getFarmerByCode(code: string) {
     try {
       const user_data = await this.prisma.user.findFirst({

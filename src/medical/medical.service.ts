@@ -173,7 +173,6 @@ export class MedicalService {
 
   async getDoctorMedicalRequest(id: number, type: string) {
     try {
-      console.log('Doctor ID:', id, 'Type:', type);
       if (type == 'TODAY') {
         // show today's medical requests
         const medical_data = await this.prisma.medical_request.findMany({
@@ -191,7 +190,6 @@ export class MedicalService {
             farmer: true,
           },
         });
-        console.log('Medical Data:', medical_data);
 
         if (!medical_data) {
           throw new BadGatewayException('Medical request not found');
@@ -272,6 +270,29 @@ export class MedicalService {
         },
       });
 
+      if (!medical_data) {
+        throw new BadGatewayException('Medical request not found');
+      }
+      return medical_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async latestMedicalRequest() {
+    try {
+      const medical_data = await this.prisma.medical_request.findFirst({
+        where: {
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          cow: true,
+          farmer: true,
+        },
+      });
       if (!medical_data) {
         throw new BadGatewayException('Medical request not found');
       }
