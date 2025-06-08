@@ -499,6 +499,29 @@ export interface CowPagination {
     total: number;
 }
 
+export interface CowReportData {
+    Beneficiary_Contact: string;
+    alias: string;
+    beneficiary_code: string;
+    beneficiary_type?: Nullable<string>;
+    birthdate: DateTime;
+    bull_calves: number;
+    cow_count?: Nullable<number>;
+    cowname: string;
+    cowstatus: CowStatus;
+    cowtagno: string;
+    daily_milk_produce: string;
+    death_date?: Nullable<DateTime>;
+    death_reason?: Nullable<string>;
+    heifer_calves: number;
+    mother_cowtagno?: Nullable<string>;
+    mother_id?: Nullable<number>;
+    name: string;
+    no_of_calves: number;
+    sex: string;
+    weight: string;
+}
+
 export interface DashboardData {
     cows: number;
     medical: number;
@@ -766,6 +789,7 @@ export interface IQuery {
     birth(id: number): Birth | Promise<Birth>;
     breed(id: number): Breed | Promise<Breed>;
     codeLogin(code: string): User | Promise<User>;
+    cowReport(): CowReportData[] | Promise<CowReportData[]>;
     getAllLearn(): LearnData[] | Promise<LearnData[]>;
     getCowById(id: number): Cow | Promise<Cow>;
     getDashbordData(): DashboardData | Promise<DashboardData>;
@@ -787,6 +811,7 @@ export interface IQuery {
     login(loginUserInput: LoginUserInput): User | Promise<User>;
     signIn(signInUserInput: SignInUserInput): User | Promise<User>;
     treatmentGraph(year: string): TreatmentData | Promise<TreatmentData>;
+    userReport(): UserReportData[] | Promise<UserReportData[]>;
 }
 
 export interface TreatmentData {
@@ -822,6 +847,32 @@ export interface UserPagination {
     skip: number;
     take: number;
     total: number;
+}
+
+export interface UserReportData {
+    address: string;
+    alias?: Nullable<string>;
+    alive_cows: number;
+    amount?: Nullable<string>;
+    beneficiary_code: string;
+    beneficiary_type: string;
+    contact: string;
+    contact_two?: Nullable<string>;
+    dead_cows: number;
+    district: string;
+    emi_amount?: Nullable<string>;
+    emi_date?: Nullable<DateTime>;
+    end_date?: Nullable<DateTime>;
+    loan_id?: Nullable<string>;
+    name: string;
+    no_of_calves: number;
+    number_of_cows: number;
+    number_of_female_calves: number;
+    number_of_male_calves: number;
+    sold_cows: number;
+    start_date?: Nullable<DateTime>;
+    status: string;
+    village: string;
 }
 
 export interface Vaccination {

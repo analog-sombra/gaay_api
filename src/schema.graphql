@@ -103,6 +103,29 @@ type CowPagination {
   total: Int!
 }
 
+type CowReportData {
+  Beneficiary_Contact: String!
+  alias: String!
+  beneficiary_code: String!
+  beneficiary_type: String
+  birthdate: DateTime!
+  bull_calves: Int!
+  cow_count: Int
+  cowname: String!
+  cowstatus: CowStatus!
+  cowtagno: String!
+  daily_milk_produce: String!
+  death_date: DateTime
+  death_reason: String
+  heifer_calves: Int!
+  mother_cowtagno: String
+  mother_id: Int
+  name: String!
+  no_of_calves: Int!
+  sex: String!
+  weight: String!
+}
+
 enum CowStatus {
   ALIVE
   DEAD
@@ -630,6 +653,7 @@ type Query {
   birth(id: Int!): Birth!
   breed(id: Int!): Breed!
   codeLogin(code: String!): User!
+  cowReport: [CowReportData!]!
   getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
   getDashbordData: DashboardData!
@@ -651,6 +675,7 @@ type Query {
   login(loginUserInput: LoginUserInput!): User!
   signIn(signInUserInput: SignInUserInput!): User!
   treatmentGraph(year: String!): TreatmentData!
+  userReport: [UserReportData!]!
 }
 
 enum RequestType {
@@ -826,6 +851,32 @@ type UserPagination {
   skip: Int!
   take: Int!
   total: Int!
+}
+
+type UserReportData {
+  address: String!
+  alias: String
+  alive_cows: Int!
+  amount: String
+  beneficiary_code: String!
+  beneficiary_type: String!
+  contact: String!
+  contact_two: String
+  dead_cows: Int!
+  district: String!
+  emi_amount: String
+  emi_date: DateTime
+  end_date: DateTime
+  loan_id: String
+  name: String!
+  no_of_calves: Int!
+  number_of_cows: Int!
+  number_of_female_calves: Int!
+  number_of_male_calves: Int!
+  sold_cows: Int!
+  start_date: DateTime
+  status: String!
+  village: String!
 }
 
 type Vaccination {
