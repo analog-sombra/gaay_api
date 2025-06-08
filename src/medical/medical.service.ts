@@ -195,14 +195,14 @@ export class MedicalService {
           throw new BadGatewayException('Medical request not found');
         }
         return medical_data;
-      } else if (type == 'UPCOMING') {
-        // show upcoming medical requests
+      } else if (type == 'PENDING') {
+        // show pending medical requests
         const medical_data = await this.prisma.medical_request.findMany({
           where: {
             doctorid: id,
-            scheduled_date: {
-              gt: new Date(new Date().setUTCHours(23, 59, 59, 999)),
-            },
+            // scheduled_date: {
+            //   gt: new Date(new Date().setUTCHours(23, 59, 59, 999)),
+            // },
             medicalStatus: 'SCHEDULED',
             status: 'ACTIVE',
           },
