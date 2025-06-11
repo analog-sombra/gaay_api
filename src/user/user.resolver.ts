@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserInput, CreateUserLoanInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Cow } from 'src/cow/entities/cow.entity';
 import { UserPagination } from './entities/user.pagination.entity';
@@ -44,27 +44,23 @@ export class UserResolver {
   }
 
   @Mutation(() => [User])
-  searchUsersByRole(
-   @Args('role', { type: () => [String] }) role: string[],
-  ) {
+  searchUsersByRole(@Args('role', { type: () => [String] }) role: string[]) {
     return this.userService.searchUsersByRole(role);
   }
 
   @Mutation(() => User)
   createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
+    @Args('createUserLoanInput') createUserLoanInput: CreateUserLoanInput,
   ) {
-    return this.userService.createUser(createUserInput);
+    return this.userService.createUser(createUserInput, createUserLoanInput);
   }
 
   @Mutation(() => User)
-  createStaff(
-    @Args('createStaffInput') createStaffInput: CreateStaffInput,
-  ) {
+  createStaff(@Args('createStaffInput') createStaffInput: CreateStaffInput) {
     return this.userService.createStaff(createStaffInput);
   }
 
-  
   @Query(() => User)
   latestFarmer() {
     return this.userService.getLatestFarmer();

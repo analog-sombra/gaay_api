@@ -1,6 +1,7 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import { BeneficiaryType, Role } from '@prisma/client';
 import {
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -64,4 +65,22 @@ export class CreateUserInput {
   @IsNotEmpty()
   @Field(() => BeneficiaryType)
   beneficiary_type: BeneficiaryType;
+}
+
+@InputType()
+export class CreateUserLoanInput {
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  amount: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  emi_amount: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  start_date: string;
 }

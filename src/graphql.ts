@@ -312,6 +312,12 @@ export interface CreateUserInput {
     village: string;
 }
 
+export interface CreateUserLoanInput {
+    amount: string;
+    emi_amount: string;
+    start_date: string;
+}
+
 export interface CreateVaccinationInput {
     exampleField: number;
 }
@@ -522,11 +528,39 @@ export interface CowReportData {
     weight: string;
 }
 
+export interface DashboardCowReportData {
+    alive: number;
+    calf: number;
+    cow_alive: number;
+    cow_dead: number;
+    dead: number;
+    heifer: number;
+    sold: number;
+    total: number;
+}
+
 export interface DashboardData {
     cows: number;
     medical: number;
     user: number;
     venders: number;
+}
+
+export interface DashboardMedicalReportData {
+    completed: number;
+    create: number;
+    late: number;
+    schedule: number;
+    total: number;
+}
+
+export interface DashboardUserReportData {
+    iddp: number;
+    iddp_cow_count: number;
+    ssdu: number;
+    ssdu_cow_count: number;
+    total: number;
+    withcows: number;
 }
 
 export interface Feedback {
@@ -767,7 +801,7 @@ export interface IMutation {
     createMarketMedicine(createMedicineInput: CreateMedicineInput): Medicine | Promise<Medicine>;
     createMedical(createMedicalInput: CreateMedicalInput): Medical | Promise<Medical>;
     createStaff(createStaffInput: CreateStaffInput): User | Promise<User>;
-    createUser(createUserInput: CreateUserInput): User | Promise<User>;
+    createUser(createUserInput: CreateUserInput, createUserLoanInput: CreateUserLoanInput): User | Promise<User>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
     editUserPhoto(id: number, photo: string): User | Promise<User>;
     removeBirth(id: number): Birth | Promise<Birth>;
@@ -790,6 +824,9 @@ export interface IQuery {
     breed(id: number): Breed | Promise<Breed>;
     codeLogin(code: string): User | Promise<User>;
     cowReport(): CowReportData[] | Promise<CowReportData[]>;
+    dashboardCowReport(): DashboardCowReportData | Promise<DashboardCowReportData>;
+    dashboardMedicalReport(): DashboardMedicalReportData | Promise<DashboardMedicalReportData>;
+    dashboardUserReport(): DashboardUserReportData | Promise<DashboardUserReportData>;
     getAllLearn(): LearnData[] | Promise<LearnData[]>;
     getCowById(id: number): Cow | Promise<Cow>;
     getDashbordData(): DashboardData | Promise<DashboardData>;

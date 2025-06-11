@@ -98,6 +98,10 @@ export class DashboardService {
   }
   async cowReport() {
     const cows = await this.prisma.cow.findMany({
+      where: {
+        deletedAt: null,
+        deletedById: null,
+      },
       include: {
         farmer: true, // equivalent of LEFT JOIN user
         calf_birth: {
@@ -157,6 +161,10 @@ export class DashboardService {
   }
   async userReport() {
     const users = await this.prisma.user.findMany({
+      where: {
+        deletedAt: null,
+        role: 'FARMER',
+      },
       orderBy: {
         beneficiary_code: 'asc',
       },
@@ -197,6 +205,8 @@ export class DashboardService {
             mothercow: {
               farmerid: user.id,
             },
+            deletedAt: null,
+            deletedById: null,
           },
           include: {
             calf: true,
@@ -242,5 +252,198 @@ export class DashboardService {
     );
 
     return result;
+  }
+
+  async dashboardMedicalReport() {
+    try {
+      const total = await this.prisma.medical_request.count({
+        where: {
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+
+      const created = await this.prisma.medical_request.count({
+        where: {
+          medicalStatus: 'CREATED',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+
+      const scheduled = await this.prisma.medical_request.count({
+        where: {
+          medicalStatus: 'SCHEDULED',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+      const completed = await this.prisma.medical_request.count({
+        where: {
+          medicalStatus: 'RESOLVED',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0); // Set time to start of the day
+
+      // for late it's scheduled but date is less than today
+
+      const late = await this.prisma.medical_request.count({
+        where: {
+          medicalStatus: 'SCHEDULED',
+          deletedAt: null,
+          deletedById: null,
+          scheduled_date: {
+            lt: today,
+          },
+        },
+      });
+
+      const dashboardCowReportData = {
+        total,
+        create: created,
+        schedule: scheduled,
+        completed,
+        late,
+      };
+      return dashboardCowReportData;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async dashboardUserReport() {
+    try {
+      const iddp = await this.prisma.user.findMany({
+        where: {
+          deletedAt: null,
+          role: 'FARMER',
+          beneficiary_type: 'IDDP',
+        },
+      });
+
+      const ssdu = await this.prisma.user.findMany({
+        where: {
+          deletedAt: null,
+          role: 'FARMER',
+          beneficiary_type: 'SSDU',
+        },
+      });
+
+      const total = await this.prisma.user.findMany({
+        where: {
+          deletedAt: null,
+          role: 'FARMER',
+        },
+      });
+
+      const dashboardUserReportData = {
+        iddp: iddp.length,
+        iddp_cow_count: iddp.reduce(
+          (acc, user) => acc + (user.cow_count || 0),
+          0,
+        ),
+        ssdu: ssdu.length,
+        ssdu_cow_count: ssdu.reduce(
+          (acc, user) => acc + (user.cow_count || 0),
+          0,
+        ),
+        total: total.length,
+        withcows: total.reduce((acc, user) => acc + (user.cow_count || 0), 0),
+      };
+      return dashboardUserReportData;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async dashboardCowReport() {
+    try {
+      const total = await this.prisma.cow.count({
+        where: {
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+      const alive = await this.prisma.cow.count({
+        where: {
+          cowstatus: 'ALIVE',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+      const dead = await this.prisma.cow.count({
+        where: {
+          cowstatus: 'DEAD',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+      const sold = await this.prisma.cow.count({
+        where: {
+          cowstatus: 'SOLD',
+          deletedAt: null,
+          deletedById: null,
+        },
+      });
+
+      const cows = await this.prisma.birth.findMany({
+        where: {
+          deletedAt: null,
+          deletedById: null,
+        },
+        include: {
+          calf: true,
+        },
+      });
+
+      const heifer = cows.filter((birth) => birth.calf?.sex === 'FEMALE');
+      const calf = cows.filter((birth) => birth.calf?.sex === 'MALE');
+
+      // cow who is not in birth table
+      const cowAlive = await this.prisma.cow.count({
+        where: {
+          cowstatus: 'ALIVE',
+          deletedAt: null,
+          deletedById: null,
+          NOT: {
+            id: {
+              in: cows.map((birth) => birth.calfid),
+            },
+          },
+        },
+      });
+
+      const cowDead = await this.prisma.cow.count({
+        where: {
+          cowstatus: 'DEAD',
+          deletedAt: null,
+          deletedById: null,
+          NOT: {
+            id: {
+              in: cows.map((birth) => birth.calfid),
+            },
+          },
+        },
+      });
+
+      const dashboardCowReportData = {
+        total,
+        alive,
+        dead,
+        sold,
+        heifer: heifer.length,
+        calf: calf.length,
+        cow_alive: cowAlive,
+        cow_dead: cowDead,
+      };
+
+      return dashboardCowReportData;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }

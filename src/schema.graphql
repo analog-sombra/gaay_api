@@ -351,9 +351,26 @@ input CreateUserInput {
   village: String!
 }
 
+input CreateUserLoanInput {
+  amount: String!
+  emi_amount: String!
+  start_date: String!
+}
+
 input CreateVaccinationInput {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+type DashboardCowReportData {
+  alive: Int!
+  calf: Int!
+  cow_alive: Int!
+  cow_dead: Int!
+  dead: Int!
+  heifer: Int!
+  sold: Int!
+  total: Int!
 }
 
 type DashboardData {
@@ -361,6 +378,23 @@ type DashboardData {
   medical: Int!
   user: Int!
   venders: Int!
+}
+
+type DashboardMedicalReportData {
+  completed: Int!
+  create: Int!
+  late: Int!
+  schedule: Int!
+  total: Int!
+}
+
+type DashboardUserReportData {
+  iddp: Int!
+  iddp_cow_count: Int!
+  ssdu: Int!
+  ssdu_cow_count: Int!
+  total: Int!
+  withcows: Int!
 }
 
 """
@@ -626,7 +660,7 @@ type Mutation {
   createMarketMedicine(createMedicineInput: CreateMedicineInput!): Medicine!
   createMedical(createMedicalInput: CreateMedicalInput!): Medical!
   createStaff(createStaffInput: CreateStaffInput!): User!
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInput!, createUserLoanInput: CreateUserLoanInput!): User!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
   editUserPhoto(id: Int!, photo: String!): User!
   removeBirth(id: Int!): Birth!
@@ -654,6 +688,9 @@ type Query {
   breed(id: Int!): Breed!
   codeLogin(code: String!): User!
   cowReport: [CowReportData!]!
+  dashboardCowReport: DashboardCowReportData!
+  dashboardMedicalReport: DashboardMedicalReportData!
+  dashboardUserReport: DashboardUserReportData!
   getAllLearn: [LearnData!]!
   getCowById(id: Int!): Cow!
   getDashbordData: DashboardData!

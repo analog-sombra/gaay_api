@@ -1,7 +1,7 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { SearchUserPaginationInput } from './dto/search-user-pagination';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserInput, CreateUserLoanInput } from './dto/create-user.input';
 import { CreateStaffInput } from './dto/create-staff.input';
 import { Role } from '@prisma/client';
 
@@ -189,7 +189,10 @@ export class UserService {
     }
   }
 
-  async createUser(createUserInput: CreateUserInput) {
+  async createUser(
+    createUserInput: CreateUserInput,
+    createUserLoanInput: CreateUserLoanInput,
+  ) {
     try {
       // if beneficiary_code is not unique, throw error
       const is_user = await this.prisma.user.findUnique({
@@ -210,6 +213,30 @@ export class UserService {
       });
       if (!user_data) {
         throw new BadGatewayException('User not found');
+      }
+
+      const loan = await this.prisma.loan.create({
+        data: {
+          ...createUserLoanInput,
+          farmerid: user_data.id,
+          status: 'ACTIVE',
+          loan_id: user_data.beneficiary_code?.toString() || '',
+          remarks: 'Loan created for new user',
+          createdById: user_data.id,
+          emi_date: new Date(
+            new Date(createUserLoanInput.start_date).setDate(
+              new Date(createUserLoanInput.start_date).getDate() + 30,
+            ),
+          ),
+          end_date: new Date(
+            new Date(createUserLoanInput.start_date).setMonth(
+              new Date(createUserLoanInput.start_date).getMonth() + 60,
+            ),
+          ),
+        },
+      });
+      if (!loan) {
+        throw new BadGatewayException('Loan not created');
       }
       return user_data;
     } catch (error) {
