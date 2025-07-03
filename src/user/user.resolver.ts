@@ -65,4 +65,9 @@ export class UserResolver {
   latestFarmer() {
     return this.userService.getLatestFarmer();
   }
+
+  @Query(() => String)
+  getUserCode() {
+    return this.userService.getUserCode();
+  }
 }

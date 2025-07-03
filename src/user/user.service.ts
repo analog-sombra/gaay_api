@@ -262,4 +262,39 @@ export class UserService {
       throw new BadGatewayException(error);
     }
   }
+  async getUserCode() {
+    try {
+      const user_data = await this.prisma.user.findMany({
+        where: {
+          status: 'ACTIVE',
+          deletedAt: null,
+          beneficiary_code: {
+            not: null,
+          },
+        },
+        select: {
+          beneficiary_code: true,
+        },
+      });
+      if (user_data.length === 0) {
+        return '1000';
+      }
+
+      // list all 4 digit beneficiary code and short the list by small to large
+
+      const codes = user_data
+        .map((user) => user.beneficiary_code)
+        .filter((code) => code && code.length === 4)
+        .map((code) => parseInt(code ?? '0', 10))
+        .sort((a, b) => b - a);
+
+      if (codes.length === 0) {
+        return '1000';
+      }
+
+      return (codes[0] + 1).toString();
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
 }

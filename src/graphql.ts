@@ -840,6 +840,7 @@ export interface IQuery {
     getMarketMedicineByUser(id: number, skip: number, take: number): MedicinePagination | Promise<MedicinePagination>;
     getMedicalRequestById(id: number): Medical | Promise<Medical>;
     getUserById(id: number): User | Promise<User>;
+    getUserCode(): string | Promise<string>;
     getUserCows(id: number): Cow[] | Promise<Cow[]>;
     getUserCurrentLoan(id: number): Loan | Promise<Loan>;
     latestCow(): Cow | Promise<Cow>;

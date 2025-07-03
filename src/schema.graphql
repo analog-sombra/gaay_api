@@ -704,6 +704,7 @@ type Query {
   getMarketMedicineByUser(id: Int!, skip: Int!, take: Int!): MedicinePagination!
   getMedicalRequestById(id: Int!): Medical!
   getUserById(id: Int!): User!
+  getUserCode: String!
   getUserCows(id: Int!): [Cow!]!
   getUserCurrentLoan(id: Int!): Loan!
   latestCow: Cow!
