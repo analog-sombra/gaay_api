@@ -290,6 +290,7 @@ export interface CreateMedicineInput {
 
 export interface CreateStaffInput {
     address: string;
+    alias: string;
     contact: string;
     contact_two?: Nullable<string>;
     district: string;
@@ -300,6 +301,7 @@ export interface CreateStaffInput {
 
 export interface CreateUserInput {
     address: string;
+    alias: string;
     beneficiary_code: string;
     beneficiary_type: BeneficiaryType;
     contact: string;
@@ -803,6 +805,7 @@ export interface IMutation {
     createStaff(createStaffInput: CreateStaffInput): User | Promise<User>;
     createUser(createUserInput: CreateUserInput, createUserLoanInput: CreateUserLoanInput): User | Promise<User>;
     createVaccination(createVaccinationInput: CreateVaccinationInput): Vaccination | Promise<Vaccination>;
+    deleteUser(id: number): User | Promise<User>;
     editUserPhoto(id: number, photo: string): User | Promise<User>;
     removeBirth(id: number): Birth | Promise<Birth>;
     removeBreed(id: number): Breed | Promise<Breed>;
@@ -828,6 +831,7 @@ export interface IQuery {
     dashboardMedicalReport(): DashboardMedicalReportData | Promise<DashboardMedicalReportData>;
     dashboardUserReport(): DashboardUserReportData | Promise<DashboardUserReportData>;
     getAllLearn(): LearnData[] | Promise<LearnData[]>;
+    getAllMarketCowByUser(id: number): Market[] | Promise<Market[]>;
     getCowById(id: number): Cow | Promise<Cow>;
     getDashbordData(): DashboardData | Promise<DashboardData>;
     getDoctorMedicalRequest(id: number, type: string): Medical[] | Promise<Medical[]>;

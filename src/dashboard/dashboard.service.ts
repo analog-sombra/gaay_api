@@ -13,6 +13,10 @@ export class DashboardService {
         where: {
           deletedAt: null,
           deletedById: null,
+          farmer: {
+            role: 'FARMER',
+            deletedAt: null,
+          },
         },
       });
       const venders = await this.prisma.user.count({
@@ -101,6 +105,10 @@ export class DashboardService {
       where: {
         deletedAt: null,
         deletedById: null,
+        farmer: {
+          role: 'FARMER',
+          deletedAt: null,
+        },
       },
       include: {
         farmer: true, // equivalent of LEFT JOIN user

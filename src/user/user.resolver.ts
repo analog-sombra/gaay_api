@@ -70,4 +70,9 @@ export class UserResolver {
   getUserCode() {
     return this.userService.getUserCode();
   }
+
+   @Mutation(() => User)
+  deleteUser(@Args('id', { type: () => Int }) id: number) {
+    return this.userService.deleteUser(id);
+  }
 }

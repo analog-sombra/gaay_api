@@ -259,4 +259,32 @@ export class MarketService {
       throw new BadGatewayException(error);
     }
   }
+  async getAllMarketCowByUser(id: number) {
+    try {
+      const market_data = await this.prisma.market.findMany({
+        where: {
+          status: 'ACTIVE',
+          deletedAt: null,
+          deletedById: null,
+          farmerid: id,
+        },
+        include: {
+          cow: {
+            include: {
+              breed: true,
+            },
+          },
+          farmer: true,
+        },
+      });
+
+      if (!market_data) {
+        throw new BadGatewayException('Market cow data not found');
+      }
+
+      return market_data;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
 }

@@ -13,6 +13,11 @@ export class CreateStaffInput {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
+  alias: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
   name: string;
 
   @IsString()

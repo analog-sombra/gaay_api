@@ -75,4 +75,9 @@ export class MarketResolver {
   ) {
     return this.marketService.getMarketCowByUser(id, skip, take);
   }
+
+  @Query(() => [Market])
+  getAllMarketCowByUser(@Args('id', { type: () => Int }) id: number) {
+    return this.marketService.getAllMarketCowByUser(id);
+  }
 }

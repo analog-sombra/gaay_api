@@ -329,6 +329,7 @@ input CreateMedicineInput {
 
 input CreateStaffInput {
   address: String!
+  alias: String!
   contact: String!
   contact_two: String
   district: String!
@@ -339,6 +340,7 @@ input CreateStaffInput {
 
 input CreateUserInput {
   address: String!
+  alias: String!
   beneficiary_code: String!
   beneficiary_type: BeneficiaryType!
   contact: String!
@@ -662,6 +664,7 @@ type Mutation {
   createStaff(createStaffInput: CreateStaffInput!): User!
   createUser(createUserInput: CreateUserInput!, createUserLoanInput: CreateUserLoanInput!): User!
   createVaccination(createVaccinationInput: CreateVaccinationInput!): Vaccination!
+  deleteUser(id: Int!): User!
   editUserPhoto(id: Int!, photo: String!): User!
   removeBirth(id: Int!): Birth!
   removeBreed(id: Int!): Breed!
@@ -692,6 +695,7 @@ type Query {
   dashboardMedicalReport: DashboardMedicalReportData!
   dashboardUserReport: DashboardUserReportData!
   getAllLearn: [LearnData!]!
+  getAllMarketCowByUser(id: Int!): [Market!]!
   getCowById(id: Int!): Cow!
   getDashbordData: DashboardData!
   getDoctorMedicalRequest(id: Int!, type: String!): [Medical!]!

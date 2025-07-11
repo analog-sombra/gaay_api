@@ -209,6 +209,7 @@ export class UserService {
           ...createUserInput,
           status: 'ACTIVE',
           category: 'SCST',
+          photo: 'public/images/users/1742374757309_avatar.jpeg',
         },
       });
       if (!user_data) {
@@ -252,6 +253,8 @@ export class UserService {
           category: 'GENERAL',
           cow_count: 0,
           beneficiary_type: 'SSDU',
+          beneficiary_code: createStaffInput.contact,
+          photo: 'public/images/users/1742374757309_avatar.jpeg',
         },
       });
       if (!user_data) {
@@ -293,6 +296,37 @@ export class UserService {
       }
 
       return (codes[0] + 1).toString();
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
+  }
+
+  async deleteUser(id: number) {
+    try {
+      const is_user = await this.prisma.user.findUnique({
+        where: {
+          id,
+          deletedAt: null,
+        },
+      });
+
+      if (!is_user) {
+        throw new BadGatewayException('User not found');
+      }
+
+      const user_data = await this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          deletedAt: new Date(),
+          status: 'INACTIVE',
+        },
+      });
+      if (!user_data) {
+        throw new BadGatewayException('User not found');
+      }
+      return user_data;
     } catch (error) {
       throw new BadGatewayException(error);
     }

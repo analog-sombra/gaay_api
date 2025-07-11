@@ -14,6 +14,11 @@ export class CreateUserInput {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
+  alias: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
   name: string;
 
   @IsString()
