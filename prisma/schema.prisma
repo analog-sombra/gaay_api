@@ -188,7 +188,7 @@ model cow {
   photo4             String?
   breed              breed         @relation(fields: [breedid], references: [id])
   breedid            Int
-  sex                SEX           @default(MALE)
+  sex                SEX           @default(FEMALE)
   birthdate          DateTime
   noofcalves         Int?
   weight             String
